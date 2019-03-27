@@ -1,0 +1,24 @@
+
+.table-view .scroll-bar:horizontal .increment-arrow,
+.table-view .scroll-bar:horizontal .decrement-arrow,
+.table-view .scroll-bar:horizontal .increment-button,
+.table-view .scroll-bar:horizontal .decrement-button {
+	-fx-padding: 0;
+}
+
+.table-row-cell:empty {
+    -fx-background-color: white;
+}
+
+.table-row-cell:empty .table-cell {
+    -fx-border-width: 0px;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-unit-increment: 100 ;
+    -fx-block-increment: 500 ;
+}
+
+.combo-box-popup .list-cell:disabled  {
+    -fx-opacity: 0.4 ;
+}

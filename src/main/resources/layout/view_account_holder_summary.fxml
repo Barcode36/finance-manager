@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane">
+	<padding>
+		<Insets top="0.0" bottom="5.0" right="5.0" left="5.0"/>
+	</padding>
+	<top>
+		<HBox alignment="CENTER_LEFT">
+			<children>
+				<Text fx:id="nameText" fill="WHITE">
+					<font>
+						<Font style="Calibri" size="32"/>
+					</font>
+				</Text>
+			</children>
+		</HBox>
+	</top>
+	<center>
+		<VBox fx:id="acctTypesBox" alignment="TOP_LEFT"/>
+	</center>
+	<bottom>
+		<HBox alignment="CENTER_RIGHT">
+			<children>
+				<Text fx:id="totalText" fill="WHITE">
+					<font>
+						<Font style="Calibri" size="24"/>
+					</font>
+				</Text>
+			</children>
+		</HBox>
+	</bottom>
+</fx:root>
+

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+<?import com.ccacic.financemanager.controller.control.EntryChunkManagerControl?>
+
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<HBox fx:id="acctBar" spacing="5.0" alignment="CENTER_LEFT">
+			<VBox.margin>
+				<Insets top="5.0"/>
+			</VBox.margin>
+			<padding>
+				<Insets top="5.0" left="5.0" right="5.0"/>
+			</padding>
+			<children>
+				<Text fx:id="acctText" fill="WHITE">
+					<font>
+						<Font style="Calibri" size="40"/>
+					</font>
+				</Text>
+				<Pane HBox.hgrow="ALWAYS"/>
+				<VBox spacing="5.0" alignment="CENTER_RIGHT">
+					<children>
+						<Text fx:id="amountDefCurrText" fill="WHITE">
+							<font>
+								<Font style="Calibri" size="32"/>
+							</font>
+						</Text>
+						<Text fx:id="amountText" fill="WHITE">
+							<font>
+								<Font style="Calibri" size="32"/>
+							</font>
+						</Text>
+					</children>
+				</VBox>
+			</children>
+		</HBox>
+		<HBox fx:id="acctTypeBar" spacing="5.0" alignment="CENTER_LEFT">
+			<padding>
+				<Insets bottom="7.0" left="5.0" right="5.0"/>
+			</padding>
+			<children>
+				<Text fx:id="acctTypeText" fill="LIGHTGREY">
+					<font>
+						<Font style="Calibri" size="24"/>
+					</font>
+				</Text>
+				<Pane HBox.hgrow="ALWAYS"/>
+				<Button fx:id="toggleEntriesButton" text="+" minWidth="31.0" maxWidth="31.0"/>
+			</children>
+		</HBox>
+		<VBox fx:id="acctExpandedBar" alignment="TOP_CENTER" visible="false">
+			<children>
+				<HBox fx:id="acctOptButtonBar" spacing="5.0" alignment="CENTER_LEFT">
+					<children>
+						<Button fx:id="addEntryButton" text="Add Entry">
+							<HBox.margin>
+								<Insets top="5.0" bottom="5.0" left="5.0"/>
+							</HBox.margin>
+						</Button>
+						<Button fx:id="editEntryButton" text="Edit Entry">
+							<HBox.margin>
+								<Insets top="5.0" bottom="5.0"/>
+							</HBox.margin>
+						</Button>
+						<Button fx:id="removeEntryButton" text="Remove Entry">
+							<HBox.margin>
+								<Insets top="5.0" bottom="5.0"/>
+							</HBox.margin>
+						</Button>
+						<Pane HBox.hgrow="ALWAYS"/>
+						<Button fx:id="editAccountButton" text="Edit Account">
+							<HBox.margin>
+								<Insets top="5.0" bottom="5.0"/>
+							</HBox.margin>
+						</Button>
+						<Button fx:id="removeAccountButton" text="Remove Account">
+							<HBox.margin>
+								<Insets top="5.0" right="5.0" bottom="5.0"/>
+							</HBox.margin>
+						</Button>
+					</children>
+				</HBox>
+			</children>
+		</VBox>
+		<EntryChunkManagerControl fx:id="entryChunkManagerControl"/>
+	</children>
+</fx:root>
+
+<!-- 
+		VBox rootPane = new VBox();
+		HBox acctBar = new HBox(); //needs id
+			VBox.setMargin(acctBar, new Insets(5, 0, 0, 0));
+			acctBar.setAlignment(Pos.CENTER_LEFT);
+		TableView2<Entry> entryTable = new TableView2<Entry>();
+			entryTable.setColumnResizePolicy(TableView2.CONSTRAINED_RESIZE_POLICY);
+		VBox acctExpandedBar = new VBox(); //needs id
+			acctExpandedBar.setAlignment(Pos.TOP_CENTER);
+		HBox acctDetailsBar = new HBox();
+			acctDetailsBar.setAlignment(Pos.CENTER_LEFT);
+			acctDetailsBar.setSpacing(5);
+		Text acctTypeText = new Text(); //needs id
+			acctTypeText.setFont(Font.font("Calibri", FontWeight.NORMAL, 24));
+			acctTypeText.setFill(Color.LIGHTGREY);
+			HBox.setMargin(acctTypeText, new Insets(5, 0, 5, 5));
+		Text IDText = new Text(); //needs id
+			IDText.setFont(Font.font("Calibri", FontWeight.NORMAL, 24));
+			IDText.setFill(Color.LIGHTGREY);
+			HBox.setMargin(IDText, new Insets(5, 0, 5, 5));
+		HBox acctOptButtonBar = new HBox(); //needs id
+			acctOptButtonBar.setAlignment(Pos.CENTER_LEFT);
+			acctOptButtonBar.setSpacing(5);
+		Button addEntryButton = new Button("Add Entry");
+			HBox.setMargin(addEntryButton, new Insets(5, 0, 5, 5));
+		Button editEntryButton = new Button("Edit Entry");
+			HBox.setMargin(editEntryButton, new Insets(5, 0, 5, 0));
+		Button removeEntryButton = new Button("Remove Entry");
+			HBox.setMargin(removeEntryButton, new Insets(5, 0, 5, 0));
+		Pane acctOptSpacer = new Pane();
+			HBox.setHgrow(acctOptSpacer, Priority.ALWAYS);
+		Button editAccountButton = new Button("Edit Account");
+			HBox.setMargin(editAccountButton, new Insets(5, 0, 5, 0));
+		Button removeAccountButton = new Button("Remove Account");
+			HBox.setMargin(removeAccountButton, new Insets(5, 5, 5, 0));
+		Text acctText = new Text(); //needs id
+			acctText.setFont(Font.font("Calibri", FontWeight.NORMAL, 32));
+			acctText.setFill(Color.WHITE);
+			HBox.setMargin(acctText, new Insets(5, 0, 5, 5));
+		Pane textSpacer = new Pane();
+			HBox.setHgrow(textSpacer, Priority.ALWAYS);
+		Text amountText = new Text(); //needs id
+			amountText.setFont(Font.font("Calibri", FontWeight.NORMAL, 32));
+			amountText.setFill(Color.WHITE);
+			HBox.setMargin(amountText, new Insets(5, 5, 5, 0));
+		Button toggleEntriesButton = new Button("+");
+			HBox.setMargin(toggleEntriesButton, new Insets(5, 5, 5, 0));
+			
+			
+		acctDetailsBar.getChildren().addAll(acctTypeText, IDText);
+		acctOptButtonBar.getChildren().addAll(addEntryButton, editEntryButton, removeEntryButton, acctOptSpacer,
+				editAccountButton, removeAccountButton);
+		acctExpandedBar.getChildren().addAll(acctDetailsBar, acctOptButtonBar);
+		acctBar.getChildren().addAll(acctText, textSpacer, amountText, toggleEntriesButton);
+		rootPane.getChildren().addAll(acctBar, acctExpandedBar, entryTable); 
+-->
+

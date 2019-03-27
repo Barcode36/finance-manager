@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import com.ccacic.financemanager.controller.control.LimitedTextField?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.HBox?>
+<?import com.ccacic.financemanager.controller.control.CurrencyTextField?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox">
+	<padding>
+		<Insets top="5.0" bottom="5.0" right="5.0" left="5.0"/>
+	</padding>
+	<children>
+		<Text text="Transaction ID"/>
+		<LimitedTextField fx:id="transField"/>
+		<Text text="Price at Transaction Time"/>
+		<HBox spacing="5.0">
+			<children>
+				<CurrencyTextField fx:id="histPriceField"/>
+			</children>
+		</HBox>
+		<Text text="Value"/>
+		<Text fx:id="valueText"/>
+	</children>
+</fx:root>
+

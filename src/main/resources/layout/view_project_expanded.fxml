@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import com.ccacic.financemanager.controller.control.entrytable.ProjectEntryTable?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.geometry.Insets?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox">
+	<children>
+		<HBox fx:id="headerBox">
+			<padding>
+				<Insets top="5.0" bottom="5.0" left="5.0" right="5.0"/>
+			</padding>
+			<children>
+				<Text fx:id="nameText" fill="WHITE">
+					<font>
+						<Font style="Calibri" size="48"/>
+					</font>
+				</Text>
+				<Pane HBox.hgrow="ALWAYS"/>
+				<Text fx:id="amountText" fill="WHITE">
+					<font>
+						<Font style="Calibri" size="48"/>
+					</font>
+				</Text>
+			</children>
+		</HBox>
+		<ProjectEntryTable fx:id="entryTable">
+			<columnResizePolicy>
+				<ProjectEntryTable fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+			</columnResizePolicy>
+		</ProjectEntryTable>
+	</children>
+</fx:root>
+

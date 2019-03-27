@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import com.ccacic.financemanager.controller.control.entrytable.EntryTable?>
+<?import com.ccacic.financemanager.controller.control.CurrencyComboBox?>
+
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<HBox alignment="CENTER_LEFT">
+			<VBox.margin>
+				<Insets top="5.0" right="5.0" left="5.0"/>
+			</VBox.margin>
+			<children>
+				<VBox spacing="5.0">
+					<children>
+						<HBox spacing="5.0" alignment="CENTER">
+							<children>
+								<Text text="Name"/>
+								<TextField fx:id="nameTextField"/>
+							</children>
+						</HBox>
+						<ComboBox fx:id="acctTypeCombo"/>
+					</children>
+				</VBox>
+				<Pane HBox.hgrow="ALWAYS" minWidth="30"/>
+				<VBox spacing="5.0" alignment="CENTER_RIGHT">
+					<children>
+						<ComboBox fx:id="exchangeCombo"/>
+						<CurrencyComboBox fx:id="currencyCombo"/>
+					</children>
+				</VBox>
+			</children>
+		</HBox>
+		<Pane minHeight="20"/>
+	</children>
+</fx:root>
+
+<!-- 
+		VBox vbox = new VBox();
+			vbox.setSpacing(5);
+		VBox acctParamBox = new VBox(); //give fx:id
+			VBox.setMargin(acctParamBox, new Insets(0, 5, 0, 5));
+			acctParamBox.setSpacing(5);
+		HBox comboAndIDBox = new HBox();
+			VBox.setMargin(comboAndIDBox, new Insets(5, 5, 0, 5));
+			comboAndIDBox.setSpacing(5);
+			comboAndIDBox.setAlignment(Pos.CENTER_LEFT);
+		ComboBox<String> acctTypeCombo = new ComboBox<String>();
+		ComboBox<String> currencyCombo = new ComboBox<String>();
+		Pane comboAndIDSpacer1 = new Pane();
+			HBox.setHgrow(comboAndIDSpacer1, Priority.ALWAYS);
+		Pane comboAndIDSpacer2 = new Pane();
+			HBox.setHgrow(comboAndIDSpacer2, Priority.ALWAYS);
+		Text IDText = new Text("ID #");
+		TextField IDTextField = new TextField();
+		Text nameText = new Text("Name");
+		TextField nameTextField = new TextField();
+		TableView2<Entry> entryTable = new TableView2<Entry>();
+			VBox.setMargin(entryTable, new Insets(0, 5, 0, 5));
+			entryTable.setPrefWidth(300);
+			entryTable.setPrefHeight(160);
+			entryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		HBox addEntryButtonBox = new HBox();
+			VBox.setMargin(addEntryButtonBox, new Insets(0, 5, 0 ,5));
+			addEntryButtonBox.setAlignment(Pos.CENTER_LEFT);
+		Button addEntryButton = new Button("Add Entry");
+		Pane entryButtonSpacer = new Pane();
+			HBox.setHgrow(entryButtonSpacer, Priority.ALWAYS);
+		Button editEntryButton = new Button("Edit Entry");
+		HBox optionButtonBox = new HBox();
+			optionButtonBox.setSpacing(5);
+			VBox.setMargin(optionButtonBox, new Insets(0, 5, 5, 5));
+			optionButtonBox.setAlignment(Pos.CENTER_RIGHT);
+		Button createAcctButton = new Button();
+		Button cancelButton = new Button("Cancel");
+		
+		comboAndIDBox.getChildren().addAll(acctTypeCombo, comboAndIDSpacer1, IDText, IDTextField,
+				nameText, nameTextField, comboAndIDSpacer2, currencyCombo);
+		addEntryButtonBox.getChildren().addAll(addEntryButton, entryButtonSpacer, editEntryButton);
+		optionButtonBox.getChildren().addAll(createAcctButton, cancelButton);
+		vbox.getChildren().addAll(comboAndIDBox, addEntryButtonBox, entryTable, acctParamBox, optionButtonBox);
+ -->

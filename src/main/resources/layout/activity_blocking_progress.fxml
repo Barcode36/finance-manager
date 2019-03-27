@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.geometry.Insets?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox">
+	<padding>
+		<Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
+	</padding>
+	<children>
+		<Text fx:id="messageText"/>
+		<HBox>
+			<children>
+				<ProgressBar fx:id="progressBar" HBox.hgrow="ALWAYS"/>
+			</children>
+		</HBox>
+	</children>
+</fx:root>
+

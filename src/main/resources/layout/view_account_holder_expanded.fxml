@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.Button?>
+
+<fx:root type="VBox" xmlns:fx="http://javafx.com/fxml/1">
+	<children>
+		<HBox fx:id="acctHoldNameBox" spacing="5.0" alignment="CENTER_LEFT">
+			<children>
+				<Text fx:id="nameText" fill="WHITE">
+					<HBox.margin>
+						<Insets top="5.0" bottom="5.0" left="5.0"/>
+					</HBox.margin>
+					<font>
+						<Font style="Calibri" size="56"/>
+					</font>
+				</Text>
+				<Pane HBox.hgrow="ALWAYS"/>
+				<Text fx:id="amountText" fill="WHITE">
+					<HBox.margin>
+						<Insets top="5.0" bottom="5.0" left="5.0"/>
+					</HBox.margin>
+					<font>
+						<Font style="Calibri" size="48"/>
+					</font>
+				</Text>
+			</children>
+		</HBox>
+		<HBox fx:id="acctHoldOptButtonBox" spacing="5.0" alignment="CENTER_LEFT">
+			<children>
+				<Button fx:id="addAccountButton" text="Add Account">
+					<HBox.margin>
+						<Insets top="5.0" bottom="5.0" left="5.0"/>
+					</HBox.margin>
+				</Button>
+				<Pane HBox.hgrow="ALWAYS"/>
+				<Button fx:id="editAcctHoldButton" text="Edit Account Holder">
+					<HBox.margin>
+						<Insets top="5.0" right="5.0" bottom="5.0"/>
+					</HBox.margin>
+				</Button>
+				<Button fx:id="deleteAcctHoldButton" text="Delete Account Holder">
+					<HBox.margin>
+						<Insets top="5.0" right="5.0" bottom="5.0"/>
+					</HBox.margin>
+				</Button>
+			</children>
+		</HBox>
+	</children>
+</fx:root>
+
+<!-- 
+		VBox rootPane = new VBox();
+		HBox acctHoldNameBox = new HBox(); //needs id
+			acctHoldNameBox.setAlignment(Pos.CENTER_LEFT);
+			acctHoldNameBox.setSpacing(5);
+		Text nameText = new Text(); //needs id
+			HBox.setMargin(nameText, new Insets(5, 0, 5, 5));
+			nameText.setFont(Font.font("Calibri", FontWeight.NORMAL, 48));
+			nameText.setFill(Color.WHITE);
+		Pane textSpacer = new Pane();
+			HBox.setHgrow(textSpacer, Priority.ALWAYS);
+		Text amountText = new Text(); //needs id
+			HBox.setMargin(amountText, new Insets(5, 0, 5, 5));
+			amountText.setFont(Font.font("Calibri", FontWeight.NORMAL, 48));
+			amountText.setFill(Color.WHITE);
+		HBox acctHoldOptButtonBox = new HBox(); //needs id
+			acctHoldOptButtonBox.setAlignment(Pos.CENTER_LEFT);
+			acctHoldOptButtonBox.setSpacing(5);
+		Button addAccountButton = new Button("Add Account");
+			HBox.setMargin(addAccountButton, new Insets(5, 0, 5, 5));
+		Pane buttonSpacer = new Pane();
+			HBox.setHgrow(buttonSpacer, Priority.ALWAYS);
+		Button editAcctHoldButton = new Button("Edit Account Holder");
+			HBox.setMargin(editAcctHoldButton, new Insets(5, 5, 5, 0));
+		Button deleteAcctHoldButton = new Button("Delete Account Holder");
+			HBox.setMargin(deleteAcctHoldButton, new Insets(5, 5, 5, 0));
+		
+		acctHoldNameBox.getChildren().addAll(nameText, textSpacer, amountText);
+		acctHoldOptButtonBox.getChildren().addAll(addAccountButton, buttonSpacer, editAcctHoldButton, deleteAcctHoldButton);
+		rootPane.getChildren().addAll(acctHoldNameBox, acctHoldOptButtonBox);
+-->
