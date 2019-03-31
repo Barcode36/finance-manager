@@ -93,6 +93,7 @@ private static boolean registered = false;
 		load(FileHandler.getLayout("activity_blocking_progress.fxml"), new VBox());
 		popupStage.setTitle(title);
 		popupStage.initStyle(StageStyle.UNDECORATED);
+		popupStage.setOnCloseRequest(javafx.event.Event::consume);
 	}
 
 	@Override
