@@ -80,15 +80,15 @@ public class CurrencyTextField extends TextField {
         
         try {
 			String newText = currencyProperty.getValue().liveFormat(currentText, finalText);
+			if (caretPosition == currentText.length()) {
+				caretPosition = newText.length();
+			}
 			super.replaceText(0, currentText.length(), newText);
 		} catch (NumberFormatException e) {
-			Logger.getInstance().logWarning("Improper String for currency formatting");;
+			Logger.getInstance().logDebug("Improper String for currency formatting");;
 		}
-        Platform.runLater(() -> {
-        	
-        	positionCaret(caretPosition);
-        	
-        });
+        final int finalCaretPos = caretPosition;
+        Platform.runLater(() -> positionCaret(finalCaretPos));
 	}
 	
 }
