@@ -3,6 +3,7 @@ package com.ccacic.financemanager.controller.control.entrytable;
 import java.io.File;
 import java.util.List;
 
+import com.ccacic.financemanager.controller.control.UpdatableTableView;
 import com.ccacic.financemanager.model.entry.Entry;
 
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import javafx.util.Callback;
 class EntryFileCellFactory implements Callback<TableColumn<Entry, List<File>>, TableCell<Entry, List<File>>> {
 
 	private static final String EMPTY_MESSAGE = "No Files";
+	private static final double[] MAX_HEIGHT = new double[] {-1};
 	
 	@Override
 	public TableCell<Entry, List<File>> call(TableColumn<Entry, List<File>> param) {
@@ -44,6 +46,12 @@ class EntryFileCellFactory implements Callback<TableColumn<Entry, List<File>>, T
 			}
 			
 		};
+		cell.heightProperty().addListener((obv, oldVal, newVal) -> {
+			if (newVal.doubleValue() > MAX_HEIGHT[0]) {
+				((UpdatableTableView) param.getTableView()).registerFixedCellSize(newVal.doubleValue());
+				MAX_HEIGHT[0] = newVal.doubleValue();
+			}
+		});
 		return cell;
 	}
 	
