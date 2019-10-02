@@ -23,6 +23,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.lang.reflect.InvocationTargetException;
+
 /**
  * The main activity of the view. Holds all views and activities
  * that aren't popup activities. Coordinates population of all
@@ -50,8 +52,9 @@ public class MainActivity extends FXActivity<BorderPane> {
 	static {
 		double scrollarWidth;
 		try {
-			scrollarWidth = ScrollBar.class.newInstance().getWidth();
-		} catch (InstantiationException | IllegalAccessException e) {
+			scrollarWidth = ScrollBar.class.getDeclaredConstructor().newInstance().getWidth();
+		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+			e.printStackTrace();
 			scrollarWidth = 0;
 		}
 		scrollbarWidth = scrollarWidth;

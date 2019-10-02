@@ -122,7 +122,7 @@ public class Launcher extends Application {
 			long sleepTime = Long.parseLong(generalConfig.getValue(GeneralConfig.DATA_FETCH_TIME));
 			UpdateRatesThread updateThread = new UpdateRatesThread(sleepTime);
 			updateThread.start();
-		} catch (Exception e) {
+		} catch (Error e) {
 			e.printStackTrace();
 		}
 	}

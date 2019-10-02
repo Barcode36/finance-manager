@@ -62,7 +62,7 @@
 		TextField IDTextField = new TextField();
 		Text nameText = new Text("Name");
 		TextField nameTextField = new TextField();
-		TableView2<Entry> entryTable = new TableView2<Entry>();
+		UpdatableTableView<Entry> entryTable = new UpdatableTableView<Entry>();
 			VBox.setMargin(entryTable, new Insets(0, 5, 0, 5));
 			entryTable.setPrefWidth(300);
 			entryTable.setPrefHeight(160);

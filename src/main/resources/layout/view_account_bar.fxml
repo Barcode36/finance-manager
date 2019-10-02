@@ -98,8 +98,8 @@
 		HBox acctBar = new HBox(); //needs id
 			VBox.setMargin(acctBar, new Insets(5, 0, 0, 0));
 			acctBar.setAlignment(Pos.CENTER_LEFT);
-		TableView2<Entry> entryTable = new TableView2<Entry>();
-			entryTable.setColumnResizePolicy(TableView2.CONSTRAINED_RESIZE_POLICY);
+		UpdatableTableView<Entry> entryTable = new UpdatableTableView<Entry>();
+			entryTable.setColumnResizePolicy(UpdatableTableView.CONSTRAINED_RESIZE_POLICY);
 		VBox acctExpandedBar = new VBox(); //needs id
 			acctExpandedBar.setAlignment(Pos.TOP_CENTER);
 		HBox acctDetailsBar = new HBox();

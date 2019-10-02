@@ -4,7 +4,7 @@ import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import com.ccacic.financemanager.controller.control.TableView2;
+import com.ccacic.financemanager.controller.control.UpdatableTableView;
 import com.ccacic.financemanager.controller.entry.FXEntryFrameContainer;
 import com.ccacic.financemanager.model.currency.Currency;
 import com.ccacic.financemanager.model.entry.Entry;
@@ -20,12 +20,12 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 
 /**
- * A TableView2 for displaying Entries. By default the Entries are
+ * A UpdatableTableView for displaying Entries. By default the Entries are
  * sorted by date
  * @author Cameron Cacic
  *
  */
-public class EntryTable extends TableView2<Entry> {
+public class EntryTable extends UpdatableTableView<Entry> {
 	
 	private final Currency[] curr;
 	
@@ -33,6 +33,7 @@ public class EntryTable extends TableView2<Entry> {
 	 * Creates a new EntryTable
 	 */
 	public EntryTable() {
+		super();
 		curr = new Currency[1];
 	}
 	
@@ -81,7 +82,7 @@ public class EntryTable extends TableView2<Entry> {
 		TableColumn<Entry, List<File>> filesCol = new TableColumn<Entry, List<File>>("Files");
 		TableColumn<Entry, String> descrCol = new TableColumn<Entry, String>("Description");
 		
-		dateCol.setCellValueFactory(new PropertyValueFactory<Entry, LocalDateTime>("dateTime"));
+		dateCol.setCellValueFactory(new PropertyValueFactory<>("dateTime"));
 		dateCol.setComparator(new Comparator<LocalDateTime>() {
 			@Override
 			public int compare(LocalDateTime d1, LocalDateTime d2) {

@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.geometry.Insets?>
 <?import com.ccacic.financemanager.controller.control.LimitedTextField?>
-<?import com.ccacic.financemanager.controller.control.TableView2?>
+<?import com.ccacic.financemanager.controller.control.UpdatableTableView?>
 <?import com.ccacic.financemanager.controller.control.CurrencyComboBox?>
 
 <fx:root type="VBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
@@ -62,7 +62,7 @@
 		TextField nameTextField = new TextField();
 		Text currText = new Text("Main Currency");
 		ComboBox<String> currCombo = new ComboBox<String>();
-		TableView2<Account> accountTable = new TableView2<Account>();
+		UpdatableTableView<Account> accountTable = new UpdatableTableView<Account>();
 			accountTable.setPrefWidth(300);
 			accountTable.setPrefHeight(160);
 			VBox.setMargin(accountTable, new Insets(0, 5, 0, 5));

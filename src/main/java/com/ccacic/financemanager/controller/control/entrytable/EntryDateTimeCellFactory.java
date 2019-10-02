@@ -3,6 +3,7 @@ package com.ccacic.financemanager.controller.control.entrytable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import com.ccacic.financemanager.controller.control.UpdatableTableView;
 import com.ccacic.financemanager.model.entry.Entry;
 
 import javafx.scene.control.TableCell;
@@ -17,13 +18,15 @@ import javafx.util.Callback;
  */
 class EntryDateTimeCellFactory implements Callback<TableColumn<Entry, LocalDateTime>, TableCell<Entry, LocalDateTime>> {
 
+	private static final double[] MAX_HEIGHT = new double[] {-1};
+
 	private boolean showsTime;
 	
 	/**
 	 * Creates a new EntryDateTimeCellFactory
 	 * @param showsTime if the time should be displayed alongside the date
 	 */
-	public EntryDateTimeCellFactory(boolean showsTime) {
+	EntryDateTimeCellFactory(boolean showsTime) {
 		this.showsTime = showsTime;
 	}
 	
@@ -46,6 +49,12 @@ class EntryDateTimeCellFactory implements Callback<TableColumn<Entry, LocalDateT
 				}
 			}
 		};
+		cell.heightProperty().addListener((obv, oldVal, newVal) -> {
+			if (newVal.doubleValue() > MAX_HEIGHT[0]) {
+				((UpdatableTableView) param.getTableView()).registerFixedCellSize(newVal.doubleValue());
+				MAX_HEIGHT[0] = newVal.doubleValue();
+			}
+		});
 		return cell;
 	}
 	
