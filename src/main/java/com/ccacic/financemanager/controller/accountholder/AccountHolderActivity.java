@@ -15,8 +15,6 @@ import com.ccacic.financemanager.model.currency.Currency;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -39,7 +37,7 @@ public class AccountHolderActivity extends FXPopupActivity<VBox> {
 	@FXML
 	private Button cancelButton;
 	
-	private String cat;
+	private final String cat;
 	private AccountHolder toEdit;
 	
 	/**
@@ -50,7 +48,6 @@ public class AccountHolderActivity extends FXPopupActivity<VBox> {
 	public AccountHolderActivity(String cat, AccountHolder toEdit) {
 		this.toEdit = toEdit;
 		this.cat = cat;
-		this.toEdit = toEdit;
 	}
 	
 	@Override
@@ -82,7 +79,7 @@ public class AccountHolderActivity extends FXPopupActivity<VBox> {
 			
 			AccountHolder accountHolder = new AccountHolder(null, nameTextField.getText(), cat,
 					currCombo.getSelectionModel().getSelectedItem(),
-					new ArrayList<Account>(accounts));
+					new ArrayList<>(accounts));
 			String acctHoldId = EventManager.getUniqueID(accountHolder);
 			EventManager.fireEvent(new Event(Event.NEW_ACCT_HOLDER, accountHolder));
 			String identifier = EventManager.getUniqueID(this);
@@ -91,14 +88,7 @@ public class AccountHolderActivity extends FXPopupActivity<VBox> {
 			
 		});
 		
-		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent e) {
-				popupStage.close();
-			}
-			
-		});
+		cancelButton.setOnAction(e -> popupStage.close());
 	}
 
 }

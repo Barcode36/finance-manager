@@ -23,10 +23,10 @@ import com.ccacic.financemanager.model.tag.Tag;
  */
 public class StockAccountAssembler extends AccountAssembler<StockAccount> {
 	
-	protected static final String defDisplayName = "Stock Position";
-	protected static final String defEntryType = StockEntry.class.getSimpleName();
-	protected static final Set<Currency> defCurrencies = FiatCurrEntry.getFiatCurrs();
-	protected static final Set<Tag> defTags = new HashSet<>();
+	private static final String defDisplayName = "Stock Position";
+	private static final String defEntryType = StockEntry.class.getSimpleName();
+	private static final Set<Currency> defCurrencies = FiatCurrEntry.getFiatCurrs();
+	private static final Set<Tag> defTags = new HashSet<>();
 	
 	public static final String TICKER = "ticker";
 	public static final String YIELD = "yield";
@@ -46,8 +46,8 @@ public class StockAccountAssembler extends AccountAssembler<StockAccount> {
 	 * @param currencies the supported Currencies for StockAccount
 	 * @param tags the Tags associated with StockAccount
 	 */
-	public StockAccountAssembler(String displayName, String entryType, Set<Currency> currencies,
-			Set<Tag> tags) {
+    private StockAccountAssembler(String displayName, String entryType, Set<Currency> currencies,
+                                  Set<Tag> tags) {
 		super(StockAccount.class.getSimpleName(), displayName, entryType, currencies, tags);
 	}
 

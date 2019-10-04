@@ -14,7 +14,7 @@ import javafx.scene.control.TableColumn;
  */
 public class FXEntryFrameContainer extends FXFrameContainer<Entry> {
 	
-	private static FXEntryFrameContainer instance = new FXEntryFrameContainer();
+	private static final FXEntryFrameContainer instance = new FXEntryFrameContainer();
 	
 	/**
 	 * Returns the instance of the FXEntryFrameContainer
@@ -42,7 +42,7 @@ public class FXEntryFrameContainer extends FXFrameContainer<Entry> {
 		if (factory == null) {
 			return;
 		}
-		factory.insertEntryColumns(columns);;
+		factory.insertEntryColumns(columns);
 	}
 
 }

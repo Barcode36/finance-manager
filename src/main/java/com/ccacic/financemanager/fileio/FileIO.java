@@ -26,7 +26,7 @@ import com.ccacic.financemanager.model.config.GeneralConfig;
  * @author Cameron Cacic
  *
  */
-public class FileIO {
+class FileIO {
 	
 	/**
 	 * Loads the passed File and returns its contents as a String.
@@ -36,7 +36,7 @@ public class FileIO {
 	 * @param sourceFile the File to load
 	 * @param expectedHash the expected hash of the File
 	 * @return the File's contents as a String
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
 	public String loadFile(File sourceFile, String expectedHash) throws IOException {
 		return loadFile(sourceFile, expectedHash, User.getCurrentUser().getPassword());
@@ -52,14 +52,14 @@ public class FileIO {
 	 * @param expectedHash the expected hash of the File
 	 * @param password the password to perform decryption with
 	 * @return the File's contents as a String
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
 	public String loadFile(File sourceFile, String expectedHash, String password) throws IOException {
 		
 		Hashing hashing = new Hashing();
 		InputStream stream = new FileInputStream(sourceFile);
 		InputStream wrappedStream = hashing.wrapStream(stream);
-		String readFile = "";
+		StringBuilder readFile = new StringBuilder();
 		
 		if (password != null) {
 			
@@ -70,13 +70,13 @@ public class FileIO {
 				return null;
 			}
 			wrappedStream.close();
-			readFile = new String(bytes, StandardCharsets.UTF_8);
+			readFile = new StringBuilder(new String(bytes, StandardCharsets.UTF_8));
 			
 		} else {
 			
 			BufferedReader reader = new BufferedReader(new InputStreamReader(wrappedStream, StandardCharsets.UTF_8));
 			while (reader.ready()) {
-				readFile += reader.readLine();
+				readFile.append(reader.readLine());
 			}
 			reader.close();
 			
@@ -87,7 +87,7 @@ public class FileIO {
 			throw new MismatchedHashException("Expected hash for " + sourceFile.getName() + " did not match its actual hash",
 					expectedHash, hash);
 		}
-		return readFile;
+		return readFile.toString();
 		
 	}
 	
@@ -97,7 +97,7 @@ public class FileIO {
 	 * @param file the File to write to
 	 * @param data the data to write
 	 * @return the hash of the written File
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
 	public String writeToFile(File file, String data) throws IOException {
 		return writeToFile(file, data, User.getCurrentUser().getPassword());
@@ -111,7 +111,7 @@ public class FileIO {
 	 * @param data the data to write
 	 * @param password the password to perform encryption with
 	 * @return the hash of the written File
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
 	public String writeToFile(File file, String data, String password) throws IOException {
 		ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
@@ -128,7 +128,7 @@ public class FileIO {
 	 * @param file the File to write to
 	 * @param bytes the bytes to write
 	 * @return the hash of the written File
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
 	public String writeToFile(File file, byte[] bytes) throws IOException {
 		return writeToFile(file, bytes, User.getCurrentUser().getPassword());
@@ -142,12 +142,16 @@ public class FileIO {
 	 * @param bytes the bytes to write
 	 * @param password the password to perform encryption with
 	 * @return the hash of the written File
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
-	public String writeToFile(File file, byte[] bytes, String password) throws IOException {
+    private String writeToFile(File file, byte[] bytes, String password) throws IOException {
 		
-		file.getParentFile().mkdirs();
-		file.createNewFile();
+		if (!file.getParentFile().mkdirs()) {
+			throw new IOException("Failed to create directories described in " + file.getParentFile());
+		}
+		if (!file.createNewFile()) {
+			throw new IOException("Failed to create " + file);
+		}
 		
 		Hashing hashing = new Hashing();
 		if (password != null) {

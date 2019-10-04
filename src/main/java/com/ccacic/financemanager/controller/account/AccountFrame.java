@@ -44,11 +44,11 @@ public class AccountFrame extends FXPopupProgActivityFrame<String, VBox> {
 	@FXML
 	private CurrencyComboBox currencyCombo;
 	
-	private Account toEdit;
-	private AccountHolder owner;
+	private final Account toEdit;
+	private final AccountHolder owner;
 	
-	private List<String> holdableAcctList;
-	private List<String> holdableAcctListNames;
+	private final List<String> holdableAcctList;
+	private final List<String> holdableAcctListNames;
 	
 	/**
 	 * Creates a new AccountFrame

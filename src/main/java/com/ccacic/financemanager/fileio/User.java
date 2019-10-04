@@ -2,10 +2,8 @@ package com.ccacic.financemanager.fileio;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
 import com.ccacic.financemanager.event.Event;
 import com.ccacic.financemanager.event.EventManager;
 import com.ccacic.financemanager.logger.Logger;
@@ -20,9 +18,9 @@ import com.ccacic.financemanager.model.ParamMap;
  */
 public class User {
 	
-	public static final String NAME = "name";
-	public static final String ACCT_HOLD_IDS = "acct_hold_ids";
-	public static final String HASHES = "hashes";
+	private static final String NAME = "name";
+	private static final String ACCT_HOLD_IDS = "acct_hold_ids";
+	private static final String HASHES = "hashes";
 
 	private static User currentUser;
 	
@@ -54,8 +52,12 @@ public class User {
 				if (password == null) {
 					return;
 				}
-				userFile.getParentFile().mkdirs();
-				userFile.createNewFile();
+				if (!userFile.getParentFile().mkdirs()) {
+					throw new IOException("Failed to create directories described in " + userFile.getParentFile());
+				}
+				if (!userFile.createNewFile()) {
+					throw new IOException("Failed to create user file " + userFile);
+				}
 				currentUser = new User(userFile.getName().substring(0, userFile.getName().lastIndexOf('.')), password);
 				FileIO fileIO = new FileIO();
 				fileIO.writeToFile(userFile, currentUser.disassemble().encode(), password);
@@ -78,7 +80,7 @@ public class User {
 	 * Creates a new User using the passed user file. Should
 	 * only be called from the static User methods
 	 * @param userFile the user file to build the User from
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
 	private User(File userFile) throws IOException {
 		
@@ -142,7 +144,9 @@ public class User {
 			acctHoldIds.remove(accountHolder.getIdentifier());
 			hashes.remove(accountHolder.getIdentifier());
 			File toBeDeleted = new File(userDir, accountHolder.getIdentifier());
-			toBeDeleted.delete();
+			if (!toBeDeleted.delete()) {
+				Logger.getInstance().logWarning("Failed to delete " + toBeDeleted);
+			}
 			
 		}, Event.DELETE_ACCT_HOLDER);
 		
@@ -199,7 +203,7 @@ public class User {
 	public List<File> getArchives() {
 		List<File> archives = new ArrayList<>();
 		File archiveDir = new File(userDir, "archives");
-		for (File file: archiveDir.listFiles()) {
+		for (File file: Objects.requireNonNull(archiveDir.listFiles())) {
 			if (file.getName().endsWith(FileHandler.ARCH_EXTENSION)) {
 				archives.add(file);
 			}

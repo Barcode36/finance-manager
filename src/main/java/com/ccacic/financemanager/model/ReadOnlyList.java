@@ -1,5 +1,6 @@
 package com.ccacic.financemanager.model;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -40,7 +41,7 @@ public class ReadOnlyList<E> implements Iterable<E> {
 	private final List<E> list;
 	
 	@SuppressWarnings("unchecked")
-	/**
+	/*
 	 * Creates a new ReadOnlyList that copies the passed ReadOnlyList's
 	 * contents into a new backing list of the same class
 	 * @param list the ReadOnlyList to copy
@@ -49,8 +50,8 @@ public class ReadOnlyList<E> implements Iterable<E> {
 		
 		List<E> tmp;
 		try {
-			tmp = list.list.getClass().newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+			tmp = list.list.getClass().getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			tmp = new ArrayList<>();
 		}
 		addAll(tmp, list);
@@ -68,11 +69,11 @@ public class ReadOnlyList<E> implements Iterable<E> {
 	
 	/**
 	 * Checks if the passed Object is contained in the backing List
-	 * @param o the Object to check for
-	 * @return if the Objecy is contained in the backing List
+	 * @param obj the Object to check for
+	 * @return if the Object is contained in the backing List
 	 */
-	public boolean contains(Object o) {
-		return list.contains(o);
+	public boolean contains(E obj) {
+		return list.contains(obj);
 	}
 	
 	/**
@@ -98,11 +99,11 @@ public class ReadOnlyList<E> implements Iterable<E> {
 	/**
 	 * Finds the first index of the passed Object, or -1 if it is not
 	 * present in the backing List
-	 * @param o the Object to search for
+	 * @param obj the Object to search for
 	 * @return the first index of the Object, or -1
 	 */
-	public int indexOf(Object o) {
-		return list.indexOf(o);
+	public int indexOf(E obj) {
+		return list.indexOf(obj);
 	}
 	
 	/**
@@ -120,9 +121,10 @@ public class ReadOnlyList<E> implements Iterable<E> {
 	 * an UnsupportedOperationException
 	 */
 	public Iterator<E> iterator() {
-		return new Iterator<E>() {
-			
-			private Iterator<E> iterator;
+		return new Iterator<>() {
+
+			private final Iterator<E> iterator;
+
 			{
 				iterator = list.iterator();
 			}
@@ -136,23 +138,23 @@ public class ReadOnlyList<E> implements Iterable<E> {
 			public E next() {
 				return iterator.next();
 			}
-			
+
 			@Override
 			public void remove() {
 				throw new UnsupportedOperationException("ReadOnlyList iterators do not support removal");
 			}
-			
+
 		};
 	}
 	
 	/**
 	 * Finds the last index of the passed Object in the backing List, or -1
 	 * if the Object is not contained in the backing List
-	 * @param o the Object to search for
+	 * @param obj the Object to search for
 	 * @return the last index of the Object, or -1
 	 */
-	public int lastIndexOf(Object o) {
-		return list.lastIndexOf(o);
+	public int lastIndexOf(E obj) {
+		return list.lastIndexOf(obj);
 	}
 	
 	/**
@@ -162,9 +164,9 @@ public class ReadOnlyList<E> implements Iterable<E> {
 	 */
 	private class UnmodifiableListIterator implements ListIterator<E> {
 
-		private ListIterator<E> listIterator;
+		private final ListIterator<E> listIterator;
 		
-		public UnmodifiableListIterator(ListIterator<E> listIterator) {
+		UnmodifiableListIterator(ListIterator<E> listIterator) {
 			this.listIterator = listIterator;
 		}
 		
@@ -273,6 +275,7 @@ public class ReadOnlyList<E> implements Iterable<E> {
 	 * @return the backing List as an array
 	 */
 	public <T> T[] toArray(T[] a) {
+		//noinspection SuspiciousToArrayCall
 		return list.toArray(a);
 	}
 	

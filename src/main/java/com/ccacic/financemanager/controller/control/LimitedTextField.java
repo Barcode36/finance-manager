@@ -33,7 +33,7 @@ public class LimitedTextField extends TextField {
      * Returns the max length
      * @return the max length
      */
-    public final int getMaxLength() {
+    private int getMaxLength() {
         return this.maxLength.getValue();
     }
 

@@ -7,17 +7,15 @@
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane">
 	<bottom>
-		<HBox spacing="5.0" alignment="CENTER_RIGHT">
-			<padding>
-				<Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
-			</padding>
-			<children>
-				<Button fx:id="prevButton" text="Previous"/>
-				<Button fx:id="nextButton" text="Next"/>
-				<Button fx:id="cancelButton" text="Cancel"/>
-				<Button fx:id="finishButton" text="Finish"/>
-			</children>
-		</HBox>
+        <HBox spacing="5.0" alignment="CENTER_RIGHT">
+            <padding>
+                <Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
+            </padding>
+            <Button fx:id="prevButton" text="Previous"/>
+            <Button fx:id="nextButton" text="Next"/>
+            <Button fx:id="cancelButton" text="Cancel"/>
+            <Button fx:id="finishButton" text="Finish"/>
+        </HBox>
 	</bottom>
 </fx:root>
 

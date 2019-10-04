@@ -10,8 +10,8 @@ import java.io.IOException;
  */
 public class MismatchedHashException extends IOException {
 
-	private String expectedHash;
-	private String actualHash;
+	private final String expectedHash;
+	private final String actualHash;
 	
 	/**
 	 * Creates a new MismatchedHashException

@@ -3,6 +3,7 @@ package com.ccacic.financemanager.controller.main;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.ccacic.financemanager.controller.FXPopupActivity;
 import com.ccacic.financemanager.event.Event;
@@ -32,7 +33,7 @@ public class UserSelectionActivity extends FXPopupActivity<BorderPane> {
 	@FXML
 	private Button createNewUserButton;
 	
-	private List<String> users;
+	private final List<String> users;
 	
 	/**
 	 * Creates a new UserSelectionActivity
@@ -40,9 +41,9 @@ public class UserSelectionActivity extends FXPopupActivity<BorderPane> {
 	public UserSelectionActivity() {
 		File userDir = FileHandler.getInstance().getUserDir();
 		users = new ArrayList<>();
-		for (File u: userDir.listFiles()) {
+		for (File u: Objects.requireNonNull(userDir.listFiles())) {
 			if (u.isDirectory()) {
-				for (String u2: u.list()) {
+				for (String u2: Objects.requireNonNull(u.list())) {
 					if (u2.equals(u.getName() + FileHandler.DATA_EXTENSION)) {
 						users.add(u.getName());
 						break;
@@ -84,7 +85,7 @@ public class UserSelectionActivity extends FXPopupActivity<BorderPane> {
 					Logger.getInstance().logDebug("User selected");
 					String id = EventManager.getUniqueID(this);
 					EventManager.fireEvent(new Event(ACTIVITY_RESULT_OBTAINED, true, id));
-					Platform.runLater(() -> popupStage.close());
+					Platform.runLater(popupStage::close);
 					
 				} else {
 					Logger.getInstance().logDebug("Failed to select user, canceled by operator");

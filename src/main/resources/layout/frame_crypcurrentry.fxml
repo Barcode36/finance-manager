@@ -8,20 +8,16 @@
 <?import com.ccacic.financemanager.controller.control.CurrencyTextField?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox">
-	<padding>
-		<Insets top="5.0" bottom="5.0" right="5.0" left="5.0"/>
-	</padding>
-	<children>
-		<Text text="Transaction ID"/>
-		<LimitedTextField fx:id="transField"/>
-		<Text text="Price at Transaction Time"/>
-		<HBox spacing="5.0">
-			<children>
-				<CurrencyTextField fx:id="histPriceField"/>
-			</children>
-		</HBox>
-		<Text text="Value"/>
-		<Text fx:id="valueText"/>
-	</children>
+    <padding>
+        <Insets top="5.0" bottom="5.0" right="5.0" left="5.0"/>
+    </padding>
+    <Text text="Transaction ID"/>
+    <LimitedTextField fx:id="transField"/>
+    <Text text="Price at Transaction Time"/>
+    <HBox spacing="5.0">
+        <CurrencyTextField fx:id="histPriceField"/>
+    </HBox>
+    <Text text="Value"/>
+    <Text fx:id="valueText"/>
 </fx:root>
 

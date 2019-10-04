@@ -46,15 +46,14 @@ class AlphaVantagePublicConnection extends PublicConnection {
 	 * @param symbol the symbol
 	 * @param interval the interval
 	 * @return the intraday time series as a JsonObject
-	 * @throws IOException
+	 * @throws IOException if an IOException occurs in fetching the data
 	 */
 	public JsonObject getTimeSeriesIntraday(String symbol, Interval interval) throws IOException {
 		
 		Map<String, String> queries = getQueryMap("TIME_SERIES_INTRADAY", symbol, interval.getTime() + "min");
 		String result = executeRequest("query", queries, RequestType.GET, null);
-		JsonObject object = parseJsonString(result);
-		return object;
-		
+		return parseJsonString(result);
+
 	}
 	
 }

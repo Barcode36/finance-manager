@@ -16,11 +16,11 @@ import com.ccacic.assetexchangewrapper.core.api.TimeStampValue;
  */
 class CurrencyConverterApiReadOnlyMarket implements ReadOnlyMarket {
 	
-	private String name;
-	private Interval interval;
+	private final String name;
+	private final Interval interval;
 	private boolean marketActive;
 	
-	private CurrencyConverterApiPublicConnection connection;
+	private final CurrencyConverterApiPublicConnection connection;
 	
 	private TimeStampValue<Double> mostRecentRate;
 	
@@ -82,14 +82,14 @@ class CurrencyConverterApiReadOnlyMarket implements ReadOnlyMarket {
 	}
 	
 	@Override
-	public TimeStampValue<Double> getVolume() throws IOException {
+	public TimeStampValue<Double> getVolume() {
 		
-		return new TimeStampValue<Double>(LocalDateTime.now(), -1.0);
+		return new TimeStampValue<>(LocalDateTime.now(), -1.0);
 		
 	}
 
 	@Override
-	public TimeStampValue<Double> getBaseVolume() throws IOException {
+	public TimeStampValue<Double> getBaseVolume() {
 		return getVolume();
 	}
 	
@@ -99,7 +99,7 @@ class CurrencyConverterApiReadOnlyMarket implements ReadOnlyMarket {
 	}
 
 	@Override
-	public void refreshConstants() throws IOException {
+	public void refreshConstants() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -110,12 +110,12 @@ class CurrencyConverterApiReadOnlyMarket implements ReadOnlyMarket {
 	}
 
 	@Override
-	public LocalDateTime getTimeStamp() throws IOException {
+	public LocalDateTime getTimeStamp() {
 		return mostRecentRate.getTimeStamp();
 	}
 
 	@Override
-	public Map<String, String> getMarketSummary() throws IOException {
+	public Map<String, String> getMarketSummary() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -138,11 +138,11 @@ class CurrencyConverterApiReadOnlyMarket implements ReadOnlyMarket {
 	
 	/**
 	 * Updates the recent values
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	private void updateRecentValues() throws IOException {
 		double rate = connection.getRate(name);
-		mostRecentRate = new TimeStampValue<Double>(LocalDateTime.now(), rate);
+		mostRecentRate = new TimeStampValue<>(LocalDateTime.now(), rate);
 	}
 
 }

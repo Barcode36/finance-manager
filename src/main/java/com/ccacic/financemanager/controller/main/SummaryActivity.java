@@ -44,8 +44,8 @@ public class SummaryActivity extends FXActivity<VBox> implements EventListener {
 	@FXML
 	private HBox totalBox;
 	
-	private Map<Tag, Text> tagAmountTextMap;
-	private Map<Tag, HBox> tagAmountBoxMap;
+	private final Map<Tag, Text> tagAmountTextMap;
+	private final Map<Tag, HBox> tagAmountBoxMap;
 	
 	/**
 	 * Creates a new SummaryActivity
@@ -64,9 +64,7 @@ public class SummaryActivity extends FXActivity<VBox> implements EventListener {
 			EventManager.addListener(accountHolder, this, Event.UPDATE, id);
 			onEvent(null);
 		}, Event.NEW_ACCT_HOLDER);
-		EventManager.addListener(null, e -> {
-			onEvent(null);
-		}, Event.DELETE_ACCT_HOLDER);
+		EventManager.addListener(null, e -> onEvent(null), Event.DELETE_ACCT_HOLDER);
 	}
 
 	@Override
@@ -103,7 +101,7 @@ public class SummaryActivity extends FXActivity<VBox> implements EventListener {
 					
 					Double prevAmount = amountMap.get(tag);
 					if (prevAmount == null) {
-						prevAmount = new Double(0.0);
+						prevAmount = 0.0;
 					}
 					prevAmount += value;
 					if (tag.equals(Tag.DEBT)) {

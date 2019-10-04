@@ -12,8 +12,8 @@ public class EntryFactory extends Factory<Entry> {
 	
 	private static final EntryFactory instance = new EntryFactory();
 	
-	public static final String DEFAULT_DISPLAY_NAME = "Entry";
-	public static final boolean DEFAULT_SHOWS_TIME = false;
+	private static final String DEFAULT_DISPLAY_NAME = "Entry";
+	private static final boolean DEFAULT_SHOWS_TIME = false;
 	
 	/**
 	 * Returns the singleton instance
@@ -53,11 +53,10 @@ public class EntryFactory extends Factory<Entry> {
 	 * @param key the Entry type
 	 * @return the display name
 	 */
-	public String getDisplayName(String key) {
+	private String getDisplayName(String key) {
 		if (key == null) {
 			return DEFAULT_DISPLAY_NAME;
 		}
-		@SuppressWarnings("unchecked")
 		EntryAssembler<? extends Entry> assembler = (EntryAssembler<? extends Entry>) assemblerMap.get(key);
 		return assembler == null ? DEFAULT_DISPLAY_NAME : assembler.getDisplayName();
 	}
@@ -71,15 +70,13 @@ public class EntryFactory extends Factory<Entry> {
 		if (key == null) {
 			return DEFAULT_SHOWS_TIME;
 		}
-		@SuppressWarnings("unchecked")
 		EntryAssembler<? extends Entry> assembler = (EntryAssembler<? extends Entry>) assemblerMap.get(key);
 		return assembler == null ? DEFAULT_SHOWS_TIME : assembler.showsTime();
 	}
 	
 	@Override
 	public Entry requestItem(ParamMap paramMap) {
-		Entry entry = super.requestItem(paramMap);
-		return entry;
+		return super.requestItem(paramMap);
 	}
 	
 }

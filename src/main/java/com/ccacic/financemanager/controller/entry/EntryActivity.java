@@ -18,7 +18,7 @@ import com.ccacic.financemanager.model.entry.EntryFactory;
 public class EntryActivity extends FXPopupProgActivity<Entry> {
 	
 	private Entry toEdit;
-	private String accountIdentifier;
+	private final String accountIdentifier;
 
 	/**
 	 * Creates a new EntryActivity

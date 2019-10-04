@@ -11,8 +11,8 @@ import com.ccacic.financemanager.model.entry.EntryAssembler;
  */
 public class StockEntryAssembler extends EntryAssembler<StockEntry> {
 
-	protected static final String defDisplayName = "Stock Entry";
-	protected static final boolean defShowsTime = false;
+	private static final String defDisplayName = "Stock Entry";
+	private static final boolean defShowsTime = false;
 	
 	public static final String SHARES = "shares";
 	
@@ -28,7 +28,7 @@ public class StockEntryAssembler extends EntryAssembler<StockEntry> {
 	 * @param displayName the name to display for StockEntry
 	 * @param showsTime if StockEntry displays a time alongside a date
 	 */
-	protected StockEntryAssembler(String displayName, boolean showsTime) {
+    private StockEntryAssembler(String displayName, boolean showsTime) {
 		super(StockEntry.class.getSimpleName(), displayName, showsTime);
 	}
 

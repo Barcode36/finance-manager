@@ -11,8 +11,8 @@ import com.ccacic.financemanager.model.entry.EntryAssembler;
  */
 public class FiatCurrEntryAssembler extends EntryAssembler<FiatCurrEntry> {
 	
-	protected static final String defDisplayName = "Fiat Entry";
-	protected static final boolean defShowsTime = false;
+	private static final String defDisplayName = "Fiat Entry";
+	private static final boolean defShowsTime = false;
 
 	/**
 	 * Creates a new FiatCurrEntryAssembler with the default values
@@ -26,7 +26,7 @@ public class FiatCurrEntryAssembler extends EntryAssembler<FiatCurrEntry> {
 	 * @param displayName the name to display for FiatCurrEntry
 	 * @param showsTime if FiatCurrEntry should display a time along with a date
 	 */
-	protected FiatCurrEntryAssembler(String displayName, boolean showsTime) {
+    private FiatCurrEntryAssembler(String displayName, boolean showsTime) {
 		super(FiatCurrEntry.class.getSimpleName(), displayName, showsTime);
 	}
 
@@ -37,7 +37,7 @@ public class FiatCurrEntryAssembler extends EntryAssembler<FiatCurrEntry> {
 	
 	@Override
 	public void modifyEntry(FiatCurrEntry entry, ParamMap paramMap, Delta delta) {
-		return;
+
 	}
 
 	@Override

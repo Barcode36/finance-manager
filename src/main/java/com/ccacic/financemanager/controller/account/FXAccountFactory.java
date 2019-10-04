@@ -21,7 +21,7 @@ public abstract class FXAccountFactory<T extends Account> extends FXFrameFactory
 	 * Creates a new FXAccountFactory with the given name
 	 * @param name the name of the facotry
 	 */
-	public FXAccountFactory(String name) {
+	FXAccountFactory(String name) {
 		super(name);
 	}
 	
@@ -30,7 +30,7 @@ public abstract class FXAccountFactory<T extends Account> extends FXFrameFactory
 	 * @param toEdit the Account to edit, or null to create a new Account
 	 * @return a list of activity frames
 	 */
-	public abstract List<FXPopupProgActivityFrame<?, ? extends Pane>> createAcctFrameList(T toEdit);
+	protected abstract List<FXPopupProgActivityFrame<?, ? extends Pane>> createAcctFrameList(T toEdit);
 	
 	/**
 	 * This method allows Account children to inject views into the

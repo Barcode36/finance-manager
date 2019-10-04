@@ -17,13 +17,13 @@ public enum DateResolution {
 	MONTHLY(1),
 	ANNUALY(Integer.MAX_VALUE);
 	
-	private int maxResolution;
+	private final int maxResolution;
 	
 	/**
 	 * Creates a new DateResolution
 	 * @param max the maximum value for this resolution
 	 */
-	private DateResolution(int max) {
+	DateResolution(int max) {
 		maxResolution = max;
 	}
 	

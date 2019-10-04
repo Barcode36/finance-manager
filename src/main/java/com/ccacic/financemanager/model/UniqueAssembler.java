@@ -14,7 +14,7 @@ public abstract class UniqueAssembler<T extends Unique> extends Assembler<T> {
 	 * Creates a new UniqueAssembler with the passed name
 	 * @param assemblerName the UniqueAssembler name
 	 */
-	public UniqueAssembler(String assemblerName) {
+    protected UniqueAssembler(String assemblerName) {
 		super(assemblerName);
 	}
 	

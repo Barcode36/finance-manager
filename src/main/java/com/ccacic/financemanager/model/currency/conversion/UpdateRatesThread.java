@@ -45,9 +45,7 @@ public class UpdateRatesThread extends Thread implements EventListener {
 		this.sleepTime = sleepTime;
 		
 		this.updateNow = new boolean[1];
-		updateNow[0] = false;
 		this.quitLoop = new boolean[1];
-		quitLoop[0] = false;
 		
 		EventManager.addListener(this, this, Event.REFRESH_RATES);
 		
@@ -57,14 +55,14 @@ public class UpdateRatesThread extends Thread implements EventListener {
 	/**
 	 * Signals the flag to quit looping
 	 */
-	public void quitLooping() {
+    private void quitLooping() {
 		quitLoop[0] = true;
 	}
 	
 	/**
 	 * Signals the flag to call an update immediately
 	 */
-	public void updateNow() {
+    private void updateNow() {
 		updateNow[0] = true;
 	}
 

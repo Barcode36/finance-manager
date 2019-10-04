@@ -23,7 +23,7 @@ import javafx.application.Platform;
 public class AccountActivity extends FXPopupProgActivity<Account> {
 	
 	private Account toEdit;
-	private String acctHoldIdentifier;
+	private final String acctHoldIdentifier;
 	
 	/**
 	 * Creates a new AccountActivity
@@ -49,7 +49,7 @@ public class AccountActivity extends FXPopupProgActivity<Account> {
 			frames.add(accountFrame);
 			FXAccountFrameContainer fxAcctFactory = FXAccountFrameContainer.getInstance();
 			frames.addAll(fxAcctFactory.getFrameList((String) e.getData(), toEdit));
-			Platform.runLater(() -> initializeActivity());
+			Platform.runLater(this::initializeActivity);
 			
 		}, ACTIVITY_RESULT_OBTAINED, acctTypeChangeID);
 		

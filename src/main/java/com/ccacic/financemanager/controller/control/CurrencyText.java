@@ -14,8 +14,8 @@ import javafx.scene.text.Text;
  */
 public class CurrencyText extends Text {
 
-	private DoubleProperty amountProperty;
-	private SimpleCurrencyProperty currencyProperty;
+	private final DoubleProperty amountProperty;
+	private final SimpleCurrencyProperty currencyProperty;
 	
 	/**
 	 * Creates a new CurrencyText with a zero amount

@@ -24,7 +24,7 @@ public class StockAccountFrame1 extends FXPopupProgActivityFrame<Void, VBox>{
 	@FXML
 	private TextField yieldField;
 	
-	private StockAccount toEdit;
+	private final StockAccount toEdit;
 	
 	/**
 	 * Creates a new StockAccountFrame1

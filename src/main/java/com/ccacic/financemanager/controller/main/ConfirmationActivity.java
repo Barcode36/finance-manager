@@ -68,8 +68,8 @@ public class ConfirmationActivity extends FXPopupActivity<VBox> {
 	@FXML
 	private Text messageText;
 	
-	private String message;
-	private String title;
+	private final String message;
+	private final String title;
 	private boolean resultObtained;
 	
 	/**
@@ -77,7 +77,7 @@ public class ConfirmationActivity extends FXPopupActivity<VBox> {
 	 * @param message the message to display
 	 * @param title the title of the popup stage
 	 */
-	public ConfirmationActivity(String message, String title) {
+	private ConfirmationActivity(String message, String title) {
 		this.message = message;
 		this.title = title;
 		this.resultObtained = false;

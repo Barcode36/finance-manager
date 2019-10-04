@@ -9,12 +9,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 import com.ccacic.financemanager.event.Event;
 import com.ccacic.financemanager.event.EventManager;
@@ -44,7 +39,7 @@ public class FileHandler {
 	public static final String ACCOUNT_PATH = "com.ccacic.financemanager.model.account.";
 	public static final String ENTRY_PATH = "com.ccacic.financemanager.model.entry.";
 	
-	public static final String CONFIG_EXTENSION = ".cfg";
+	private static final String CONFIG_EXTENSION = ".cfg";
 	public static final String DATA_EXTENSION = ".dat";
 	public static final String ARCH_EXTENSION = ".arc";
 	public static final String TMP_EXTENSION = ".tmp";
@@ -59,8 +54,8 @@ public class FileHandler {
 		return instance;
 	}
 	
-	private File dataDir;
-	private File userDir;
+	private final File dataDir;
+	private final File userDir;
 	
 	/**
 	 * Creates a new FileHandler and finds or creates the
@@ -70,12 +65,18 @@ public class FileHandler {
 		
 		dataDir = new File(System.getProperty("user.dir") + "\\data");
 		if (!dataDir.exists()) {
-			dataDir.mkdir();
+			if (!dataDir.mkdir()) {
+				Logger.getInstance().logError("Failed to create data directory");
+				Launcher.exitImmediately();
+			}
 		}
 		
 		userDir = new File(dataDir, "\\users");
 		if (!userDir.exists()) {
-			userDir.mkdir();
+			if (!userDir.mkdir()) {
+				Logger.getInstance().logError("Failed to create user directory");
+				Launcher.exitImmediately();
+			}
 		}
 		
 		EventManager.addListener(this, e -> {
@@ -133,15 +134,18 @@ public class FileHandler {
 		try {
 			File configFile = new File(dataDir, "\\config" + CONFIG_EXTENSION);
 			if (!configFile.exists()) {
-				configFile.createNewFile();
-				Files.copy(ClassLoader.getSystemClassLoader().getResourceAsStream("config/def_config.cfg"), configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+				if (!configFile.createNewFile()) {
+					Logger.getInstance().logError("Failed to create config file " + configFile);
+					Launcher.exitImmediately();
+				}
+				Files.copy(Objects.requireNonNull(ClassLoader.getSystemClassLoader().getResourceAsStream("config/def_config.cfg")), configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 			}
 			
 			Scanner configScan = new Scanner(configFile);
 			
-			List<String> currParseList = new ArrayList<String>();
-			List<String> catParseList = new ArrayList<String>();
-			String generalSection = "";
+			List<String> currParseList = new ArrayList<>();
+			List<String> catParseList = new ArrayList<>();
+			StringBuilder generalSection = new StringBuilder();
 			
 			while (configScan.hasNextLine()) {
 				String line = configScan.nextLine().trim();
@@ -153,9 +157,7 @@ public class FileHandler {
 					loadConfigSection(configScan, catParseList, "CATEGORY");
 					break;
 				case "GENERAL":
-					generalSection += loadConfigSection(configScan, null, "GENERAL");
-				default:
-					continue;
+					generalSection.append(loadConfigSection(configScan, null, "GENERAL"));
 				}
 			}
 			configScan.close();
@@ -172,7 +174,7 @@ public class FileHandler {
 				AccountHolder.addCategory(category);
 			}
 			
-			ParamMap paramMap = StringProcessing.pullParamMap(generalSection);
+			ParamMap paramMap = StringProcessing.pullParamMap(generalSection.toString());
 			GeneralConfig.getInstance().putValues(paramMap);
 			
 		} catch (Exception e) {
@@ -190,20 +192,20 @@ public class FileHandler {
 	 * @return the full output of the Scanner
 	 */
 	private String loadConfigSection(Scanner scan, List<String> parsedSectionList, String sectionName) {
-		String parsedLines = "";
+		StringBuilder parsedLines = new StringBuilder();
 		boolean exit = false;
 		while (scan.hasNextLine() && !exit) {
 			String line = scan.nextLine().trim();
 			if (line.equals("END " + sectionName)) {
 				exit = true;
 			} else if (line.length() > 0 && line.charAt(0) != '#') {
-				parsedLines += line;
+				parsedLines.append(line);
 			}
 		}
 		if (parsedSectionList != null) {
-			parsedSectionList.add(parsedLines);
+			parsedSectionList.add(parsedLines.toString());
 		}
-		return parsedLines;
+		return parsedLines.toString();
 	}
 	
 	/**
@@ -263,7 +265,7 @@ public class FileHandler {
 		
 		for (AccountHolder accountHolder: accountHolders) {
 			Event lock = EventManager.fireEvent(new Event(Event.NEW_ACCT_HOLDER, accountHolder));
-			synchronized (lock) {
+			synchronized (Objects.requireNonNull(lock)) {
 				try {
 					lock.wait();
 				} catch (InterruptedException e) {
@@ -286,7 +288,7 @@ public class FileHandler {
 	 * @param acctHoldFile the File to convert
 	 * @param expectedHash the expected hash of the File
 	 * @return the created AccountHolder
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
 	private AccountHolder readAcctHolder(File acctHoldFile, String expectedHash) throws IOException {
 		
@@ -401,7 +403,7 @@ public class FileHandler {
 	 * @param expectedHash the expected hash of the File
 	 * @param acctHoldId the ID of the owning AccountHolder
 	 * @return the created Account
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
 	private Account readAccount(File acctFile, String expectedHash, String acctHoldId) throws IOException {
 		
@@ -442,8 +444,7 @@ public class FileHandler {
 		ParamMap acctMap = ParamMap.decode(acctStr);
 		acctMap.put(AccountAssembler.ACCT_HOLD_ID, acctHoldId);
 		AccountFactory factory = AccountFactory.getInstance();
-		Account account = factory.requestItem(acctMap);
-		return account;
+		return factory.requestItem(acctMap);
 		
 	}
 	
@@ -472,7 +473,10 @@ public class FileHandler {
 			
 			File configFile = new File(dataDir, "config" + CONFIG_EXTENSION);
 			if (!configFile.exists()) {
-				configFile.createNewFile();
+				if (!configFile.createNewFile()) {
+					Logger.getInstance().logError("Failed to create config file " + configFile);
+					Launcher.exitImmediately();
+				}
 			}
 			
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile), StandardCharsets.UTF_8));
@@ -531,14 +535,17 @@ public class FileHandler {
 				
 			File acctHoldDir = new File(User.getCurrentUser().getUserDir(), aH.getIdentifier());
 			if (!acctHoldDir.exists()) {
-				acctHoldDir.mkdir();
+				if (!acctHoldDir.mkdir()) {
+					Logger.getInstance().logError("Failed to create account holder directory " + acctHoldDir);
+					Launcher.exitImmediately();
+				}
 			}
 			
-			String encoded = "id=" + aH.getIdentifier() + ";"
-				+ "name=" + aH.getName() + ";"
-				+ "category=" + aH.getCategory() + ";"
-				+ "main_curr_code=" + aH.getMainCurr().getCode() + ";"
-				+ "accounts={";
+			StringBuilder encoded = new StringBuilder("id=" + aH.getIdentifier() + ";"
+					+ "name=" + aH.getName() + ";"
+					+ "category=" + aH.getCategory() + ";"
+					+ "main_curr_code=" + aH.getMainCurr().getCode() + ";"
+					+ "accounts={");
 			
 			List<String> hashes = new ArrayList<>();
 			for (int i = 0; i < aH.getAccounts().size(); i++) {
@@ -547,25 +554,25 @@ public class FileHandler {
 				String hash = writeAccount(acctHoldDir, a);
 				if (hash != null) {
 					hashes.add(hash);
-					encoded += a.getIdentifier();
+					encoded.append(a.getIdentifier());
 					if (i < aH.getAccounts().size() - 1) {
-						encoded += ",";
+						encoded.append(",");
 					}
 				}
 				
 			}
-			encoded += "};hashes={";
+			encoded.append("};hashes={");
 			for (int i = 0; i < hashes.size(); i++) {
-				encoded += hashes.get(i);
+				encoded.append(hashes.get(i));
 				if (i < hashes.size() - 1) {
-					encoded += ",";
+					encoded.append(",");
 				}
 			}
-			encoded += "};";
+			encoded.append("};");
 			
 			File acctHoldFile = new File(acctHoldDir, aH.getIdentifier() + DATA_EXTENSION);
 			FileIO fileIO = new FileIO();
-			return fileIO.writeToFile(acctHoldFile, encoded);
+			return fileIO.writeToFile(acctHoldFile, encoded.toString());
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -588,7 +595,10 @@ public class FileHandler {
 			
 			File acctDir = new File(acctHoldDir, a.getIdentifier());
 			if (!acctDir.exists()) {
-				acctDir.mkdir();
+				if (!acctDir.mkdir()) {
+					Logger.getInstance().logError("Failed to create account directory " + acctDir);
+					Launcher.exitImmediately();
+				}
 			}
 			
 			AccountFactory accountFactory = AccountFactory.getInstance();
@@ -656,7 +666,9 @@ public class FileHandler {
 			}
 		}
 		
-		file.delete();
+		if (!file.delete()) {
+			Logger.getInstance().logWarning("Failed to delete " + file);
+		}
 		
 	}
 	
@@ -669,7 +681,7 @@ public class FileHandler {
 		for (AccountHolder acctHold: deletionLedger) {
 			String id = EventManager.getUniqueID(acctHold);
 			Object lock = EventManager.fireEvent(new Event(Event.DELETE_ACCT_HOLDER, acctHold, id));
-			synchronized (lock) {
+			synchronized (Objects.requireNonNull(lock)) {
 				try {
 					lock.wait();
 				} catch (InterruptedException e) {

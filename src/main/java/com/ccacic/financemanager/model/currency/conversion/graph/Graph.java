@@ -36,13 +36,13 @@ public class Graph<T> {
 		 * @param val the passed instance
 		 * @return the heuristic value
 		 */
-		public int getHeuristic(V val);
+		int getHeuristic(V val);
 		
 	}
 	
-	private Set<Node<T>> nodes;
-	private Set<Edge<T>> edges;
-	private Heuristic<Node<T>> heuristic;
+	private final Set<Node<T>> nodes;
+	private final Set<Edge<T>> edges;
+	private final Heuristic<Node<T>> heuristic;
 	
 	/**
 	 * Creates a new, empty Graph with the default heuristic
@@ -113,7 +113,6 @@ public class Graph<T> {
 	/**
 	 * Adds the passed node to the Graph
 	 * @param node the node to add
-	 * @throws IllegalArgumentException
 	 */
 	public void addNode(T node) {
 		Node<T> newNode = Node.getNode(node);
@@ -130,9 +129,9 @@ public class Graph<T> {
 	 * @param start the node to start searching at
 	 * @param goal the node to end the path at
 	 * @return a path between the start and goal, or null if no path is found
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException if the the start or goal node is not part of the Graph
 	 */
-	public List<Edge<T>> findPath(T start, T goal) throws IllegalArgumentException {
+	private List<Edge<T>> findPath(T start, T goal) throws IllegalArgumentException {
 		
 		if (!(containsNode(start) && containsNode(goal))) {
 			return null;
@@ -142,9 +141,7 @@ public class Graph<T> {
 		Stack<Node<T>> stack = new Stack<>();
 		LinkedList<Edge<T>> path = new LinkedList<>();
 		Map<Node<T>, Integer> depthMap = new HashMap<>();
-		Comparator<Node<T>> comparator = (o1, o2) -> {
-			return heuristic.getHeuristic(o1) - heuristic.getHeuristic(o2);
-		};
+		Comparator<Node<T>> comparator = Comparator.comparingInt(heuristic::getHeuristic);
 		
 		Node<T> goalNode = Node.getNode(goal);
 		Node<T> startNode = Node.getNode(start);
@@ -206,7 +203,7 @@ public class Graph<T> {
 	 * @param goal the goal node
 	 * @return the product of the weights of the edges along the path
 	 * between the start and goal node, or 0.0 if no path is found
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException if either the start or goal node is not present in the Graph
 	 */
 	public double pathProduct(T start, T goal) throws IllegalArgumentException {
 		List<Edge<T>> path = findPath(start, goal);
@@ -222,18 +219,11 @@ public class Graph<T> {
 	
 	@Override
 	public String toString() {
-		String str = "";
-		/*for (Node<T> node: nodes) {
-			str += node + "\n";
-			for (Edge<T> edge: node.getEdges()) {
-				str += "\t" + edge + "\n";
-			}
-		}
-		return str;*/
+		StringBuilder str = new StringBuilder();
 		for (Edge<T> edge: edges) {
-			str += edge + "\n";
+			str.append(edge).append("\n");
 		}
-		return str;
+		return str.toString();
 	}
 
 }

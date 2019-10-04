@@ -11,33 +11,29 @@
 <?import com.ccacic.financemanager.controller.control.CurrencyText?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox">
-	<spacing>5</spacing>
-	<children>
-		<HBox fx:id="categoryBar" alignment="CENTER_LEFT" spacing="5.0">
-			<padding>
-				<Insets top="5.0" bottom="5.0" right="5.0" left="5.0"/>
-			</padding>
-			<children>
-				<Text fx:id="categoryNameText" fill="WHITE">
-					<font>
-						<Font style="Calibri" size="36"/>
-					</font>
-				</Text>
-				<Pane HBox.hgrow="ALWAYS"/>
-				<CurrencyText fx:id="categoryTotalText" fill="WHITE">
-					<font>
-						<Font style="Calibri" size="36"/>
-					</font>
-				</CurrencyText>
-				<Button fx:id="categoryAddButton" text="+"/>
-			</children>
-		</HBox>
-		<GridPane fx:id="buttonGridPane" hgap="5.0" vgap="5.0" alignment="CENTER_LEFT">
-			<padding>
-				<Insets right="5.0" left="5.0"/>
-			</padding>
-		</GridPane>
-		<Pane fx:id="seperatorPane" minHeight="10"/>
-	</children>
+    <spacing>5</spacing>
+    <HBox fx:id="categoryBar" alignment="CENTER_LEFT" spacing="5.0">
+        <padding>
+            <Insets top="5.0" bottom="5.0" right="5.0" left="5.0"/>
+        </padding>
+        <Text fx:id="categoryNameText" fill="WHITE">
+            <font>
+                <Font name="Calibri" size="36"/>
+            </font>
+        </Text>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <CurrencyText fx:id="categoryTotalText" fill="WHITE">
+            <font>
+                <Font name="Calibri" size="36"/>
+            </font>
+        </CurrencyText>
+        <Button fx:id="categoryAddButton" text="+"/>
+    </HBox>
+    <GridPane fx:id="buttonGridPane" hgap="5.0" vgap="5.0" alignment="CENTER_LEFT">
+        <padding>
+            <Insets right="5.0" left="5.0"/>
+        </padding>
+    </GridPane>
+    <Pane fx:id="seperatorPane" minHeight="10"/>
 </fx:root>
 

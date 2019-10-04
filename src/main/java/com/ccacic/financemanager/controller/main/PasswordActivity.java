@@ -72,8 +72,8 @@ public class PasswordActivity extends FXPopupActivity<VBox> {
 	@FXML
 	private Button enterButton;
 	
-	private String text;
-	private String title;
+	private final String text;
+	private final String title;
 	private boolean resultObtained;
 	
 	/**
@@ -81,7 +81,7 @@ public class PasswordActivity extends FXPopupActivity<VBox> {
 	 * @param text the text to display alongside the passord field
 	 * @param title the title of the password stage
 	 */
-	public PasswordActivity(String text, String title) {
+	private PasswordActivity(String text, String title) {
 		this.text = text;
 		this.title = title;
 		this.resultObtained = false;

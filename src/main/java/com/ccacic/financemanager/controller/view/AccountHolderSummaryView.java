@@ -39,7 +39,7 @@ public class AccountHolderSummaryView extends FXActivity<BorderPane> implements 
 	@FXML
 	private Text totalText;
 
-	private AccountHolder aH;
+	private final AccountHolder aH;
 	
 	/**
 	 * Creates a new AccountHolderSummaryView
@@ -73,12 +73,7 @@ public class AccountHolderSummaryView extends FXActivity<BorderPane> implements 
 		
 		Map<String, Integer> typeCountMap = new HashMap<>();
 		for (Account a: aH.getAccounts()) {
-			Integer count = typeCountMap.get(a.getClass().getSimpleName());
-			if (count == null) {
-				typeCountMap.put(a.getClass().getSimpleName(), 1);
-			} else {
-				typeCountMap.put(a.getClass().getSimpleName(), count + 1);
-			}
+			typeCountMap.merge(a.getClass().getSimpleName(), 1, Integer::sum);
 		}
 		List<Node> newAcctTexts = new ArrayList<>();
 		for (String key: typeCountMap.keySet()) {

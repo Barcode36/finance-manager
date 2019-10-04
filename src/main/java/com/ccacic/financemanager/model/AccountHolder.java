@@ -22,25 +22,22 @@ import com.ccacic.financemanager.model.currency.Currency;
  */
 public class AccountHolder extends Unique {
 	
-	protected static final Map<String, Category> categories = new HashMap<>();
-	protected static final List<AccountHolder> accountHolders = new CopyOnWriteArrayList<>();
+	private static final Map<String, Category> categories = new HashMap<>();
+	private static final List<AccountHolder> accountHolders = new CopyOnWriteArrayList<>();
 	
 	public static final String NAME = "name";
 	public static final String CATEGORY = "category";
 	public static final String MAIN_CURRENCY_CODE = "main_curr_code";
 	public static final String ACCOUNTS = "accounts";
 	
-	/**
+	/*
 	 * Listens for changes to the AccountHolder model to update the
 	 * internal inventory
 	 */
 	static {
-		EventManager.addListener(null, e -> {
-			accountHolders.add((AccountHolder) e.getData());
-		}, Event.NEW_ACCT_HOLDER);
-		EventManager.addListener(null, e -> {
-			accountHolders.remove((AccountHolder) e.getData());
-		}, Event.DELETE_ACCT_HOLDER);
+		EventManager.addListener(null, e -> accountHolders.add((AccountHolder) e.getData()), Event.NEW_ACCT_HOLDER);
+		//noinspection RedundantCast
+		EventManager.addListener(null, e -> accountHolders.remove((AccountHolder) e.getData()), Event.DELETE_ACCT_HOLDER);
 	}
 	
 	/**
@@ -112,9 +109,7 @@ public class AccountHolder extends Unique {
 		
 		for (Account acct: accounts) {
 			String acctId = EventManager.getUniqueID(acct);
-			EventManager.addListener(this, e -> {
-				EventManager.fireEvent(new Event(Event.UPDATE, id));
-			}, Event.UPDATE, acctId);
+			EventManager.addListener(this, e -> EventManager.fireEvent(new Event(Event.UPDATE, id)), Event.UPDATE, acctId);
 		}
 		
 		EventManager.addListener(this, e -> {
@@ -122,9 +117,7 @@ public class AccountHolder extends Unique {
 			accounts.add(newAccount);
 			String acctId = EventManager.getUniqueID(newAccount);
 			
-			EventManager.addListener(this, e2 -> {
-				EventManager.fireEvent(new Event(Event.UPDATE, id));
-			}, Event.UPDATE, acctId);
+			EventManager.addListener(this, e2 -> EventManager.fireEvent(new Event(Event.UPDATE, id)), Event.UPDATE, acctId);
 			
 			EventManager.fireEvent(new Event(Event.UPDATE, id));
 		}, Event.NEW_ACCOUNT, id);
@@ -154,7 +147,7 @@ public class AccountHolder extends Unique {
 	/**
 	 * Returns an unmodifiable List of the Accounts held by this
 	 * AccountHolder. Use EventManager to modify the model
-	 * @return
+	 * @return a ReadOnlyList of Accounts
 	 */
 	public ReadOnlyList<Account> getAccounts() {
 		return new ReadOnlyList<>(accounts);
@@ -175,7 +168,7 @@ public class AccountHolder extends Unique {
 	 * @param curr the Currency to convert to
 	 * @return the total
 	 */
-	public double getTotal(Currency curr) {
+	private double getTotal(Currency curr) {
 		double total = 0;
 		for (Account account: accounts) {
 			total += account.getTotal(curr);

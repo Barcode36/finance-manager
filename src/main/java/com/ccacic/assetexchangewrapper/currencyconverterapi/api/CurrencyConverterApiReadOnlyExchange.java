@@ -9,7 +9,6 @@ import java.util.Set;
 import com.ccacic.assetexchangewrapper.core.Interval;
 import com.ccacic.assetexchangewrapper.core.api.ReadOnlyExchange;
 import com.ccacic.assetexchangewrapper.core.api.ReadOnlyMarket;
-import com.ccacic.assetexchangewrapper.core.exceptions.MissingMarketException;
 import com.google.gson.JsonObject;
 
 /**
@@ -19,9 +18,9 @@ import com.google.gson.JsonObject;
  */
 public class CurrencyConverterApiReadOnlyExchange implements ReadOnlyExchange {
 
-	private Interval interval;
-	private Map<String, String> currencies;
-	private CurrencyConverterApiPublicConnection connection;
+	private final Interval interval;
+	private final Map<String, String> currencies;
+	private final CurrencyConverterApiPublicConnection connection;
 	
 	/**
 	 * Creates a new CurrencyConverterApiReadOnlyExchange with the passed Interval
@@ -70,13 +69,12 @@ public class CurrencyConverterApiReadOnlyExchange implements ReadOnlyExchange {
 	}
 
 	@Override
-	public ReadOnlyMarket getReadOnlyMarket(String baseCurr, String convCurr)
-			throws MissingMarketException, IOException {
+	public ReadOnlyMarket getReadOnlyMarket(String baseCurr, String convCurr) {
 		return getReadOnlyMarket(baseCurr + "_" + convCurr);
 	}
 
 	@Override
-	public ReadOnlyMarket getReadOnlyMarket(String marketName) throws MissingMarketException, IOException {
+	public ReadOnlyMarket getReadOnlyMarket(String marketName) {
 		return new CurrencyConverterApiReadOnlyMarket(marketName, interval);
 	}
 
@@ -86,7 +84,7 @@ public class CurrencyConverterApiReadOnlyExchange implements ReadOnlyExchange {
 	}
 
 	@Override
-	public Set<String> getKnownMarkets() throws IOException {
+	public Set<String> getKnownMarkets() {
 		return new HashSet<>();
 	}
 

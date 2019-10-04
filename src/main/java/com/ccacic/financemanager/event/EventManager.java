@@ -3,15 +3,9 @@ package com.ccacic.financemanager.event;
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 import com.ccacic.financemanager.logger.Logger;
 import com.ccacic.financemanager.model.Unique;
@@ -102,7 +96,7 @@ public final class EventManager {
 		 * @param event the Event to pass
 		 * @param name the name of this Thread
 		 */
-		public EventThread(List<WeakStrongReference<EventListener>> pertinentListeners, Event event, String name) {
+		EventThread(List<WeakStrongReference<EventListener>> pertinentListeners, Event event, String name) {
 			super(name);
 			this.pertinentListeners = pertinentListeners;
 			this.event = event;
@@ -112,10 +106,10 @@ public final class EventManager {
 		/**
 		 * Resets the EventThread to fire a new Event through a new List of
 		 * EventListeners
-		 * @param pertinentListeners
-		 * @param event
+		 * @param pertinentListeners the pertinent listeners to loop through
+		 * @param event the Event to be fired
 		 */
-		public void reset(List<WeakStrongReference<EventListener>> pertinentListeners, Event event) {
+		void reset(List<WeakStrongReference<EventListener>> pertinentListeners, Event event) {
 			if (this.pertinentListeners == null && this.event == null) {
 				this.pertinentListeners = pertinentListeners;
 				this.event = event;
@@ -127,14 +121,14 @@ public final class EventManager {
 		 * firing
 		 * @return the Event
 		 */
-		public Event getEvent() {
+		Event getEvent() {
 			return event;
 		}
 		
 		/**
 		 * Causes the EventThread to exit its run method at the next opportunity
 		 */
-		public void stopRunning() {
+		void stopRunning() {
 			keepRunning = false;
 		}
 		
@@ -165,6 +159,7 @@ public final class EventManager {
 					}
 					
 					// sends out a notification to any threads waiting on the Event to end
+					//noinspection SynchronizeOnNonFinalField
 					synchronized (event) {
 						event.notifyAll();
 					}
@@ -224,7 +219,7 @@ public final class EventManager {
 		 * @param strong if the reference is to be stored as a strong
 		 * reference or not
 		 */
-		public WeakStrongReference(T obj, boolean strong) {
+		WeakStrongReference(T obj, boolean strong) {
 			this.strong = strong;
 			if (strong) {
 				strongRef = obj;
@@ -239,23 +234,23 @@ public final class EventManager {
 		 * Returns the Object the Reference holds
 		 * @return the Object held
 		 */
-		public T getRef() {
+		T getRef() {
 			if (strong) {
 				return strongRef;
 			} else {
-				return weakRef.get();
+				return Objects.requireNonNull(weakRef).get();
 			}
 		}
 		
 		@SuppressWarnings("unchecked")
 		@Override
 		public boolean equals(Object obj) {
-			if (obj == null) {
+			if (obj == null || !getClass().equals(obj.getClass())) {
 				return false;
 			}
 			WeakStrongReference<T> ref = (WeakStrongReference<T>) obj;
 			T refObj = ref.getRef();
-			return strong ? refObj.equals(strongRef) : refObj.equals(weakRef.get());
+			return strong ? refObj.equals(strongRef) : refObj.equals(Objects.requireNonNull(weakRef).get());
 		}
 		
 	}
@@ -270,7 +265,7 @@ public final class EventManager {
 	 */
 	private static class HashedWeakReference<T> extends WeakReference<T> {
 
-		public HashedWeakReference(T referent, ReferenceQueue<? super T> q) {
+		HashedWeakReference(T referent, ReferenceQueue<? super T> q) {
 			super(referent, q);
 		}
 		
@@ -279,7 +274,7 @@ public final class EventManager {
 			if (get() == null) {
 				return super.hashCode();
 			}
-			return get().hashCode();
+			return Objects.requireNonNull(get()).hashCode();
 		}
 		
 		@Override
@@ -287,7 +282,7 @@ public final class EventManager {
 			if (get() == null) {
 				return super.equals(obj);
 			}
-			return get().equals(obj);
+			return Objects.requireNonNull(get()).equals(obj);
 		}
 		
 	}
@@ -331,44 +326,29 @@ public final class EventManager {
 	 * @return the passed listener
 	 */
 	public static EventListener addListener(Object bean, EventListener listener, String eventType,
-			String... identifiers) {
+											String... identifiers) {
 
 		boolean strong = bean == null || bean != listener;
 		if (strong && bean != null) {
 			// given a strong, nonnull bean, so add a reference to the beanMap
-			HashedWeakReference<Object> reference = new HashedWeakReference<Object>(bean, garbageQueue);
-			List<EventListener> listeners = beanMap.get(reference);
-			if (listeners == null) {
-				listeners = Collections.synchronizedList(new LinkedList<>());
-				beanMap.put(reference, listeners);
-			}
+			HashedWeakReference<Object> reference = new HashedWeakReference<>(bean, garbageQueue);
+			List<EventListener> listeners = beanMap.computeIfAbsent(reference, k -> Collections.synchronizedList(new LinkedList<>()));
 			listeners.add(listener);
 		}
 		
 		// find the proper mapping for the passed eventType
-		Map<String, List<WeakStrongReference<EventListener>>> idMap = eventMapper.get(eventType);
-		if (idMap == null) {
-			idMap = Collections.synchronizedMap(new WeakHashMap<>());
-			eventMapper.put(eventType, idMap);
-		}
-		
+		Map<String, List<WeakStrongReference<EventListener>>> idMap = eventMapper.computeIfAbsent(eventType, k -> Collections.synchronizedMap(new WeakHashMap<>()));
+
+
 		if (identifiers == null || identifiers.length == 0) {
 			// no identifiers provided, so associate it with the null key
-			List<WeakStrongReference<EventListener>> list = idMap.get(null);
-			if (list == null) {
-				list = Collections.synchronizedList(new LinkedList<>());
-				idMap.put(null, list);
-			}
+			List<WeakStrongReference<EventListener>> list = idMap.computeIfAbsent(null, k -> Collections.synchronizedList(new LinkedList<>()));
 			list.add(new WeakStrongReference<>(listener, strong));
 			
 		} else {
 			// associate the listener with a reference and add it to the proper list
 			for (String id: identifiers) {
-				List<WeakStrongReference<EventListener>> list = idMap.get(id);
-				if (list == null) {
-					list = Collections.synchronizedList(new LinkedList<>());
-					idMap.put(id, list);
-				}
+				List<WeakStrongReference<EventListener>> list = idMap.computeIfAbsent(id, k -> Collections.synchronizedList(new LinkedList<>()));
 				WeakStrongReference<EventListener> weakStrongReference = new WeakStrongReference<>(listener, strong);
 				list.add(weakStrongReference);
 			}
@@ -390,18 +370,18 @@ public final class EventManager {
 	 */
 	private static void logStatus() {
 		if (Logger.getInstance() != null) {
-			String log = "EventManager State\n";
+			StringBuilder log = new StringBuilder("EventManager State\n");
 			for (String eventType2: eventMapper.keySet()) {
-				log += eventType2 + ":\n";
+				log.append(eventType2).append(":\n");
 				for (String id: eventMapper.get(eventType2).keySet()) {
-					log += "\t" + id + ": [";
+					log.append("\t").append(id).append(": [");
 					for (WeakStrongReference<EventListener> ref: eventMapper.get(eventType2).get(id)) {
-						log += ref.getRef().hashCode() + ", ";
+						log.append(ref.getRef().hashCode()).append(", ");
 					}
-					log += "]\n";
+					log.append("]\n");
 				}
 			}
-			Logger.getInstance().logDebug(log);
+			Logger.getInstance().logDebug(log.toString());
 		}
 	}
 	
@@ -424,7 +404,7 @@ public final class EventManager {
 	 * Searches for and removes all occurences of the passed listener from EventManager
 	 * @param listener the listener to remove
 	 */
-	public static void removeListener(EventListener listener) {
+	private static void removeListener(EventListener listener) {
 		for (String key: eventMapper.keySet()) {
 			removeListener(listener, key);
 		}
@@ -437,7 +417,7 @@ public final class EventManager {
 	 * @param listener the listener to remove
 	 * @param eventType the eventType to search with
 	 */
-	public static void removeListener(EventListener listener, String eventType) {
+	private static void removeListener(EventListener listener, String eventType) {
 		Map<String, List<WeakStrongReference<EventListener>>> idMap = eventMapper.get(eventType);
 		for (String key: idMap.keySet()) {
 			List<WeakStrongReference<EventListener>> listeners = idMap.get(key);
@@ -494,9 +474,7 @@ public final class EventManager {
 		
 		if (pertinentIDMap == null) {
 			Logger.getInstance().logInfo("Event type unregistered, storing: TYPE " + event.getEventType() + " ID " + event.getIdentifier());
-			if (droppedNullEvents.get(event.getEventType()) == null) {
-				droppedNullEvents.put(event.getEventType(), Collections.synchronizedList(new LinkedList<>()));
-			}
+			droppedNullEvents.computeIfAbsent(event.getEventType(), k -> Collections.synchronizedList(new LinkedList<>()));
 			droppedNullEvents.get(event.getEventType()).add(event);
 			return null;
 		} else if (pertinentIDMap.get(event.getIdentifier()) == null) {
@@ -541,6 +519,7 @@ public final class EventManager {
 				thread.start();
 			} else {
 				thread = eventThreadStack.pop();
+				//noinspection SynchronizationOnLocalVariableOrMethodParameter
 				synchronized (thread) {
 					thread.reset(pertinentListeners, event);
 					thread.notify();

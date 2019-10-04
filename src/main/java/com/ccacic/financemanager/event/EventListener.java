@@ -11,6 +11,6 @@ public interface EventListener {
 	 * Recieves an Event when one occurs
 	 * @param event the Event
 	 */
-	public void onEvent(Event event);
+	void onEvent(Event event);
 
 }

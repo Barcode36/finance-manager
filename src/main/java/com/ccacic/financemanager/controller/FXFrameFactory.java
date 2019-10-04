@@ -12,13 +12,13 @@ import javafx.scene.layout.Pane;
  */
 public abstract class FXFrameFactory<T> {
 
-	private String factoryName;
+	private final String factoryName;
 	
 	/**
 	 * Creates a factory with the given name
 	 * @param name the factory name
 	 */
-	public FXFrameFactory(String name) {
+	protected FXFrameFactory(String name) {
 		factoryName = name;
 	}
 	

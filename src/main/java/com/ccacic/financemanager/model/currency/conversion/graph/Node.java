@@ -24,17 +24,19 @@ class Node<T> {
 	 * @param data the data to create a Node around
 	 * @return the new Node or the existing Node
 	 */
-	public static Node getNode(Object data) {
+	@SuppressWarnings("unchecked")
+	static <T> Node<T> getNode(T data) {
 		if (nodeMap.containsKey(data)) {
-			return nodeMap.get(data);
+
+			return (Node<T>) nodeMap.get(data);
 		} else {
 			return new Node<>(data);
 		}
 	}
 
-	private T data;
-	private Set<Edge<T>> edges;
-	private Map<Node<T>, Edge<T>> tailMap;
+	private final T data;
+	private final Set<Edge<T>> edges;
+	private final Map<Node<T>, Edge<T>> tailMap;
 	
 	/**
 	 * Creates a new Node with the passed data
@@ -59,7 +61,7 @@ class Node<T> {
 	 * Adds an Edge to the Node. Throws an IllegalArgumentException if
 	 * the Node isn't the head of the passed Edge
 	 * @param edge the Edge to add
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException if the Node isn't the head of the passed Edge
 	 */
 	public void addEdge(Edge<T> edge) throws IllegalArgumentException {
 		if (!edge.getNodeHead().equals(this)) {
@@ -96,11 +98,14 @@ class Node<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
-		Node<T> node = (Node<T>) obj;
-		if (data == null) {
-			return node == null || node.getData() == null;
+		if (obj == null) {
+			return data == null;
 		}
-		return node != null && data.equals(node.getData());		
+		if (!getClass().equals(obj.getClass())) {
+			return false;
+		}
+		Node<T> node = (Node<T>) obj;
+		return data.equals(node.getData());
 	}
 	
 	@Override

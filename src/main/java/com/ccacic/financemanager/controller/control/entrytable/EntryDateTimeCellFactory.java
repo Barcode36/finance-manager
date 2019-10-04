@@ -20,7 +20,7 @@ class EntryDateTimeCellFactory implements Callback<TableColumn<Entry, LocalDateT
 
 	private static final double[] MAX_HEIGHT = new double[] {-1};
 
-	private boolean showsTime;
+	private final boolean showsTime;
 	
 	/**
 	 * Creates a new EntryDateTimeCellFactory
@@ -32,11 +32,11 @@ class EntryDateTimeCellFactory implements Callback<TableColumn<Entry, LocalDateT
 	
 	@Override
 	public TableCell<Entry, LocalDateTime> call(TableColumn<Entry, LocalDateTime> param) {	
-		TableCell<Entry, LocalDateTime> cell = new TableCell<Entry, LocalDateTime>() {
-			
+		TableCell<Entry, LocalDateTime> cell = new TableCell<>() {
+
 			@Override
 			public void updateItem(final LocalDateTime dateTime, boolean empty) {
-				if (dateTime == null ||empty) {
+				if (dateTime == null || empty) {
 					setText("");
 				} else {
 					DateTimeFormatter formatter;
@@ -45,7 +45,7 @@ class EntryDateTimeCellFactory implements Callback<TableColumn<Entry, LocalDateT
 					else {
 						formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy HH:mm");
 					}
-					setText(formatter.format(dateTime));		
+					setText(formatter.format(dateTime));
 				}
 			}
 		};

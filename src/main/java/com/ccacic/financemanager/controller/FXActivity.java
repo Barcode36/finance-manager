@@ -38,7 +38,7 @@ public abstract class FXActivity<V extends Pane> {
 	/**
 	 * No-argument constructor, allows for easy extension
 	 */
-	public FXActivity() {
+    protected FXActivity() {
 		this.isLoaded = false;
 	}
 	
@@ -68,7 +68,7 @@ public abstract class FXActivity<V extends Pane> {
 	 * Returns if this activity has been loaded
 	 * @return the loaded state
 	 */
-	public boolean isLoaded() {
+    boolean isLoaded() {
 		return isLoaded;
 	}
 	

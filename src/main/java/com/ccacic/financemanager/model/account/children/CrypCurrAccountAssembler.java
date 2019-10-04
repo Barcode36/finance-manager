@@ -17,10 +17,10 @@ import com.ccacic.financemanager.model.tag.Tag;
  */
 public class CrypCurrAccountAssembler extends AccountAssembler<CrypCurrAccount> {
 	
-	protected static final String defDisplayName = "Cryptocurrency Wallet";
-	protected static final String defEntryType = CrypCurrEntry.class.getSimpleName();
-	protected static final Set<Currency> defCurrencies = CrypCurrEntry.getCrypCurrs();
-	protected static final Set<Tag> defTags = new HashSet<>();
+	private static final String defDisplayName = "Cryptocurrency Wallet";
+	private static final String defEntryType = CrypCurrEntry.class.getSimpleName();
+	private static final Set<Currency> defCurrencies = CrypCurrEntry.getCrypCurrs();
+	private static final Set<Tag> defTags = new HashSet<>();
 	
 	/**
 	 * Creates a new CrypCurrAccountAssembler with the default values
@@ -37,8 +37,8 @@ public class CrypCurrAccountAssembler extends AccountAssembler<CrypCurrAccount> 
 	 * @param currencies the currencies supported by CrypCurrAccount
 	 * @param tags the Tags associated with CrypCurrAccouunt
 	 */
-	public CrypCurrAccountAssembler(String displayName, String entryType, Set<Currency> currencies,
-			Set<Tag> tags) {
+    private CrypCurrAccountAssembler(String displayName, String entryType, Set<Currency> currencies,
+                                     Set<Tag> tags) {
 		super(CrypCurrAccount.class.getSimpleName(), displayName, entryType, currencies, tags);
 	}
 
@@ -49,7 +49,7 @@ public class CrypCurrAccountAssembler extends AccountAssembler<CrypCurrAccount> 
 
 	@Override
 	public void modifyAccount(CrypCurrAccount account, ParamMap paramMap, Delta delta) {
-		return;
+
 	}
 
 	@Override

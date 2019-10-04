@@ -56,25 +56,19 @@ public class ButtonToolbarActivity extends FXActivity<HBox> {
 		refreshButton.setOnAction(e -> {
 			refreshButton.setDisable(true);
 			Event event = EventManager.fireEvent(new Event(Event.REFRESH_RATES));
-			EventManager.onEventFinish(event, () -> {
-				Platform.runLater(() -> refreshButton.setDisable(false));
-			});
+			EventManager.onEventFinish(event, () -> Platform.runLater(() -> refreshButton.setDisable(false)));
 		});
 		
 		saveArchiveButton.setOnAction(e -> {
 			saveArchiveButton.setDisable(true);
 			Event event = EventManager.fireEvent(new Event(Event.SAVE_ARCHIVE_REQUEST));
-			EventManager.onEventFinish(event, () -> {
-				Platform.runLater(() -> saveArchiveButton.setDisable(false));
-			});
+			EventManager.onEventFinish(event, () -> Platform.runLater(() -> saveArchiveButton.setDisable(false)));
 		});
 		
 		loadArchiveButton.setOnAction(e -> {
 			loadArchiveButton.setDisable(true);
 			Event event = EventManager.fireEvent(new Event(Event.LOAD_ARCHIVE_REQUEST));
-			EventManager.onEventFinish(event, () -> {
-				Platform.runLater(() -> loadArchiveButton.setDisable(false));
-			});
+			EventManager.onEventFinish(event, () -> Platform.runLater(() -> loadArchiveButton.setDisable(false)));
 		});
 		
 	}

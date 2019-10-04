@@ -23,30 +23,22 @@
 					<left>5</left>
 				</Insets>
 			</BorderPane.margin>
-			<children>
-				<VBox spacing="5.0" alignment="CENTER_LEFT">
-					<children>
-						<Text text="Amount"/>
-						<CurrencyTextField fx:id="currTextField"/>
-					</children>
-				</VBox>
-				<VBox spacing="5.0" alignment="CENTER_LEFT">
-					<children>
-						<Text text="Files"/>
-						<HBox spacing="5.0">
-							<children>
-								<ComboBox fx:id="filesCombo" minWidth="305" maxWidth="305" promptText="No Files Selected"/>
-								<Button fx:id="addFileButton" text="Add"/>
-								<Button fx:id="removeFileButton" text="Remove" disable="true"/>
-							</children>
-						</HBox>
-					</children>
-				</VBox>
-			</children>
+			<VBox spacing="5.0" alignment="CENTER_LEFT">
+				<Text text="Amount"/>
+				<CurrencyTextField fx:id="currTextField"/>
+			</VBox>
+			<VBox spacing="5.0" alignment="CENTER_LEFT">
+				<Text text="Files"/>
+				<HBox spacing="5.0">
+					<ComboBox fx:id="filesCombo" minWidth="305" maxWidth="305" promptText="No Files Selected"/>
+					<Button fx:id="addFileButton" text="Add"/>
+					<Button fx:id="removeFileButton" text="Remove" disable="true"/>
+				</HBox>
+			</VBox>
 		</HBox>
 	</top>
 	<left>
-		<VBox fx:id="dateBox" spacing="5.0" alignment="TOP_LEFT">
+		<VBox fx:id="dateBox" spacing="5.0">
 			<BorderPane.margin>
 				<Insets>
 					<right>5</right>
@@ -54,28 +46,24 @@
 					<left>5</left>
 				</Insets>
 			</BorderPane.margin>
-			<children>
-				<Text text="Date"/>
-				<DatePicker fx:id="datePicker" editable="false"/>
-				<Text fx:id="hourText" text="Hour"/>
-				<TextField fx:id="hourTextField"/>
-				<Text fx:id="minText" text="Minute"/>
-				<TextField fx:id="minTextField"/>
-			</children>
+			<Text text="Date"/>
+			<DatePicker fx:id="datePicker" editable="false"/>
+			<Text fx:id="hourText" text="Hour"/>
+			<TextField fx:id="hourTextField"/>
+			<Text fx:id="minText" text="Minute"/>
+			<TextField fx:id="minTextField"/>
 		</VBox>
 	</left>
 	<center>
-		<VBox spacing="5.0" alignment="TOP_LEFT">
+		<VBox spacing="5.0">
 			<BorderPane.margin>
 				<Insets>
 					<right>5</right>
 					<bottom>5</bottom>
 				</Insets>
 			</BorderPane.margin>
-			<children>
-				<Text text="Description"/>
-				<TextArea fx:id="descrArea" wrapText="true"/>
-			</children>
+			<Text text="Description"/>
+			<TextArea fx:id="descrArea" wrapText="true"/>
 		</VBox>
 	</center>
 	<bottom>
@@ -95,7 +83,7 @@
 		-->
 	</bottom>
 	<right>
-		<VBox fx:id="rightBox" alignment="TOP_LEFT"/>
+		<VBox fx:id="rightBox"/>
 	</right>
 </fx:root>
 

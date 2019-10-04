@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.ccacic.assetexchangewrapper.core.exceptions.MissingMarketException;
 import com.ccacic.financemanager.exception.InvalidCurrencyCodeException;
 import com.ccacic.financemanager.model.ParamMap;
 import com.ccacic.financemanager.model.config.GeneralConfig;
@@ -82,7 +81,7 @@ public class Currency {
 	 * not correspond to any known Currency
 	 * @param currCode the code
 	 * @return a Currency instance corresponding to the passed code
-	 * @throws InvalidCurrencyCodeException
+	 * @throws InvalidCurrencyCodeException if the passed code doesn't map to a Currency
 	 */
 	public static Currency getCurrency(String currCode) throws InvalidCurrencyCodeException {
 		if (currencies.containsKey(currCode)) {
@@ -120,7 +119,7 @@ public class Currency {
 	 * @return a Set of codes
 	 */
 	public static Set<String> getAllCurrencyCodes() {
-		return new HashSet<String>(currencies.keySet());
+		return new HashSet<>(currencies.keySet());
 	}
 	
 	/**
@@ -161,19 +160,20 @@ public class Currency {
 			backIndex--;
 		}
 		String[] commaSplit = amnt.substring(frontIndex, backIndex + 1).split(",");
-		String reassembled = "";
+		StringBuilder reassembledBuilder = new StringBuilder();
 		for (String s: commaSplit) {
-			reassembled += s;
+			reassembledBuilder.append(s);
 		}
+		String reassembled = reassembledBuilder.toString();
 		return isNegative ? "-" + reassembled : reassembled;
 	}
 	
-	private String code;
-	private String symbol;
-	private Set<Tag> tags;
-	private boolean leftSide;
-	private boolean space;
-	private int decPlaces;
+	private final String code;
+	private final String symbol;
+	private final Set<Tag> tags;
+	private final boolean leftSide;
+	private final boolean space;
+	private final int decPlaces;
 	
 	/**
 	 * Creates a new Currency using the passed ParamMap to source parameters
@@ -182,7 +182,7 @@ public class Currency {
 	public Currency(ParamMap paramMap) {
 		this.code = paramMap.get(NAME);
 		this.symbol = paramMap.get(SYMBOL);
-		this.tags = paramMap.getAsSet(TAGS, (item) -> Tag.getTagByID(item));
+		this.tags = paramMap.getAsSet(TAGS, Tag::getTagByID);
 		this.leftSide = paramMap.getAsBoolean(LEFT_SIDE);
 		this.space = paramMap.getAsBoolean(SPACE);
 		this.decPlaces = paramMap.getAsInt(DECIMAL_PLACES);
@@ -224,7 +224,7 @@ public class Currency {
 	 * Returns the Tags associated with this Currency
 	 * @return the associated Tags
 	 */
-	public Set<Tag> getTags() {
+	private Set<Tag> getTags() {
 		return tags;
 	}
 	
@@ -255,9 +255,8 @@ public class Currency {
 	 * @param curr the currency to convert from
 	 * @param value the value to apply the conversion to
 	 * @return the converted value
-	 * @throws MissingMarketException 
 	 */
-	public double convertCurrency(Currency curr, double value) throws MissingMarketException {
+	public double convertCurrency(Currency curr, double value) {
 		CurrencyExchangeFactory factory = CurrencyExchangeFactory.getInstance();
 		return factory.getCurrencyConversionRate(curr, this) * value;
 	}
@@ -277,9 +276,8 @@ public class Currency {
 	 * @param value the value to apply the conversion to
 	 * @param exchangeID the exchange to use for the value
 	 * @return the converted value
-	 * @throws MissingMarketException 
 	 */
-	public double convertCurrency(Currency curr, double value, String exchangeID) throws MissingMarketException {
+	public double convertCurrency(Currency curr, double value, String exchangeID) {
 		CurrencyExchangeFactory factory = CurrencyExchangeFactory.getInstance();
 		return factory.getCurrencyConversionRate(curr, this, exchangeID) * value;
 	}
@@ -290,11 +288,7 @@ public class Currency {
 	 * @return the formated double
 	 */
 	public String format(double amnt) {
-		String dec = "#,##0.";
-		for (int k = 0; k < decPlaces; k++) {
-			dec += "0";
-		}
-		DecimalFormat df = new DecimalFormat(dec);
+		DecimalFormat df = new DecimalFormat("#,##0." + "0".repeat(Math.max(0, decPlaces)));
 		if (!leftSide) {
 			return df.format(amnt) + (space ? " " : "") + getSymbol();
 		} else {
@@ -323,7 +317,7 @@ public class Currency {
 	 * @param amnt the double parsable String to format
 	 * @return the formated String
 	 */
-	public String format(String amnt) {
+	private String format(String amnt) {
 		if (amnt.length() == 0) {
 			return format(0);
 		}
@@ -331,14 +325,14 @@ public class Currency {
 	}
 	
 	/**
-	 * Performs formating on a String as it changes, using the passed old value as
+	 * Performs formatting on a String as it changes, using the passed old value as
 	 * reference for how to incorporate the changes present in the passed new value
 	 * into the proper format. Will throw a NumberFormatException if the passed new
 	 * value does not contain any numbers, with a few edge case exceptions
 	 * @param oldValue the old value of the String
 	 * @param newValue the new value of the String
 	 * @return the properly formatted version of newValue
-	 * @throws NumberFormatException
+	 * @throws NumberFormatException if the passed values do not contain any numbers
 	 */
 	public String liveFormat(String oldValue, String newValue) throws NumberFormatException {
 		String deformOld = deformat(oldValue);
@@ -355,20 +349,14 @@ public class Currency {
 		String[] oldSplitStr = deformOld.split("\\.");
 		String[] newSplitStr = deformNew.split("\\.");
 		if (oldSplitStr.length == 1) {
-			if (deformOld.length() == 0) {
-				if (deformNew.length() == 1) {
-					String dec = "0.";
-					for (int i = 0; i < decPlaces - 1; i++) {
-						dec += "0";
-					}
-					return format(Double.parseDouble(dec + deformNew));
-				}
+			if (deformNew.length() == 1) {
+				return format(Double.parseDouble("0." + "0".repeat(Math.max(0, decPlaces - 1)) + deformNew));
 			}
 		}
 		if (oldSplitStr.length == 2 && newSplitStr.length == 2) {
 			int leftDelta = newSplitStr[0].length() - oldSplitStr[0].length();
 			int rightDelta = newSplitStr[1].length() - oldSplitStr[1].length();
-			if (leftDelta < 0 || leftDelta > 0) {
+			if (leftDelta != 0) {
 				return format(Double.parseDouble(deformNew));
 			}
 			if (rightDelta < 0) {

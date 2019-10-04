@@ -70,9 +70,9 @@ private static boolean registered = false;
 	@FXML
 	private Text messageText;
 	
-	private String message;
-	private String title;
-	private String eventId;
+	private final String message;
+	private final String title;
+	private final String eventId;
 	private boolean ended;
 	
 	/**
@@ -81,7 +81,7 @@ private static boolean registered = false;
 	 * @param title the title of the stage
 	 * @param eventId the id to fire and listen for events on
 	 */
-	public BlockingProgressActivity(String message, String title, String eventId) {
+	private BlockingProgressActivity(String message, String title, String eventId) {
 		this.message = message;
 		this.title = title;
 		this.eventId = eventId;
@@ -110,7 +110,7 @@ private static boolean registered = false;
 		
 		EventManager.addListener(null, e -> {
 			ended = true;
-			Platform.runLater(() -> popupStage.close());
+			Platform.runLater(popupStage::close);
 			EventManager.removeThisListener();
 		}, Event.BLOCKING_PROGRESS_END, eventId);
 		

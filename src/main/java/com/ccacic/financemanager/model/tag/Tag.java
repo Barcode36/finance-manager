@@ -21,7 +21,7 @@ public enum Tag {
 	 * @param id the ID to search with
 	 * @return the corresponding Tag
 	 */
-	public static final Tag getTagByID(String id) {
+	public static Tag getTagByID(String id) {
 		for (Tag tag: values()) {
 			if (tag.getTagID().equals(id)) {
 				return tag;
@@ -38,7 +38,7 @@ public enum Tag {
 	 * @param name the name of the Tag, displayable to the user
 	 * @param tagID the ID of the Tag
 	 */
-	private Tag(String name, String tagID) {
+	Tag(String name, String tagID) {
 		this.name = name;
 		this.tagID = tagID;
 	}
@@ -55,7 +55,7 @@ public enum Tag {
 	 * Returns the ID of the Tag
 	 * @return the ID
 	 */
-	public String getTagID() {
+    private String getTagID() {
 		return tagID;
 	}
 	

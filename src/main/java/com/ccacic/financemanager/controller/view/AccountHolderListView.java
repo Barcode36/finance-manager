@@ -50,7 +50,7 @@ public class AccountHolderListView extends FXActivity<VBox> implements EventList
 	@FXML
 	private Pane seperatorPane;
 	
-	private Category category;
+	private final Category category;
 	
 	/**
 	 * Creates a new AccountHolderListView

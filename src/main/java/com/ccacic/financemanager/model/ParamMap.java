@@ -2,14 +2,7 @@ package com.ccacic.financemanager.model;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import com.ccacic.financemanager.exception.InvalidCurrencyCodeException;
 import com.ccacic.financemanager.logger.Logger;
@@ -33,7 +26,7 @@ public final class ParamMap {
 	 * be stored at this key but they will be returned through
 	 * the getType method
 	 */
-	public static final String TYPE_KEY = "class";
+	private static final String TYPE_KEY = "class";
 	
 	/**
 	 * Decodes the passed String into a ParamMap, assuming
@@ -65,10 +58,10 @@ public final class ParamMap {
 		List<String> pairs = new ArrayList<>();
 		
 		int startIndex = 0;
-		int endIndex = pulled.indexOf(',');
+		int endIndex = Objects.requireNonNull(pulled).indexOf(',');
 		while (endIndex > startIndex) {
 			int brackIndex = pulled.indexOf('{', startIndex);
-			String pair = "";
+			String pair;
 			if (brackIndex > startIndex && brackIndex < endIndex) {
 				String section = StringProcessing.pullBracketSection(pulled, startIndex);
 				pair = pulled.substring(startIndex, brackIndex) + "{" + section + "}";
@@ -115,7 +108,7 @@ public final class ParamMap {
 	 *
 	 * @param <T> the type to convert to
 	 */
-	public static interface Converter<T> {
+	public interface Converter<T> {
 		
 		/**
 		 * Converts the passed String to an instance of type T
@@ -128,7 +121,7 @@ public final class ParamMap {
 	
 	
 	
-	public Map<String, String> map;
+	private final Map<String, String> map;
 	
 	/**
 	 * Creates a new, empty ParamMap
@@ -204,11 +197,11 @@ public final class ParamMap {
 	 */
 	public void put(String key, Iterable<?> iter) {
 		Iterator<?> iterator = iter.iterator();
-		String encoded = "{";
+		StringBuilder encoded = new StringBuilder("{");
 		while (iterator.hasNext()) {
-			encoded += iterator.next();
+			encoded.append(iterator.next());
 			if (iterator.hasNext()) {
-				encoded += ",";
+				encoded.append(",");
 			}
 		}
 		put(key, encoded + "}");
@@ -378,7 +371,7 @@ public final class ParamMap {
 	 * @param converter the converter to convert Strings to T objects with
 	 * @return the List of T objects
 	 */
-	public <T> List<T> getAsList(String key, Converter<T> converter) {
+	private <T> List<T> getAsList(String key, Converter<T> converter) {
 		String bracketed = getAsBracketed(key);
 		if (bracketed == null) {
 			return null;

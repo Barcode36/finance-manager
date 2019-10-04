@@ -80,7 +80,7 @@ public class AccountHolderExpandedView extends FXActivity<VBox> implements Event
 				
 				Account account = (Account) e2.getData();
 				AccountBarView acctBarAct = new AccountBarView(account, aH);
-				acctBarAct.open(() -> acctBarAct.toggleEntryChunks());
+				acctBarAct.open(acctBarAct::toggleEntryChunks);
 				
 				EventManager.addListener(account, e3 -> Platform.runLater(() -> {
 					Account a = (Account) e3.getData();

@@ -16,7 +16,7 @@ import com.ccacic.financemanager.logger.Logger;
  * @author Cameron Cacic
  *
  */
-public class Hashing {
+class Hashing {
 	
 	private static final String algorithm = "SHA-256";
 	

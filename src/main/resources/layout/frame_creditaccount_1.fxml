@@ -6,18 +6,16 @@
 <?import javafx.geometry.Insets?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox">
-	<padding>
-		<Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
-	</padding>
-	<children>
-		<Text text="Credit Line"/>
-		<DoubleTextField fx:id="creditLineField"/>
-		<Text text="Annual Fee"/>
-		<DoubleTextField fx:id="annualFeeField"/>
-		<Text text="APR"/>
-		<DoubleTextField fx:id="aprField"/>
-		<Text text="Default Minimum Payment"/>
-		<DoubleTextField fx:id="minPaymentField"/>
-	</children>
+    <padding>
+        <Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
+    </padding>
+    <Text text="Credit Line"/>
+    <DoubleTextField fx:id="creditLineField"/>
+    <Text text="Annual Fee"/>
+    <DoubleTextField fx:id="annualFeeField"/>
+    <Text text="APR"/>
+    <DoubleTextField fx:id="aprField"/>
+    <Text text="Default Minimum Payment"/>
+    <DoubleTextField fx:id="minPaymentField"/>
 </fx:root>
 

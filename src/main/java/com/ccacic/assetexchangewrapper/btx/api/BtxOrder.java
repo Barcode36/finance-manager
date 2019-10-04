@@ -9,9 +9,9 @@ import com.ccacic.assetexchangewrapper.core.api.Order;
  */
 class BtxOrder implements Order {
 	
-	private double quantity;
-	private double price;
-	private String uuid;
+	private final double quantity;
+	private final double price;
+	private final String uuid;
 
 	/**
 	 * Creates a new BtxOrder

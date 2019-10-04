@@ -13,11 +13,11 @@ import java.util.Set;
  */
 public class Category implements Comparable<Category> {
 	
-	public static final String CAT_NAME = "category_name";
-	public static final String DISPLAY_NAME = "display_name";
-	public static final String PRIMARY_COLOR = "primary_color";
-	public static final String SECONDARY_COLOR = "secondary_color";
-	public static final String HOLDABLE_ACCTS = "holdable_accounts";
+	private static final String CAT_NAME = "category_name";
+	private static final String DISPLAY_NAME = "display_name";
+	private static final String PRIMARY_COLOR = "primary_color";
+	private static final String SECONDARY_COLOR = "secondary_color";
+	private static final String HOLDABLE_ACCTS = "holdable_accounts";
 	
 	/**
 	 * Creates a Category from the passed ParamMap
@@ -40,11 +40,11 @@ public class Category implements Comparable<Category> {
 				holdAccts);
 	}
 	
-	private String catName;
-	private String displayName;
-	private String primaryColor;
-	private String secondarycolor;
-	private Set<String> holdableAccounts;
+	private final String catName;
+	private final String displayName;
+	private final String primaryColor;
+	private final String secondarycolor;
+	private final Set<String> holdableAccounts;
 	
 	/**
 	 * Creates a new Category
@@ -55,7 +55,7 @@ public class Category implements Comparable<Category> {
 	 * @param holdableAccounts the Accounts AccountHolders associated with this
 	 * Category are allowed to hold
 	 */
-	public Category(String catName, String displayName, String primaryColor, String secondaryColor, Set<String> holdableAccounts) {
+	private Category(String catName, String displayName, String primaryColor, String secondaryColor, Set<String> holdableAccounts) {
 		this.catName = catName;
 		this.displayName = displayName;
 		this.primaryColor = primaryColor;
@@ -130,7 +130,7 @@ public class Category implements Comparable<Category> {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (obj == null || !getClass().equals(obj.getClass())) {
 			return false;
 		}
 		Category cat;

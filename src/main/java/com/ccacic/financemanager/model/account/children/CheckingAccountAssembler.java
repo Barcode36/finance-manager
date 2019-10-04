@@ -17,10 +17,10 @@ import com.ccacic.financemanager.model.tag.Tag;
  */
 public class CheckingAccountAssembler extends AccountAssembler<CheckingAccount> {
 	
-	protected static final String defDisplayName = "Checking Account";
-	protected static final String defEntryType = FiatCurrEntry.class.getSimpleName();
-	protected static final Set<Currency> defCurrencies = FiatCurrEntry.getFiatCurrs();
-	protected static final Set<Tag> defTags = new HashSet<>();
+	private static final String defDisplayName = "Checking Account";
+	private static final String defEntryType = FiatCurrEntry.class.getSimpleName();
+	private static final Set<Currency> defCurrencies = FiatCurrEntry.getFiatCurrs();
+	private static final Set<Tag> defTags = new HashSet<>();
 	
 	public static final String APY = "apy";
 
@@ -39,8 +39,8 @@ public class CheckingAccountAssembler extends AccountAssembler<CheckingAccount> 
 	 * @param currencies the Currencies supported by CheckingAccount
 	 * @param tags the Tags associated with CheckingAccount
 	 */
-	public CheckingAccountAssembler(String displayName, String entryType, Set<Currency> currencies,
-			Set<Tag> tags) {
+    private CheckingAccountAssembler(String displayName, String entryType, Set<Currency> currencies,
+                                     Set<Tag> tags) {
 		super(CheckingAccount.class.getSimpleName(), displayName, entryType, currencies, tags);
 	}
 

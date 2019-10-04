@@ -9,26 +9,22 @@
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane">
 	<center>
-		<HBox>
-			<padding>
-				<Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
-			</padding>
-			<children>
-				<ListView fx:id="userListView"/>
-			</children>
-		</HBox>
+        <HBox>
+            <padding>
+                <Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
+            </padding>
+            <ListView fx:id="userListView"/>
+        </HBox>
 	</center>
 	<bottom>
-		<HBox alignment="CENTER_LEFT">
-			<padding>
-				<Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
-			</padding>
-			<children>
-				<Button fx:id="createNewUserButton" text="Create New User"/>
-				<Pane HBox.hgrow="ALWAYS"/>
-				<Button fx:id="openUserButton" text="Select User"/>
-			</children>
-		</HBox>
+        <HBox alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
+            </padding>
+            <Button fx:id="createNewUserButton" text="Create New User"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button fx:id="openUserButton" text="Select User"/>
+        </HBox>
 	</bottom>
 </fx:root>
 

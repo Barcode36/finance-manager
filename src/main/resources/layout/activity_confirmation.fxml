@@ -7,17 +7,13 @@
 <?import javafx.geometry.Insets?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox">
-	<padding>
-		<Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
-	</padding>
-	<children>
-		<Text fx:id="messageText"/>
-		<HBox spacing="5.0" alignment="CENTER_RIGHT">
-			<children>
-				<Button fx:id="yesButton" text="Yes"/>
-				<Button fx:id="noButton" text="No"/>
-			</children>
-		</HBox>
-	</children>
+    <padding>
+        <Insets top="5.0" right="5.0" bottom="5.0" left="5.0"/>
+    </padding>
+    <Text fx:id="messageText"/>
+    <HBox spacing="5.0" alignment="CENTER_RIGHT">
+        <Button fx:id="yesButton" text="Yes"/>
+        <Button fx:id="noButton" text="No"/>
+    </HBox>
 </fx:root>
 

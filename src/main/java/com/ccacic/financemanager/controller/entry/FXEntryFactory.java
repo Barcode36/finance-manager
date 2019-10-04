@@ -21,7 +21,7 @@ public abstract class FXEntryFactory<T extends Entry> extends FXFrameFactory<Ent
 	 * Creates a new FXEntryFactory with the given name
 	 * @param name the name of the factory
 	 */
-	public FXEntryFactory(String name) {
+	FXEntryFactory(String name) {
 		super(name);
 	}
 	
@@ -30,7 +30,7 @@ public abstract class FXEntryFactory<T extends Entry> extends FXFrameFactory<Ent
 	 * @param toEdit the Entry to edit, or null to create a new Entry
 	 * @return a list of activity frames
 	 */
-	public abstract List<FXPopupProgActivityFrame<?, ? extends Pane>> createEntryFrameList(T toEdit);
+	protected abstract List<FXPopupProgActivityFrame<?, ? extends Pane>> createEntryFrameList(T toEdit);
 	
 	/**
 	 * The passed list contains all the default columns for EntryTable.

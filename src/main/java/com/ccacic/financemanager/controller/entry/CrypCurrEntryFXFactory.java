@@ -8,11 +8,8 @@ import com.ccacic.financemanager.model.currency.Currency;
 import com.ccacic.financemanager.model.entry.children.CrypCurrEntry;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.layout.Pane;
-import javafx.util.Callback;
 
 /**
  * The FXFactory for CrypCurrEntry
@@ -38,24 +35,14 @@ public class CrypCurrEntryFXFactory extends FXEntryFactory<CrypCurrEntry> {
 
 	@Override
 	public void insertEntryColumns(List<TableColumn<CrypCurrEntry, ?>> columns) {
-		TableColumn<CrypCurrEntry, String> histValueColumn = new TableColumn<CrypCurrEntry, String>("Value at Transaction Time");
-		histValueColumn.setCellValueFactory(new Callback<CellDataFeatures<CrypCurrEntry, String>, ObservableValue<String>>() {
-
-			public ObservableValue<String> call(CellDataFeatures<CrypCurrEntry, String> e) {
-				CrypCurrEntry entry = e.getValue();
-				return new SimpleStringProperty(Currency.getDefaultCurrency().format(entry.getHistFiatValue()));
-			}
-
+		TableColumn<CrypCurrEntry, String> histValueColumn = new TableColumn<>("Value at Transaction Time");
+		histValueColumn.setCellValueFactory(e -> {
+			CrypCurrEntry entry = e.getValue();
+			return new SimpleStringProperty(Currency.getDefaultCurrency().format(entry.getHistFiatValue()));
 		});
 		
-		TableColumn<CrypCurrEntry, String> transIDColumn = new TableColumn<CrypCurrEntry, String>("Transaction ID");
-		transIDColumn.setCellValueFactory(new Callback<CellDataFeatures<CrypCurrEntry, String>, ObservableValue<String>>() {
-
-			public ObservableValue<String> call(CellDataFeatures<CrypCurrEntry, String> e) {
-				return new SimpleStringProperty(e.getValue().getTransactID());
-			}
-
-		});
+		TableColumn<CrypCurrEntry, String> transIDColumn = new TableColumn<>("Transaction ID");
+		transIDColumn.setCellValueFactory(e -> new SimpleStringProperty(e.getValue().getTransactID()));
 		
 		columns.add(2, histValueColumn);
 		columns.add(3, transIDColumn);

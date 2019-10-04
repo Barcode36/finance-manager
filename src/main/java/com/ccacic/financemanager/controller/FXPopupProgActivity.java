@@ -25,11 +25,11 @@ import javafx.scene.layout.Pane;
 public abstract class FXPopupProgActivity<T> extends FXPopupActivity<BorderPane> {
 	
 	@FXML
-	protected Button prevButton;
+	private Button prevButton;
 	@FXML
-	protected Button nextButton;
+	private Button nextButton;
 	@FXML
-	protected Button cancelButton;
+	private Button cancelButton;
 	@FXML
 	protected Button finishButton;
 
@@ -39,7 +39,7 @@ public abstract class FXPopupProgActivity<T> extends FXPopupActivity<BorderPane>
 	/**
 	 * Creates a new popup progression activity with an empty frame list
 	 */
-	public FXPopupProgActivity() {
+	protected FXPopupProgActivity() {
 		frames = new ArrayList<>();
 		index = 0;
 	}
@@ -47,7 +47,7 @@ public abstract class FXPopupProgActivity<T> extends FXPopupActivity<BorderPane>
 	/**
 	 * Creates the result of the activity from the gathered data
 	 * of the frames
-	 * @param frameValues
+	 * @param frameValues the frame values to create the result from
 	 * @return the new item
 	 */
 	protected abstract T createResult(ParamMap frameValues);
@@ -101,11 +101,7 @@ public abstract class FXPopupProgActivity<T> extends FXPopupActivity<BorderPane>
 			
 		});
 		
-		cancelButton.setOnAction(e -> {
-			
-			popupStage.close();
-			
-		});
+		cancelButton.setOnAction(e -> popupStage.close());
 		
 		finishButton.setOnAction(e -> {
 			

@@ -34,8 +34,8 @@ public interface ReadOnlyExchange {
 	 * @param curr1 the first currency
 	 * @param curr2 the second currency
 	 * @return the specified market
-	 * @throws MissingMarketException
-	 * @throws IOException
+	 * @throws MissingMarketException if the market is missing
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	ReadOnlyMarket getReadOnlyMarket(String curr1, String curr2) throws MissingMarketException, IOException;
 	
@@ -44,8 +44,8 @@ public interface ReadOnlyExchange {
 	 * MissingMarketException if the specified market does not exist
 	 * @param marketName the market name
 	 * @return the specified market
-	 * @throws MissingMarketException
-	 * @throws IOException
+	 * @throws MissingMarketException if the market is missing
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	ReadOnlyMarket getReadOnlyMarket(String marketName) throws MissingMarketException, IOException;
 	
@@ -65,7 +65,7 @@ public interface ReadOnlyExchange {
 	/**
 	 * Gets all the known markets in the exchange
 	 * @return a Set of market names
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	Set<String> getKnownMarkets() throws IOException;
 	

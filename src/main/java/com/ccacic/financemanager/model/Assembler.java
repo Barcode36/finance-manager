@@ -12,13 +12,13 @@ package com.ccacic.financemanager.model;
  */
 public abstract class Assembler<T> {
 	
-	private String assemblerName;
+	private final String assemblerName;
 	
 	/**
 	 * Creates a new Assembler with the passed name
 	 * @param assemblerName the name of the Assembler
 	 */
-	public Assembler(String assemblerName) {
+	Assembler(String assemblerName) {
 		this.assemblerName = assemblerName;
 	}
 	

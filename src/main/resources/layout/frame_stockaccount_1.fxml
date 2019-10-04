@@ -5,10 +5,8 @@
 <?import javafx.scene.control.TextField?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="VBox">
-	<children>
-		<Text text="Ticker"/>
-		<TextField fx:id="tickerField"/>
-		<Text text="Yield"/>
-		<TextField fx:id="yieldField"/>
-	</children>
+    <Text text="Ticker"/>
+    <TextField fx:id="tickerField"/>
+    <Text text="Yield"/>
+    <TextField fx:id="yieldField"/>
 </fx:root>

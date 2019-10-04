@@ -30,7 +30,7 @@ class BtxPublicConnection extends PublicConnection {
 	 * if it failed and returns the data element of the obect if it succeeded
 	 * @param object the JsonObject to check
 	 * @return the data JsonElement
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	private JsonElement verifySuccess(JsonObject object) throws IOException {
 		if (!object.get("success").getAsBoolean()) {
@@ -43,7 +43,7 @@ class BtxPublicConnection extends PublicConnection {
 	/**
 	 * Gets all the markets as a JsonArray
 	 * @return a JsonArray of market names
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	public JsonArray getMarkets() throws IOException {
 		String result = executeRequest("getmarkets", null, RequestType.GET, null);
@@ -54,7 +54,7 @@ class BtxPublicConnection extends PublicConnection {
 	/**
 	 * Gets all the currencies
 	 * @return a JsonArray of currencies
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	public JsonArray getCurrencies() throws IOException {
 		String result = executeRequest("getcurrencies", null, RequestType.GET, null);
@@ -66,7 +66,7 @@ class BtxPublicConnection extends PublicConnection {
 	 * Gets the ticker of the passed market name
 	 * @param marketName the market name
 	 * @return the ticker as a JsonObject
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	public JsonObject getTicker(String marketName) throws IOException {
 		Map<String, String> queries = new HashMap<>();
@@ -79,7 +79,7 @@ class BtxPublicConnection extends PublicConnection {
 	/**
 	 * Gets all the market summaries
 	 * @return the market summaries as a JsonArray
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	public JsonArray getMarketSummaries() throws IOException {
 		String result = executeRequest("getmarketsummaries", null, RequestType.GET, null);
@@ -91,7 +91,7 @@ class BtxPublicConnection extends PublicConnection {
 	 * Gets the market summary of the passed market name
 	 * @param marketName the name of the market
 	 * @return the market summary as a JsonObject
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	public JsonObject getMarketSummary(String marketName) throws IOException {
 		Map<String, String> queries = new HashMap<>();
@@ -106,7 +106,7 @@ class BtxPublicConnection extends PublicConnection {
 	 * @param marketName the name of the market
 	 * @param type the type of the orders
 	 * @return the order book as a JsonArray
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	public JsonArray getOrderBook(String marketName, String type) throws IOException {
 		Map<String, String> queries = new HashMap<>();
@@ -121,7 +121,7 @@ class BtxPublicConnection extends PublicConnection {
 	 * Gets the history of the market specified by the passed market name
 	 * @param marketName the market name
 	 * @return the market history as a JsonArray
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	public JsonArray getMarketHistory(String marketName) throws IOException {
 		Map<String, String> queries = new HashMap<>();

@@ -4,7 +4,6 @@ import com.ccacic.financemanager.event.Event;
 import com.ccacic.financemanager.event.EventListener;
 import com.ccacic.financemanager.event.EventManager;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.NumberBinding;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.TableView;
 
@@ -16,7 +15,7 @@ public class UpdatableTableView<T> extends TableView<T> {
     
     private final Map<T, EventListener> currUpdateListeners;
     
-	public UpdatableTableView() {
+	protected UpdatableTableView() {
 	    super();
 
 		currUpdateListeners = new HashMap<>();

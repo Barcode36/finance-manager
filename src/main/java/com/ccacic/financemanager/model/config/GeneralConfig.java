@@ -11,7 +11,7 @@ public class GeneralConfig {
 	
 	public static final String DEFAULT_CURR = "default_currency";
 	public static final String DATA_FETCH_TIME = "data_fetch_time";
-	public static final String ENCRYPTED = "encrypted";
+	private static final String ENCRYPTED = "encrypted";
 	
 	private static final GeneralConfig instance = new GeneralConfig();
 	

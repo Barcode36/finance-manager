@@ -31,7 +31,7 @@ public class AlphaVantageReadOnlyExchange implements ReadOnlyExchange {
 	}
 
 	@Override
-	public ReadOnlyMarket getReadOnlyMarket(String baseCurr, String convCurr) throws MissingMarketException, IOException {
+	public ReadOnlyMarket getReadOnlyMarket(String baseCurr, String convCurr) throws IOException {
 		if ("USD".equals(baseCurr)) {
 			return getReadOnlyMarket(baseCurr + "-" + convCurr);
 		}
@@ -39,7 +39,7 @@ public class AlphaVantageReadOnlyExchange implements ReadOnlyExchange {
 	}
 
 	@Override
-	public ReadOnlyMarket getReadOnlyMarket(String marketName) throws MissingMarketException, IOException {
+	public ReadOnlyMarket getReadOnlyMarket(String marketName) {
 		
 		if (markets.containsKey(marketName)) {
 			return markets.get(marketName);
@@ -75,12 +75,7 @@ public class AlphaVantageReadOnlyExchange implements ReadOnlyExchange {
 			return true;
 		}
 		
-		ReadOnlyMarket market;
-		try {
-			market = getReadOnlyMarket(marketName);
-		} catch (IOException e) {
-			return false;
-		}
+		ReadOnlyMarket market = getReadOnlyMarket(marketName);
 		
 		return market.isActive();
 		

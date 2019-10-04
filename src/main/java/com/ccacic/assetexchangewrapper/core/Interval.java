@@ -18,7 +18,7 @@ public enum Interval {
 	 * Creates a new Interval with the passed time in minutes
 	 * @param time the time of the Interval
 	 */
-	private Interval(int time) {
+	Interval(int time) {
 		this.time = time;
 	}
 	

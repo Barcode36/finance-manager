@@ -242,7 +242,7 @@ public class EntryChunk extends Unique implements EventListener {
 	 * Adds the passed Entry to the EntryChunk
 	 * @param entry the Entry to add
 	 */
-	protected final void addEntry(Entry entry) {
+	final void addEntry(Entry entry) {
 		addEntry(entry, true);
 	}
 	
@@ -262,7 +262,7 @@ public class EntryChunk extends Unique implements EventListener {
 	 * Removes the Entry from the EntryChunk
 	 * @param entry the Entry to remove
 	 */
-	protected final void removeEntry(Entry entry) {
+	final void removeEntry(Entry entry) {
 		
 		// prevents fileDumpThread from nullifying entries
 		synchronized (entriesLock) {
@@ -311,8 +311,12 @@ public class EntryChunk extends Unique implements EventListener {
 					} catch (InterruptedException e) {
 						Logger.getInstance().logException(e);
 					}
-					tmpFile.delete();
-					sourceFile.delete();
+					if (!tmpFile.delete()) {
+						Logger.getInstance().logWarning("Failed to delete temporary file " + tmpFile);
+					}
+					if (!sourceFile.delete()) {
+						Logger.getInstance().logWarning("Failed to delete source file " + sourceFile);
+					}
 				}
 			}
 		}
@@ -388,7 +392,9 @@ public class EntryChunk extends Unique implements EventListener {
 				expectedSrcHash = entryFileIO.writeEntries(sourceFile, entries);
 				useTmp = false;
 				changed = false;
-				tmpFile.delete();
+				if (!tmpFile.delete()) {
+					Logger.getInstance().logWarning("Failed to delete temp file " + tmpFile);
+				}
 			}
 			
 		} catch (InterruptedException | IOException e) {

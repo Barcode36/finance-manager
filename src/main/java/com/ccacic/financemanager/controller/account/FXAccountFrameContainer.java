@@ -15,7 +15,7 @@ import javafx.scene.Parent;
  */
 public class FXAccountFrameContainer extends FXFrameContainer<Account> {
 	
-	private static FXAccountFrameContainer instance = new FXAccountFrameContainer();
+	private static final FXAccountFrameContainer instance = new FXAccountFrameContainer();
 	
 	/**
 	 * Returns the instance
@@ -37,7 +37,7 @@ public class FXAccountFrameContainer extends FXFrameContainer<Account> {
 	 * to the passed key
 	 * @param key the key to use to find the factory
 	 * @param account the account to get the views from
-	 * @return
+	 * @return a List of expanded account views
 	 */
 	public List<Parent> getExpandedViewAddOns(String key, Account account) {
 		FXAccountFactory<Account> factory = (FXAccountFactory<Account>) frameListMap.get(key);

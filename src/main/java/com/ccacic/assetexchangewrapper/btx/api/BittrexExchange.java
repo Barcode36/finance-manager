@@ -9,7 +9,6 @@ import java.util.Set;
 import com.ccacic.assetexchangewrapper.core.api.Exchange;
 import com.ccacic.assetexchangewrapper.core.api.Market;
 import com.ccacic.assetexchangewrapper.core.api.ReadOnlyMarket;
-import com.ccacic.assetexchangewrapper.core.exceptions.MissingMarketException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -23,7 +22,7 @@ public class BittrexExchange implements Exchange {
 	
 	private static final double COMMISSION_RATE = 0.0025;
 	
-	private BtxPublicConnection connection;
+	private final BtxPublicConnection connection;
 	
 	/**
 	 * Creates a new Bittrex Exchange
@@ -38,25 +37,23 @@ public class BittrexExchange implements Exchange {
 	}
 
 	@Override
-	public Market getMarket(String curr1, String curr2) throws MissingMarketException, IOException {
-		Market market = new BtxMarket(formatMarketName(curr1, curr2));
-		return market;
+	public Market getMarket(String curr1, String curr2) throws IOException {
+		return new BtxMarket(formatMarketName(curr1, curr2));
 	}
 	
 	@Override
-	public Market getMarket(String marketName) throws MissingMarketException, IOException {
-		Market market = new BtxMarket(marketName);
-		return market;
+	public Market getMarket(String marketName) throws IOException {
+		return new BtxMarket(marketName);
 	}
 	
 	@Override
 	public ReadOnlyMarket getReadOnlyMarket(String curr1, String curr2)
-			throws MissingMarketException, IOException {
+			throws IOException {
 		return getMarket(curr1, curr2);
 	}
 
 	@Override
-	public ReadOnlyMarket getReadOnlyMarket(String marketName) throws MissingMarketException, IOException {
+	public ReadOnlyMarket getReadOnlyMarket(String marketName) throws IOException {
 		return getMarket(marketName);
 	}
 	
@@ -82,7 +79,7 @@ public class BittrexExchange implements Exchange {
 	/**
 	 * Gets a List of all the active market names
 	 * @return a List of active market names
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	private List<String> getActiveMarketNames() throws IOException {
 		JsonArray array = connection.getMarkets();

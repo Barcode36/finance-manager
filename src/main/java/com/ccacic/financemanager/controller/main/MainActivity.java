@@ -50,17 +50,17 @@ public class MainActivity extends FXActivity<BorderPane> {
 	
 	private static final double scrollbarWidth;
 	static {
-		double scrollarWidth;
+		double sW;
 		try {
-			scrollarWidth = ScrollBar.class.getDeclaredConstructor().newInstance().getWidth();
+			sW = ScrollBar.class.getDeclaredConstructor().newInstance().getWidth();
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
 			e.printStackTrace();
-			scrollarWidth = 0;
+			sW = 0;
 		}
-		scrollbarWidth = scrollarWidth;
+		scrollbarWidth = sW;
+
 	}
-	
-	private BorderPane mainPane;
+
 	private VBox acctHoldBox;
 	private ScrollPane accountScrollPane;
 	
@@ -76,7 +76,7 @@ public class MainActivity extends FXActivity<BorderPane> {
 	protected void initializeActivity() {
 		this.acctHoldBox = new VBox();
 		this.accountScrollPane = new ScrollPane();
-		this.mainPane = new BorderPane();
+		BorderPane mainPane = new BorderPane();
 		
 		ScrollPane acctHoldScrollPane = new ScrollPane();
 		VBox acctHoldAndSumBox = new VBox();

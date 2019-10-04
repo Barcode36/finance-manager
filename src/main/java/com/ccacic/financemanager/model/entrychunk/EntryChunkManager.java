@@ -31,10 +31,10 @@ public class EntryChunkManager {
 	public static final int MIN_ENTRIES = 5;
 	public static final int SPLIT_THRESHOLD = 100;
 	
-	private RangeMap<LocalDateTime, EntryChunk> chunkMap;
-	private DateResolutionManager resolutionManager;
+	private final RangeMap<LocalDateTime, EntryChunk> chunkMap;
+	private final DateResolutionManager resolutionManager;
 	private File entryChunkDirectory;
-	private EntryChunkProducer producer;
+	private final EntryChunkProducer producer;
 	
 	/**
 	 * Creates a new EntryChunkManager
@@ -66,7 +66,9 @@ public class EntryChunkManager {
 			
 			if (chunk.getEntries() == null || chunk.getEntries().isEmpty()) {
 				Logger.getInstance().logWarning("Empty entry chunk " + entryChunkFile.getName() + " encountered and removed");
-				entryChunkFile.delete();
+				if (!entryChunkFile.delete()) {
+					Logger.getInstance().logWarning("Failed to delete entry chunk file " + entryChunkFile);
+				}
 				continue;
 				//throw new IllegalArgumentException("Entry chunks are never allowed to be empty");
 			}

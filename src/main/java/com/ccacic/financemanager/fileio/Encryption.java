@@ -33,14 +33,14 @@ import com.ccacic.financemanager.logger.Logger;
  * @author Cameron Cacic
  *
  */
-public class Encryption {
+class Encryption {
 	
 	/**
 	 * A byte sequence placed in the head of a byte sequence before encryption.
 	 * Its presence in a decrypted byte sequence is the check for proper decryption,
 	 * at which point it is removed from the String
 	 */
-	public static final byte[] DECRYP_CHECK = "decrypted_data".getBytes(StandardCharsets.UTF_8);
+	private static final byte[] DECRYP_CHECK = "decrypted_data".getBytes(StandardCharsets.UTF_8);
 	
 	private final String password;
 	private InputStream dataStream;
@@ -107,8 +107,12 @@ public class Encryption {
 			
 			byte[] salt = new byte[8];
 			byte[] initVec = new byte[128 / 8];
-			dataStream.read(salt);
-			dataStream.read(initVec);
+			if (dataStream.read(salt) != 8){
+				throw new IOException("Missing salt data");
+			}
+			if (dataStream.read(initVec) != 128 / 8) {
+				throw new IOException("Missing initial vector data");
+			}
 			
 			SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
 			KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 10000, 128);
@@ -129,9 +133,7 @@ public class Encryption {
 			}
 			
 			byte[] output = new byte[rawOutput.length - DECRYP_CHECK.length];
-			for (int i = DECRYP_CHECK.length; i < rawOutput.length; i++) {
-				output[i - DECRYP_CHECK.length] = rawOutput[i];
-			}
+			System.arraycopy(rawOutput, DECRYP_CHECK.length, output, 0, rawOutput.length - DECRYP_CHECK.length);
 			
 			return output;
 			
@@ -151,9 +153,9 @@ public class Encryption {
 	 * @param cipher the Cipher to apply
 	 * @param in the InputStream to fetch data from
 	 * @param out the OutputStream to put the data in
-	 * @throws IllegalBlockSizeException
-	 * @throws BadPaddingException
-	 * @throws IOException
+	 * @throws IllegalBlockSizeException if the block size is illegal
+	 * @throws BadPaddingException if the padding is bad
+	 * @throws IOException if file IO errors occur
 	 */
 	private void processData(Cipher cipher, InputStream in, OutputStream out) 
 		throws IllegalBlockSizeException, BadPaddingException, IOException {

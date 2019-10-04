@@ -11,8 +11,8 @@ import com.ccacic.financemanager.model.entry.EntryAssembler;
  */
 public class CrypCurrEntryAssembler extends EntryAssembler<CrypCurrEntry> {
 	
-	protected static final String defDisplayName = "Cryptocurrency Entry";
-	protected static final boolean defShowsTime = true;
+	private static final String defDisplayName = "Cryptocurrency Entry";
+	private static final boolean defShowsTime = true;
 	
 	public static final String TRANSACTION_ID = "trans_id";
 	public static final String HISTORIC_FIAT_PRICE = "hist_fiat_value";
@@ -29,7 +29,7 @@ public class CrypCurrEntryAssembler extends EntryAssembler<CrypCurrEntry> {
 	 * @param displayName the name to display for CrypCurrEntry
 	 * @param showsTime if CrypCurrEntry should display a time along with a date
 	 */
-	protected CrypCurrEntryAssembler(String displayName, boolean showsTime) {
+	private CrypCurrEntryAssembler(String displayName, boolean showsTime) {
 		super(CrypCurrEntry.class.getSimpleName(), displayName, showsTime);
 	}
 

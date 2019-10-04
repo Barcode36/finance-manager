@@ -21,7 +21,7 @@ public interface ReadOnlyMarket extends Pricing {
 	
 	/**
 	 * Refreshes any constants associated with the market
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	void refreshConstants() throws IOException;
 
@@ -34,28 +34,27 @@ public interface ReadOnlyMarket extends Pricing {
 	/**
 	 * Gets the current volume in the currency being traded
 	 * @return the volume as a TimeStampValue
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	TimeStampValue<Double> getVolume() throws IOException;
 	
 	/**
 	 * Gets the current volume in the currency being used to price
 	 * @return the volume as a TimeStampValue
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	TimeStampValue<Double> getBaseVolume() throws IOException;
 	
 	/**
 	 * Gets the LocalDateTime of the last time the market was fully updated
 	 * @return the LocalDateTime of the last update
-	 * @throws IOException
-	 */
-	LocalDateTime getTimeStamp() throws IOException;
+     */
+	LocalDateTime getTimeStamp();
 	
 	/**
 	 * Gets summary information about the market
 	 * @return a Map of information
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	Map<String, String> getMarketSummary() throws IOException;
 	

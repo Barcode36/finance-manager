@@ -27,7 +27,7 @@ class CurrencyConverterApiPublicConnection extends PublicConnection {
 	/**
 	 * Gets all the active currencies
 	 * @return the active currencies
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	public JsonObject getActiveCurrencies() throws IOException {
 		String result = executeRequest("currencies", null, RequestType.GET, null);
@@ -39,7 +39,7 @@ class CurrencyConverterApiPublicConnection extends PublicConnection {
 	 * Gets the latest rate for the passed marketName
 	 * @param martketName the name of the market
 	 * @return the latest rate
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	public double getRate(String martketName) throws IOException {
 		Map<String, String> queries = new HashMap<>();

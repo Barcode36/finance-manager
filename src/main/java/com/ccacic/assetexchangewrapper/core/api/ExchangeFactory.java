@@ -8,9 +8,9 @@ import java.util.Map;
  * @author Cameron Cacic
  *
  */
-public abstract class ExchangeFactory {
+abstract class ExchangeFactory {
 
-	protected final Map<String, Exchange> exchangeMap;
+	private final Map<String, Exchange> exchangeMap;
 	
 	/**
 	 * Creates the new ExchangeFactory

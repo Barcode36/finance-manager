@@ -34,9 +34,9 @@ public class Event {
 	public static final String BLOCKING_PROGRESS_END = "blocking_progress_end";
 	public static final String BLOCKING_PROGRESS_CANCELED = "blocking_progress_canceled";
 	
-	private String type;
-	private Object data;
-	private String identifier;
+	private final String type;
+	private final Object data;
+	private final String identifier;
 	
 	/**
 	 * Creates a new Event with the given type

@@ -20,18 +20,18 @@ public class CurrencyComboBox extends ComboBox<Currency> {
 	public CurrencyComboBox() {
 		super();
 		
-		setConverter(new StringConverter<Currency>() {
-			
+		setConverter(new StringConverter<>() {
+
 			@Override
 			public String toString(Currency curr) {
 				return formatCurr(curr);
 			}
-			
+
 			@Override
 			public Currency fromString(String string) {
 				return null;
 			}
-			
+
 		});
 	}
 	

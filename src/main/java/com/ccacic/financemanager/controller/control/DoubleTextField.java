@@ -24,7 +24,7 @@ public class DoubleTextField extends TextField {
 		focusedProperty().addListener((observable, oldVal, newVal) -> {
 			
 			if (newVal) {
-				Platform.runLater(() -> selectAll());
+				Platform.runLater(this::selectAll);
 			}
 			
 		});
@@ -52,7 +52,7 @@ public class DoubleTextField extends TextField {
 	 */
 	public final void setDoubleValue(double value) {
 		doubleValue.set(value);
-		if (value == Double.NaN) {
+		if (Double.isNaN(value)) {
 			super.setText("");
 		} else {
 			super.setText(value + "");

@@ -45,7 +45,8 @@ public class DateResolutionManager {
 			}
 			
 		case DAILY:
-			df = DateTimeFormatter.ofPattern("MMM dd");
+			case WEEKLY:
+				df = DateTimeFormatter.ofPattern("MMM dd");
 			if (range[0].getYear() == range[1].getYear()) {
 				return range[0].getYear() + ": " + df.format(range[0]) + " - " + df.format(range[1]);
 			} else {
@@ -59,14 +60,7 @@ public class DateResolutionManager {
 			} else {
 				return range[0].getYear() + " - " + range[1].getYear() + ": " + df.format(range[0]) + " - " + df.format(range[1]);
 			}
-		case WEEKLY:
-			df = DateTimeFormatter.ofPattern("MMM dd");
-			if (range[0].getYear() == range[1].getYear()) {
-				return range[0].getYear() + ": " + df.format(range[0]) + " - " + df.format(range[1]);
-			} else {
-				return range[0].getYear() + " - " + range[1].getYear() + ": " + df.format(range[0]) + " - " + df.format(range[1]);
-			}
-		default:
+			default:
 			return null;
 		}
 	}

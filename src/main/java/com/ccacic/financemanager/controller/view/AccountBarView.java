@@ -66,11 +66,11 @@ public class AccountBarView extends FXActivity<VBox> implements EventListener {
 	@FXML
 	private EntryChunkManagerControl entryChunkManagerControl;
 	
-	private Account a;
-	private AccountHolder aH;
+	private final Account a;
+	private final AccountHolder aH;
 	
-	private String accountType;
-	private String acctId;
+	private final String accountType;
+	private final String acctId;
 	
 	private boolean firstRun;
 	
@@ -79,7 +79,7 @@ public class AccountBarView extends FXActivity<VBox> implements EventListener {
 	 * @param a the Account to display
 	 * @param aH the AccountHolder owning the passed Account, used purely for configuration
 	 */
-	public AccountBarView(Account a, AccountHolder aH) {
+	AccountBarView(Account a, AccountHolder aH) {
 		this.a = a;
 		this.aH = aH;
 		
@@ -148,20 +148,18 @@ public class AccountBarView extends FXActivity<VBox> implements EventListener {
 			String acctHoldIdentifier = EventManager.getUniqueID(aH);
 			AccountActivity acctAct = new AccountActivity(aH, a);
 			String acctActId = EventManager.getUniqueID(acctAct);
-			EventManager.addListener(acctAct, e2 -> {
-				Platform.runLater(() -> {
-					acctText.setText(a.getName());
-					Currency defaultCurr = Currency.getDefaultCurrency();
-					amountDefCurrText.setText(a.formattedTotal(defaultCurr));
-					amountText.setText(a.formattedRawTotal());
-					FXAccountFrameContainer aCont = FXAccountFrameContainer.getInstance();
-					int index = 0;
-					for (Parent parent: aCont.getExpandedViewAddOns(accountType, a)) {
-						acctExpandedBar.getChildren().set(index++, parent);
-					}
-					
-				});
-			}, ACTIVITY_RESULT_OBTAINED, acctActId);
+			EventManager.addListener(acctAct, e2 -> Platform.runLater(() -> {
+				acctText.setText(a.getName());
+				Currency defaultCurr = Currency.getDefaultCurrency();
+				amountDefCurrText.setText(a.formattedTotal(defaultCurr));
+				amountText.setText(a.formattedRawTotal());
+				FXAccountFrameContainer aCont = FXAccountFrameContainer.getInstance();
+				int index = 0;
+				for (Parent parent: aCont.getExpandedViewAddOns(accountType, a)) {
+					acctExpandedBar.getChildren().set(index++, parent);
+				}
+
+			}), ACTIVITY_RESULT_OBTAINED, acctActId);
 			acctAct.open();
 		});
 		
@@ -175,11 +173,7 @@ public class AccountBarView extends FXActivity<VBox> implements EventListener {
 		amountText.setText(a.formattedRawTotal());
 		
 		amountDefCurrText.managedProperty().bind(amountDefCurrText.visibleProperty());
-		amountDefCurrText.visibleProperty().bind(Bindings.createBooleanBinding(() -> {
-			
-			return !amountDefCurrText.getText().equals(amountText.getText());
-			
-		}, amountDefCurrText.textProperty(), amountText.textProperty()));
+		amountDefCurrText.visibleProperty().bind(Bindings.createBooleanBinding(() -> !amountDefCurrText.getText().equals(amountText.getText()), amountDefCurrText.textProperty(), amountText.textProperty()));
 		
 		toggleEntriesButton.setOnAction(e -> toggleEntryChunks());
 		

@@ -35,13 +35,13 @@ public abstract class PublicConnection {
 		TRACE
 	}
 	
-	private String baseUrl;
+	private final String baseUrl;
 
 	/**
 	 * Creates a new PublicConnection to communicate on the passed url
 	 * @param baseUrl the URL as a String
 	 */
-	public PublicConnection(String baseUrl) {
+	protected PublicConnection(String baseUrl) {
 		this.baseUrl = baseUrl;
 	}
 	
@@ -54,7 +54,7 @@ public abstract class PublicConnection {
 	 * @param requestProperties a Map of property names to values to include with
 	 * the requests
 	 * @return the result of the request as a String
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	protected String executeRequest(String request, Map<String, String> queries, 
 			RequestType requestType, Map<String, String> requestProperties
@@ -64,13 +64,15 @@ public abstract class PublicConnection {
 		if (queries != null && !queries.isEmpty()) {
 			urlString += "?";
 			Iterator<String> keyIterator = queries.keySet().iterator();
+			StringBuilder urlStringBuilder = new StringBuilder(urlString);
 			while (keyIterator.hasNext()) {
 				String key = keyIterator.next();
-				urlString += key + "=" + queries.get(key);
+				urlStringBuilder.append(key).append("=").append(queries.get(key));
 				if (keyIterator.hasNext()) {
-					urlString += "&";
+					urlStringBuilder.append("&");
 				}
 			}
+			urlString = urlStringBuilder.toString();
 		}
 		URL url = new URL(urlString);
 		HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
@@ -86,17 +88,17 @@ public abstract class PublicConnection {
 		BufferedReader reader = 
 				new BufferedReader(
 						new InputStreamReader(connection.getInputStream()));
-		String result = "";
+		StringBuilder result = new StringBuilder();
 		String input = reader.readLine();
 		while (input != null) {
-			result += input;
+			result.append(input);
 			input = reader.readLine();
 		}
 		
 		connection.disconnect();
 		reader.close();
 		
-		return result;
+		return result.toString();
 	}
 	
 	/**

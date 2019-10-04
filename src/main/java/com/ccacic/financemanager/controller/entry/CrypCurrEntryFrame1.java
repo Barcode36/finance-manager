@@ -10,7 +10,6 @@ import com.ccacic.financemanager.model.entry.children.CrypCurrEntry;
 import com.ccacic.financemanager.model.entry.children.CrypCurrEntryAssembler;
 
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -29,7 +28,7 @@ public class CrypCurrEntryFrame1 extends FXPopupProgActivityFrame<CrypCurrEntry,
 	@FXML
 	private Text valueText;
 
-	private CrypCurrEntry toEdit;
+	private final CrypCurrEntry toEdit;
 	//private StringProperty amountProperty;
 	
 	/**
@@ -66,17 +65,12 @@ public class CrypCurrEntryFrame1 extends FXPopupProgActivityFrame<CrypCurrEntry,
 			histPriceField.setValue(toEdit.getHistFiatValue());
 		}
 		
-		ChangeListener<String> updateValueText = new ChangeListener<String>() {
-			
-			@Override
-			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				try {
-					valueText.setText(histPriceField.getValue() + "");
-				} catch (NumberFormatException ex) {
-					valueText.setText("Invalid price");
-				}
+		ChangeListener<String> updateValueText = (observable, oldValue, newValue) -> {
+			try {
+				valueText.setText(histPriceField.getValue() + "");
+			} catch (NumberFormatException ex) {
+				valueText.setText("Invalid price");
 			}
-			
 		};
 		histPriceField.textProperty().addListener(updateValueText);
 	}

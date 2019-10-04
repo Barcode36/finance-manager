@@ -21,7 +21,7 @@ public class CheckingAccountFrame1 extends FXPopupProgActivityFrame<Void, VBox> 
 	@FXML
 	private DoubleTextField apyField;
 	
-	private CheckingAccount toEdit;
+	private final CheckingAccount toEdit;
 	
 	/**
 	 * Creates a new CheckingAccountFrame1

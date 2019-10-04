@@ -30,13 +30,13 @@ public abstract class FXPopupActivity<V extends Pane> extends FXActivity<V> {
 	 */
 	public static final String POPUP_STAGE_CLOSED = "popup_stage_closed";
 	
-	protected Stage popupStage;
+	protected final Stage popupStage;
 	
 	/**
 	 * Creates a new popup activity and a new stage, incorporating
 	 * it into the stage stack
 	 */
-	public FXPopupActivity() {
+	protected FXPopupActivity() {
 		String actId = EventManager.getUniqueID(this);
 		popupStage = new Stage() {
 			

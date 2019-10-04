@@ -27,8 +27,8 @@ import com.ccacic.financemanager.model.currency.conversion.graph.Graph;
  */
 public class CurrencyExchangeFactory extends ReadOnlyExchangeFactory {
 	
-	public static final String SUPPLEMENTAL_RATE_REQUEST = "supp_rate_request";
-	public static final String SUPPLEMENTAL_RATE_RESPONSE = "supp_rate_response";
+	private static final String SUPPLEMENTAL_RATE_REQUEST = "supp_rate_request";
+	private static final String SUPPLEMENTAL_RATE_RESPONSE = "supp_rate_response";
 	
 	private static final ReentrantLock supplementingLock = new ReentrantLock();
 	private static boolean supplementing = false;
@@ -54,9 +54,9 @@ public class CurrencyExchangeFactory extends ReadOnlyExchangeFactory {
 	 */
 	private class MarketKey {
 		
-		private Currency curr1;
-		private Currency curr2;
-		private String exchangeId;
+		private final Currency curr1;
+		private final Currency curr2;
+		private final String exchangeId;
 		
 		/**
 		 * Creates a new MarketKey
@@ -64,7 +64,7 @@ public class CurrencyExchangeFactory extends ReadOnlyExchangeFactory {
 		 * @param curr2 the second Currency
 		 * @param exchangeId the exchange
 		 */
-		public MarketKey(Currency curr1, Currency curr2, String exchangeId) {
+		MarketKey(Currency curr1, Currency curr2, String exchangeId) {
 			this.curr1 = curr1;
 			this.curr2 = curr2;
 			this.exchangeId = exchangeId;
@@ -77,7 +77,7 @@ public class CurrencyExchangeFactory extends ReadOnlyExchangeFactory {
 		
 		@Override
 		public boolean equals(Object obj) {
-			if (obj == null) {
+			if (obj == null || !getClass().equals(obj.getClass())) {
 				return false;
 			}
 			MarketKey key = (MarketKey) obj;
@@ -101,11 +101,11 @@ public class CurrencyExchangeFactory extends ReadOnlyExchangeFactory {
 	 * Returns the conversion rate from the first currency to the second currency,
 	 * using the passed exchange. Returns 0.0 if no rate could be obtained. Throws
 	 * an IllegalArgumentException if the passed exchange is unrecognized
-	 * @param currCode1 the first currency
-	 * @param currCode2 the second currency
+	 * @param curr1 the first currency
+	 * @param curr2 the second currency
 	 * @param exchangeID the exchangeID
 	 * @return the conversion rate
-	 * @throws IllegalArgumentException
+	 * @throws IllegalArgumentException if the passed Currency is unknown
 	 */
 	public double getCurrencyConversionRate(Currency curr1, Currency curr2, String exchangeID) 
 			throws IllegalArgumentException {
@@ -192,8 +192,8 @@ public class CurrencyExchangeFactory extends ReadOnlyExchangeFactory {
 	/**
 	 * Returns the conversion rate from the first currnecy to the second currency, or 0.0
 	 * if no rate could be found
-	 * @param currCode1 the first currency
-	 * @param currCode2 the second currency
+	 * @param curr1 the first currency
+	 * @param curr2 the second currency
 	 * @return the conversion rate
 	 */
 	public double getCurrencyConversionRate(Currency curr1, Currency curr2) {
@@ -210,9 +210,9 @@ public class CurrencyExchangeFactory extends ReadOnlyExchangeFactory {
 	 * @param currCode1 the first currency
 	 * @param currCode2 the second currency
 	 * @return the exchangeID
-	 * @throws MissingMarketException
+	 * @throws MissingMarketException if the market is missing
 	 */
-	public String findExchange(String currCode1, String currCode2) throws MissingMarketException {
+	private String findExchange(String currCode1, String currCode2) throws MissingMarketException {
 		
 		CurrencyExchangeFactory exchangeFactory = CurrencyExchangeFactory.getInstance();
 		for (String id: exchangeFactory.getExchangeIDs()) {
@@ -309,12 +309,10 @@ public class CurrencyExchangeFactory extends ReadOnlyExchangeFactory {
 				
 			}
 			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (InvalidCurrencyCodeException e) {
+		} catch (IOException | InvalidCurrencyCodeException e) {
 			e.printStackTrace();
 		}
-		
+
 		rateGraphs.put(id, graph);
 	}
 	

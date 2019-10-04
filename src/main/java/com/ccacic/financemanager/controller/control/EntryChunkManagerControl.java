@@ -33,7 +33,7 @@ public class EntryChunkManagerControl extends VBox {
 	private Currency currency;
 	private String entryType;
 	private EntryChunkManager manager;
-	private List<SelectionModel<Entry>> selectionModels;
+	private final List<SelectionModel<Entry>> selectionModels;
 	
 	/**
 	 * Creates a new EntryChunk
@@ -124,7 +124,8 @@ public class EntryChunkManagerControl extends VBox {
 			});
 			
 			entryChunkView.getEntryTable().getItems().addListener((ListChangeListener.Change<? extends Entry> c) -> {
-				
+
+				//noinspection StatementWithEmptyBody
 				while (c.next());
 				
 				if (c.wasAdded()) {

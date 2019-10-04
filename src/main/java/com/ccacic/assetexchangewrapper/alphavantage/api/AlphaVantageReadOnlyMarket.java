@@ -26,7 +26,7 @@ class AlphaVantageReadOnlyMarket implements ReadOnlyMarket {
 	private static final LocalTime OPEN_TIME = LocalTime.of(9, 30);
 	private static final LocalTime CLOSE_TIME = LocalTime.of(15, 55);
 	
-	private AlphaVantagePublicConnection connection;
+	private final AlphaVantagePublicConnection connection;
 	
 	private final String name;
 	private final String stockTicker;
@@ -128,7 +128,7 @@ class AlphaVantageReadOnlyMarket implements ReadOnlyMarket {
 	}
 
 	@Override
-	public void refreshConstants() throws IOException {
+	public void refreshConstants() {
 		// TODO Auto-generated method stub
 		
 	}
@@ -139,13 +139,13 @@ class AlphaVantageReadOnlyMarket implements ReadOnlyMarket {
 	}
 
 	@Override
-	public LocalDateTime getTimeStamp() throws IOException {
+	public LocalDateTime getTimeStamp() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, String> getMarketSummary() throws IOException {
+	public Map<String, String> getMarketSummary() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -173,7 +173,7 @@ class AlphaVantageReadOnlyMarket implements ReadOnlyMarket {
 	/**
 	 * Gets the most recent entry from the market
 	 * @return the most recent entry as a JsonObject
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	private JsonObject getMostRecentEntry() throws IOException {
 		
@@ -206,7 +206,7 @@ class AlphaVantageReadOnlyMarket implements ReadOnlyMarket {
 	
 	/**
 	 * Updates all the values
-	 * @throws IOException
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	private void updateRecentValues() throws IOException {
 		
@@ -217,19 +217,19 @@ class AlphaVantageReadOnlyMarket implements ReadOnlyMarket {
 		LocalDateTime time = LocalDateTime.parse(entry.get(TIME_PROPERTY).getAsString(), FORMATTER);
 		
 		double value = entry.get("1. open").getAsDouble();
-		mostRecentOpen = new TimeStampValue<Double>(time, value);
+		mostRecentOpen = new TimeStampValue<>(time, value);
 		
 		value = entry.get("2. high").getAsDouble();
-		mostRecentHigh = new TimeStampValue<Double>(time, value);
+		mostRecentHigh = new TimeStampValue<>(time, value);
 		
 		value = entry.get("3. low").getAsDouble();
-		mostRecentLow = new TimeStampValue<Double>(time, value);
+		mostRecentLow = new TimeStampValue<>(time, value);
 		
 		value = entry.get("4. close").getAsDouble();
-		mostRecentClose = new TimeStampValue<Double>(time, value);
+		mostRecentClose = new TimeStampValue<>(time, value);
 		
 		double valueInt = entry.get("5. volume").getAsDouble();
-		mostRecentVolume = new TimeStampValue<Double>(time, valueInt);
+		mostRecentVolume = new TimeStampValue<>(time, valueInt);
 		
 		marketActive = true;
 		

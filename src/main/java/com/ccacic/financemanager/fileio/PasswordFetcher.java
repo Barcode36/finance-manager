@@ -16,18 +16,18 @@ import com.ccacic.financemanager.logger.Logger;
  * @author Cameron Cacic
  *
  */
-public class PasswordFetcher {
+class PasswordFetcher {
 	
 	/**
 	 * The default number of tries the user has to input the correct password
 	 */
-	public static final int NUM_TRIES = 3;
+	private static final int NUM_TRIES = 3;
 	
 	/**
 	 * Fetches the password from the user that decrypts the passed File
 	 * @param encryptedText the File to check decryption on
 	 * @return the proper password, or null if none was obtained
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException if the passed File isn't found
 	 */
 	public String fetchPassword(File encryptedText) throws FileNotFoundException {
 		return fetchPassword(encryptedText, NUM_TRIES);
@@ -38,9 +38,9 @@ public class PasswordFetcher {
 	 * @param encryptedText the File to check decryption on
 	 * @param tries the number of tries the user has to input the proper password
 	 * @return the proper password, or null if none was obtained
-	 * @throws FileNotFoundException
+	 * @throws FileNotFoundException if the passed File isn't found
 	 */
-	public String fetchPassword(File encryptedText, int tries) throws FileNotFoundException {
+    private String fetchPassword(File encryptedText, int tries) throws FileNotFoundException {
 		
 		String password = showPasswordField("Enter password", "Password");
 		
@@ -101,7 +101,7 @@ public class PasswordFetcher {
 	 * @param title the title to display alongside the password input interface
 	 * @return the obtained password, or null if the user cancels
 	 */
-	protected String showPasswordField(String message, String title) {
+    private String showPasswordField(String message, String title) {
 		
 		String id = EventManager.getUniqueID(this);
 		String[] result = new String[] {null};

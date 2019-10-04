@@ -27,7 +27,7 @@ public abstract class Factory<T> {
 	/**
 	 * Maps Assemblers to the class name they work with
 	 */
-	protected Map<String, Assembler<T>> assemblerMap;
+	protected final Map<String, Assembler<T>> assemblerMap;
 	
 	/**
 	 * Creates a new, empty Factory
@@ -58,9 +58,7 @@ public abstract class Factory<T> {
 			Logger.getInstance().logError("No assembler found for type " + paramMap.getType());
 			return null;
 		}
-		T item = assembler.assembleItem(paramMap);
-		
-		return item;
+		return assembler.assembleItem(paramMap);
 	}
 	
 	/**

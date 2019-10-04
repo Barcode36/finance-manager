@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.ccacic.financemanager.event.Event;
+import com.ccacic.financemanager.event.EventListener;
 import com.ccacic.financemanager.event.EventManager;
 import com.ccacic.financemanager.model.Delta;
 import com.ccacic.financemanager.model.ParamMap;
@@ -59,10 +60,10 @@ public abstract class AccountAssembler<T extends Account> extends UniqueAssemble
 	}
 	
 	
-	protected String displayName;
-	protected String entryType;
-	protected Set<Currency> currencies;
-	protected Set<Tag> tags;
+	private final String displayName;
+	private final String entryType;
+	private final Set<Currency> currencies;
+	private final Set<Tag> tags;
 	
 	/**
 	 * Creates a new AccountAssembler with static data about
@@ -73,8 +74,8 @@ public abstract class AccountAssembler<T extends Account> extends UniqueAssemble
 	 * @param currencies the Currencies allowed for the Account type
 	 * @param tags the Tags associated with the Account type
 	 */
-	public AccountAssembler(String assemblerName, String displayName,
-			String entryType, Set<Currency> currencies, Set<Tag> tags) {
+	protected AccountAssembler(String assemblerName, String displayName,
+							   String entryType, Set<Currency> currencies, Set<Tag> tags) {
 		super(assemblerName);
 		this.displayName = displayName;
 		this.entryType = entryType;
@@ -88,7 +89,7 @@ public abstract class AccountAssembler<T extends Account> extends UniqueAssemble
 	 * @param paramMap the ParamMap to assemble from
 	 * @return the partially assembled Account instance
 	 */
-	public abstract T assembleAccount(ParamMap paramMap);
+	protected abstract T assembleAccount(ParamMap paramMap);
 	
 	/**
 	 * Begins the modification of the passed Account instance using the
@@ -98,7 +99,7 @@ public abstract class AccountAssembler<T extends Account> extends UniqueAssemble
 	 * @param paramMap the ParamMap to source new values from
 	 * @param delta the Delta to record all changes made in
 	 */
-	public abstract void modifyAccount(T account, ParamMap paramMap, Delta delta);
+	protected abstract void modifyAccount(T account, ParamMap paramMap, Delta delta);
 	
 	/**
 	 * Begins the disassembly of the passed Account instance.
@@ -107,7 +108,7 @@ public abstract class AccountAssembler<T extends Account> extends UniqueAssemble
 	 * @param account the Account instance to disassemble
 	 * @return the partially filled ParamMap
 	 */
-	public abstract ParamMap disassembleAccount(T account);
+	protected abstract ParamMap disassembleAccount(T account);
 	
 	/**
 	 * Returns the display name of the Account type for this Assembler,
@@ -147,7 +148,7 @@ public abstract class AccountAssembler<T extends Account> extends UniqueAssemble
 	 * the Account type for this Assembler
 	 * @return the new EntryChunkProducer
 	 */
-	public EntryChunkProducer getEntryChunkProducer() {
+	protected EntryChunkProducer getEntryChunkProducer() {
 		return new EntryChunkProducer() {
 			
 			@Override
@@ -197,9 +198,8 @@ public abstract class AccountAssembler<T extends Account> extends UniqueAssemble
 		final String id = EventManager.getUniqueID(account);
 		
 		String managerId = EventManager.getUniqueID(entryChunkManager);
-		EventManager.addListener(entryChunkManager, e -> {
-			EventManager.fireEvent(new Event(Event.UPDATE, id));
-		}, Event.UPDATE, managerId);
+		EventListener updateListener = e -> EventManager.fireEvent(new Event(Event.UPDATE, id));
+		EventManager.addListener(entryChunkManager, updateListener, Event.UPDATE, managerId);
 		
 		EventManager.addListener(account, e -> {
 			Entry newEntry = (Entry) e.getData();
@@ -214,9 +214,7 @@ public abstract class AccountAssembler<T extends Account> extends UniqueAssemble
 		}, Event.DELETE_ENTRY, id);
 		
 		String currFactId = EventManager.getUniqueID(CurrencyExchangeFactory.getInstance());
-		EventManager.addListener(account, e -> {
-			EventManager.fireEvent(new Event(Event.UPDATE, id));
-		}, Event.RATES_REFRESHED, currFactId);
+		EventManager.addListener(account, updateListener, Event.RATES_REFRESHED, currFactId);
 		
 		return account;
 	}
@@ -271,8 +269,7 @@ public abstract class AccountAssembler<T extends Account> extends UniqueAssemble
 		List<String> hashes = new ArrayList<>();
 		List<String> idStrings = new ArrayList<>();
 		List<EntryChunk> chunks = entryChunkManager.getEntryChunks();
-		for (int i = 0; i < chunks.size(); i++) {
-			EntryChunk chunk = chunks.get(i);
+		for (EntryChunk chunk : chunks) {
 			hashes.add(chunk.commitChanges());
 			idStrings.add(chunk.getIdentifier());
 		}

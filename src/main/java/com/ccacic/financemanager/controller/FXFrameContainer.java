@@ -16,7 +16,7 @@ import javafx.scene.layout.Pane;
  */
 public abstract class FXFrameContainer<T> {
 
-	protected Map<String, FXFrameFactory<T>> frameListMap;
+	protected final Map<String, FXFrameFactory<T>> frameListMap;
 	
 	/**
 	 * Creates a new container

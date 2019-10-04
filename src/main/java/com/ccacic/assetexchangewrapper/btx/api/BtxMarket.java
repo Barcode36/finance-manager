@@ -22,11 +22,11 @@ import com.google.gson.JsonObject;
  */
 class BtxMarket implements Market {
 	
-	private BtxPublicConnection connection;
+	private final BtxPublicConnection connection;
 	
-	private String name;
-	private String marketCurr;
-	private String baseCurr;
+	private final String name;
+	private final String marketCurr;
+	private final String baseCurr;
 	
 	private double minTradeSize;
 	private boolean active;
@@ -35,8 +35,8 @@ class BtxMarket implements Market {
 	/**
 	 * Creates a new BtxMarket with the passed name
 	 * @param name the name
-	 * @throws MissingMarketException
-	 * @throws IOException
+	 * @throws MissingMarketException if the market is missing
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	public BtxMarket(String name) throws MissingMarketException, IOException {
 		this.name = name;
@@ -94,12 +94,12 @@ class BtxMarket implements Market {
 	}
 
 	@Override
-	public List<Order> getBuyOrders()  throws IOException{
+	public List<Order> getBuyOrders() {
 		return getOrdersByType("buy");
 	}
 
 	@Override
-	public List<Order> getSellOrders() throws IOException {
+	public List<Order> getSellOrders() {
 		return getOrdersByType("sell");
 	}
 	
@@ -107,9 +107,8 @@ class BtxMarket implements Market {
 	 * Gets all the Orders with the passed type
 	 * @param type the type
 	 * @return all the Orders with the passed type
-	 * @throws IOException
 	 */
-	private List<Order> getOrdersByType(String type) throws IOException {
+	private List<Order> getOrdersByType(String type) {
 		try {
 			List<Order> orders = new ArrayList<>();
 			JsonArray array = connection.getOrderBook(name, type);
@@ -162,35 +161,35 @@ class BtxMarket implements Market {
 	@Override
 	public TimeStampValue<Double> getLast() throws IOException {
 		JsonObject obj = connection.getTicker(name);
-		return new TimeStampValue<Double>(LocalDateTime.now(),
+		return new TimeStampValue<>(LocalDateTime.now(),
 				obj.get("Last").getAsDouble());
 	}
 
 	@Override
 	public TimeStampValue<Double> getHigh() throws IOException {
 		JsonObject obj = connection.getMarketSummary(name);
-		return new TimeStampValue<Double>(LocalDateTime.parse(obj.get("TimeStamp").getAsString()),
+		return new TimeStampValue<>(LocalDateTime.parse(obj.get("TimeStamp").getAsString()),
 				obj.get("High").getAsDouble());
 	}
 
 	@Override
 	public TimeStampValue<Double> getLow() throws IOException {
 		JsonObject obj = connection.getMarketSummary(name);
-		return new TimeStampValue<Double>(LocalDateTime.parse(obj.get("TimeStamp").getAsString()),
+		return new TimeStampValue<>(LocalDateTime.parse(obj.get("TimeStamp").getAsString()),
 				obj.get("Low").getAsDouble());
 	}
 
 	@Override
 	public TimeStampValue<Double> getBid() throws IOException {
 		JsonObject obj = connection.getTicker(name);
-		return new TimeStampValue<Double>(LocalDateTime.now(),
+		return new TimeStampValue<>(LocalDateTime.now(),
 				obj.get("Bid").getAsDouble());
 	}
 
 	@Override
 	public TimeStampValue<Double> getAsk() throws IOException {
 		JsonObject obj = connection.getTicker(name);
-		return new TimeStampValue<Double>(LocalDateTime.now(),
+		return new TimeStampValue<>(LocalDateTime.now(),
 				obj.get("Ask").getAsDouble());
 	}
 

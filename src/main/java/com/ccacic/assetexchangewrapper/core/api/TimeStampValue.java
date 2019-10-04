@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
  */
 public class TimeStampValue<T> {
 	
-	private LocalDateTime dateTime;
-	private T value;
+	private final LocalDateTime dateTime;
+	private final T value;
 
 	/**
 	 * Creates a new TimeStampValue at the passed LocalDateTime with the passed data

@@ -1,13 +1,6 @@
 package com.ccacic.financemanager.model.entrychunk;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Provides an implementation of Map that uses Ranges as keys. Instead of values being
@@ -35,8 +28,8 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 	 */
 	public static class Range<K extends Comparable<? super K>> {
 		
-		private K low;
-		private K high;
+		private final K low;
+		private final K high;
 		
 		/**
 		 * Creates a new Range with the passed low and high
@@ -52,7 +45,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 		 * Returns the low value of the Range
 		 * @return the low value
 		 */
-		public K getLow() {
+		K getLow() {
 			return low;
 		}
 		
@@ -60,7 +53,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 		 * Returns the high value of the Range
 		 * @return the high value
 		 */
-		public K getHigh() {
+		K getHigh() {
 			return high;
 		}
 		
@@ -98,7 +91,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 		 * @param high the high Node this Node points to
 		 * @param data the data contained by this Node
 		 */
-		public Node(K low, K high, V data) {
+		Node(K low, K high, V data) {
 			if (low.compareTo(high) > 0  || high.compareTo(low) < 0) {
 				throw new IllegalArgumentException("Improper range, low: " + low + " high: " + high);
 			}
@@ -128,7 +121,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 	 * @param high the upper bound
 	 * @return the range as a String
 	 */
-	public String rangeToString(K low, K high) {
+	private String rangeToString(K low, K high) {
 		return low + " <-> " + high;
 	}
 	
@@ -255,7 +248,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 	 * @param key the key to search with
 	 * @return the data stored at the range, or null if it doesn't exist
 	 */
-	public V get(K key) {
+	private V get(K key) {
 
 		Node onNode = root;
 		while (true) {
@@ -291,9 +284,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 		}
 		
 		if (comparator == null) {
-			comparator = (o1, o2) -> {
-				return o1.compareTo(o2);
-			};
+			comparator = Comparator.naturalOrder();
 		}
 		
 		Stack<Node> nodeTrace = new Stack<>();
@@ -303,8 +294,8 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 			
 			if (onNode == null) {
 				
-				Node closestLow = null;
-				Node closestHigh = null;
+				Node closestLow;
+				Node closestHigh;
 				onNode = nodeTrace.pop();
 				boolean leftChild = leftChildTrace.pop();
 				if (leftChild) {
@@ -452,7 +443,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 		while (!stack.isEmpty()) {
 			Node onNode = stack.pop();
 			if (onNode != null) {
-				if (onNode.data == data || (onNode.data != null && onNode.data.equals(data))) {
+				if (Objects.equals(onNode.data, data)) {
 					return onNode;
 				}
 				stack.push(onNode.right);
@@ -469,7 +460,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 	 * @param data the data to search for
 	 * @return if the value is contained in the map
 	 */
-	public boolean containsEntry(V data) {
+	private boolean containsEntry(V data) {
 		return getNode(data) != null;
 	}
 	
@@ -522,7 +513,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 			Node left = onNode.left;
 			Node right = onNode.right;
 			if (left != null) {
-				if (left.data == data || (left.data != null && left.data.equals(data))) {
+				if (Objects.equals(left.data, data)) {
 					onNode.left = removeNode(left);
 					size--;
 					return true;
@@ -531,7 +522,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 				}
 			}
 			if (right != null) {
-				if (right.data == data || (right.data != null && right.data.equals(data))) {
+				if (Objects.equals(right.data, data)) {
 					onNode.right = removeNode(right);
 					size--;
 					return true;
@@ -549,7 +540,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 	 * @param key the key to search for
 	 * @return the value removed, or null if none found
 	 */
-	public V removeKey(K key) {
+	private V removeKey(K key) {
 		
 		if (root == null) {
 			return null;
@@ -620,7 +611,7 @@ public class RangeMap<K extends Comparable<? super K>, V> implements Map<RangeMa
 	@Override
 	public V get(Object key) {
 		K castedKey = (K) key;
-		return get(key);
+		return get(castedKey);
 	}
 
 	@Override

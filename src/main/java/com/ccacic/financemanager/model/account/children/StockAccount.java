@@ -40,7 +40,7 @@ public class StockAccount extends Account{
 			this.stockTickerCurr = Currency.getCurrency(ticker);
 		} catch (InvalidCurrencyCodeException e) {
 			Logger.getInstance().logException(e);
-			Launcher.exitImmediately();;
+			Launcher.exitImmediately();
 		}
 		return this;
 	}
@@ -75,7 +75,7 @@ public class StockAccount extends Account{
 	 * Gets the total number of shares in the position of this StockAccount
 	 * @return the number of shares
 	 */
-	public double getShareTotal() {
+	private double getShareTotal() {
 		double total = 0;
 		for (EntryChunk entryChunk: entryChunkManager.getEntryChunks()) {
 			StockEntryChunk stockEntryChunk = (StockEntryChunk) entryChunk;

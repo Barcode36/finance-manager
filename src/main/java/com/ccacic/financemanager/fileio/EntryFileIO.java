@@ -22,7 +22,7 @@ public class EntryFileIO extends FileIO {
 	 * @param sourceFile the File to read
 	 * @param expectedHash the expected hash of the File
 	 * @return a List of Entries from the File
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
 	public List<Entry> loadEntries(File sourceFile, String expectedHash) throws IOException {
 		
@@ -46,7 +46,7 @@ public class EntryFileIO extends FileIO {
 	 * @param file the File to write to
 	 * @param entries the Entries to write
 	 * @return the hash of the File post writing Entries
-	 * @throws IOException
+	 * @throws IOException if file IO errors occur
 	 */
 	public String writeEntries(File file, List<Entry> entries) throws IOException {
 		

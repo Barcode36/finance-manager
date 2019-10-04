@@ -24,9 +24,7 @@ public class CurrencyTextField extends TextField {
 	public CurrencyTextField() {
 		super();
 		this.currencyProperty = new SimpleCurrencyProperty();
-		currencyProperty.addListener(e -> {
-			replaceText(0, 0, "");
-		});
+		currencyProperty.addListener(e -> replaceText(0, 0, ""));
 	}
 	
 	/**
@@ -85,7 +83,7 @@ public class CurrencyTextField extends TextField {
 			}
 			super.replaceText(0, currentText.length(), newText);
 		} catch (NumberFormatException e) {
-			Logger.getInstance().logDebug("Improper String for currency formatting");;
+			Logger.getInstance().logDebug("Improper String for currency formatting");
 		}
         final int finalCaretPos = caretPosition;
         Platform.runLater(() -> positionCaret(finalCaretPos));

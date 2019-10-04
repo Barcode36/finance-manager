@@ -27,7 +27,7 @@ public class CreditAccountFrame1 extends FXPopupProgActivityFrame<Object, VBox> 
 	@FXML
 	private DoubleTextField minPaymentField;
 	
-	private CreditAccount toEdit;
+	private final CreditAccount toEdit;
 	
 	/**
 	 * Creates a new CreditAccountFrame1

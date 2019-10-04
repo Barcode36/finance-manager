@@ -3,6 +3,7 @@ package com.ccacic.financemanager.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import com.ccacic.financemanager.logger.Logger;
 import com.ccacic.financemanager.model.ParamMap;
@@ -32,7 +33,7 @@ public class StringProcessing {
 		 * @param section the cut String section
 		 * @param endCutIndex the index the cut ends at
 		 */
-		public DetailedBracketSection(String section, int endCutIndex) {
+        DetailedBracketSection(String section, int endCutIndex) {
 			this.section = section;
 			this.endCutIndex = endCutIndex;
 		}
@@ -133,7 +134,7 @@ public class StringProcessing {
 			fields.add(str.substring(startIndex, str.indexOf('=', startIndex)).trim());
 			if (brackIndex > -1 && endIndex > brackIndex) {
 				String value = StringProcessing.pullBracketSection(str, startIndex);
-				values.add(value.trim());
+				values.add(Objects.requireNonNull(value).trim());
 				startIndex = str.indexOf(';', brackIndex + value.length() + 1) + 1;
 				brackIndex = str.indexOf('{', startIndex);
 			} else {
@@ -158,13 +159,13 @@ public class StringProcessing {
 		int endIndex = str.indexOf(";");
 		int brackIndex = str.indexOf("{");
 		ParamMap paramMap = new ParamMap();
-		String field = "";
-		String value = "";
+		String field;
+		String value;
 		while (endIndex > -1) {
 			field = str.substring(startIndex, str.indexOf('=', startIndex)).trim();
 			if (brackIndex > -1 && endIndex > brackIndex) {
 				value = StringProcessing.pullBracketSection(str, startIndex);
-				value = value.trim();
+				value = Objects.requireNonNull(value).trim();
 				startIndex = str.indexOf(';', brackIndex + value.length() + 1) + 1;
 				brackIndex = str.indexOf('{', startIndex);
 			} else {
@@ -184,6 +185,6 @@ public class StringProcessing {
 	 */
 	public static List<String> decodeList(String str) {
 		String pulled = pullBracketSection(str, 0);
-		return new ArrayList<>(Arrays.asList(pulled.split(",")));
+		return new ArrayList<>(Arrays.asList(Objects.requireNonNull(pulled).split(",")));
 	}
 }

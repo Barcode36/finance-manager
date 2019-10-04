@@ -22,8 +22,8 @@ public interface Exchange extends ReadOnlyExchange {
 	 * @param curr1 the first currency of the market
 	 * @param curr2 the second currency of the market
 	 * @return the corresponding Market
-	 * @throws MissingMarketException
-	 * @throws IOException
+	 * @throws MissingMarketException if the market is missing
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	Market getMarket(String curr1, String curr2) throws MissingMarketException, IOException;
 	
@@ -32,8 +32,8 @@ public interface Exchange extends ReadOnlyExchange {
 	 * MissingMarketException if no such market exists
 	 * @param marketName the name of the market
 	 * @return the corresponding Market
-	 * @throws MissingMarketException
-	 * @throws IOException
+	 * @throws MissingMarketException if the market is missing
+	 * @throws IOException if one occurs while fetching the data
 	 */
 	Market getMarket(String marketName) throws MissingMarketException, IOException;
 	

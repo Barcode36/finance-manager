@@ -22,8 +22,8 @@ public abstract class EntryAssembler<T extends Entry> extends UniqueAssembler<En
 	public static final String AMOUNT = "amount";
 	public static final String FILES = "files";
 
-	protected String displayName;
-	protected boolean showsTime;
+	private final String displayName;
+	private final boolean showsTime;
 	
 	/**
 	 * Creates a new EntryAssembler with static data about its type

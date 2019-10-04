@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import com.ccacic.financemanager.event.Event;
 import com.ccacic.financemanager.event.EventManager;
@@ -50,22 +51,20 @@ public class Archiver {
 	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MM-dd-yyyy HH-mm-ss'.arc'");
 	
 	private static final String ENTRIES = "entries";
-	
+
 	private static boolean registered = false;
-	
+
 	/**
 	 * Registers the Archiver to work with EventManager events
 	 */
 	public static void register() {
 		if (!registered) {
 			
-			EventManager.addListener(null, e -> {
-				loadMostRecentArchive();
-			}, Event.LOAD_ARCHIVE_REQUEST);
+			EventManager.addListener(null, e -> loadMostRecentArchive(), Event.LOAD_ARCHIVE_REQUEST);
 			
-			EventManager.addListener(null, e -> {
-				createArchive();
-			}, Event.SAVE_ARCHIVE_REQUEST);
+			EventManager.addListener(null, e -> createArchive(), Event.SAVE_ARCHIVE_REQUEST);
+
+			registered = true;
 			
 		}
 	}
@@ -75,7 +74,7 @@ public class Archiver {
 	 * currently stored there
 	 * @return if the archive was successfully loaded
 	 */
-	public static boolean loadMostRecentArchive() {
+	private static boolean loadMostRecentArchive() {
 		
 		// the archive directory for the current User
 		File archiveDir = new File(User.getCurrentUser().getUserDir(), "archives");
@@ -88,7 +87,7 @@ public class Archiver {
 		File mostRecentArchive = null;
 		LocalDateTime mostRecent = LocalDateTime.MIN;
 		FileFilter filter = f -> f.getName().endsWith(".arc");
-		for (File archive: archiveDir.listFiles(filter)) {
+		for (File archive: Objects.requireNonNull(archiveDir.listFiles(filter))) {
 			LocalDateTime time = LocalDateTime.parse(archive.getName(), FORMATTER);
 			if (time.isAfter(mostRecent)) {
 				mostRecent = time;
@@ -112,7 +111,7 @@ public class Archiver {
 	 * @param archiveFile the passed archive File
 	 * @return if the archive was successfully loaded
 	 */
-	public static boolean loadArchive(File archiveFile) {
+	private static boolean loadArchive(File archiveFile) {
 		
 		// verifies that the file is a .arc
 		String extension = archiveFile.getName().substring(archiveFile.getName().lastIndexOf('.'));
@@ -125,7 +124,7 @@ public class Archiver {
 		String archiverId = EventManager.getUniqueID(eventIdLock);
 		String[] data = new String[] {archiverId, "Loading archive " + archiveFile.getName(), "Loading Archive"};
 		Event lock = EventManager.fireEvent(new Event(Event.BLOCKING_PROGRESS_REQUEST, data));
-		synchronized (lock) {
+		synchronized (Objects.requireNonNull(lock)) {
 			try {
 				lock.wait();
 			} catch (InterruptedException e) {
@@ -140,7 +139,7 @@ public class Archiver {
 			
 			FileInputStream recordFileInputStream = new FileInputStream(archiveFile);
 			
-			String readFile = "";
+			String readFile;
 			
 			if (GeneralConfig.getInstance().isEncrypted()) {
 				
@@ -167,10 +166,11 @@ public class Archiver {
 				
 				// the archive is unencrypted, so just read it in
 				BufferedReader reader = new BufferedReader(new InputStreamReader(recordFileInputStream, StandardCharsets.UTF_8));
-				readFile = "";
+				StringBuilder readFileBuilder = new StringBuilder();
 				while (reader.ready()) {
-					readFile += reader.readLine();
+					readFileBuilder.append(reader.readLine());
 				}
+				readFile = readFileBuilder.toString();
 				reader.close();
 				
 			}
@@ -180,7 +180,7 @@ public class Archiver {
 			while (index > -1) {
 				String acctHoldStr = StringProcessing.pullBracketSection(readFile, index);
 				accountHolders.add(readAcctHolder(acctHoldStr));
-				index = readFile.indexOf("~ACCOUNT_HOLDER", index + acctHoldStr.length() + 1);
+				index = readFile.indexOf("~ACCOUNT_HOLDER", index + Objects.requireNonNull(acctHoldStr).length() + 1);
 			}
 
 			// deletes the current model and all files associated with it
@@ -188,7 +188,7 @@ public class Archiver {
 			
 			for (AccountHolder accountHolder: accountHolders) {
 				lock = EventManager.fireEvent(new Event(Event.NEW_ACCT_HOLDER, accountHolder));
-				synchronized (lock) {
+				synchronized (Objects.requireNonNull(lock)) {
 					lock.wait();
 				}
 			}
@@ -215,7 +215,7 @@ public class Archiver {
 		String name = null;
 		String category = null;
 		Currency mainCurr = null;
-		List<Account> accounts = new ArrayList<>();;
+		List<Account> accounts = new ArrayList<>();
 		String accountsString = null;
 		String[][] args = StringProcessing.pullArgs(str);
 		int smallLength = Math.min(args[0].length, args[1].length);
@@ -295,8 +295,7 @@ public class Archiver {
 		}
 		
 		if (AccountHolder.getCategory(category) != null) {
-			AccountHolder aH = new AccountHolder(id, name, category, mainCurr, accounts);
-			return aH;
+			return new AccountHolder(id, name, category, mainCurr, accounts);
 		} else {
 			return null;
 		}
@@ -308,13 +307,15 @@ public class Archiver {
 	 * current date and time. Does not affect the current state of the model
 	 * @return if the conversion succeeded
 	 */
-	public static boolean createArchive() {
+	private static boolean createArchive() {
 		
 		try {
 			
 			File archiveDir = new File(User.getCurrentUser().getUserDir(), "archives");
 			if (!archiveDir.exists()) {
-				archiveDir.mkdir();
+				if(!archiveDir.mkdir()) {
+					throw new IOException("Creation of " + archiveDir + " failed");
+				}
 			}
 			
 			LocalDateTime currTime = LocalDateTime.now();
@@ -322,7 +323,9 @@ public class Archiver {
 					+ currTime.getYear() + " " + String.format("%02d", currTime.getHour()) + "-" + String.format("%02d", currTime.getMinute())
 					+ "-" + String.format("%02d", currTime.getSecond()) + ".arc";
 			File archiveFile = new File(archiveDir.getAbsolutePath(), archiveName);
-			archiveFile.createNewFile();
+			if (archiveFile.createNewFile()) {
+				throw new IOException("Failed to create" + archiveFile);
+			}
 			
 			ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(byteOutStream, StandardCharsets.UTF_8));

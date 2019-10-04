@@ -3,10 +3,6 @@ package com.ccacic.financemanager.controller.entry;
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import com.ccacic.financemanager.controller.FXPopupProgActivityFrame;
 import com.ccacic.financemanager.controller.StageStack;
@@ -67,9 +63,9 @@ public class EntryFrame extends FXPopupProgActivityFrame<Stage, BorderPane>{
 	@FXML
 	private Button cancelButton;
 	
-	private String key;
-	private Currency intendedCurr;
-	private Entry toEdit;
+	private final String key;
+	private final Currency intendedCurr;
+	private final Entry toEdit;
 	
 	/**
 	 * Creates a new EntryFrame
@@ -112,9 +108,7 @@ public class EntryFrame extends FXPopupProgActivityFrame<Stage, BorderPane>{
 
 	@Override
 	protected void initializeActivity() {
-		Map<String, Boolean> hasValidValuesMap = new HashMap<String, Boolean>();
-		
-		List<File> filesArrayList = new ArrayList<File>();
+
 		ObservableList<String> filesList = FXCollections.observableArrayList();
 		
 		if (toEdit != null) {
@@ -139,12 +133,10 @@ public class EntryFrame extends FXPopupProgActivityFrame<Stage, BorderPane>{
 		} else {
 			currTextField.setText(intendedCurr.format(0));
 		}
-		hasValidValuesMap.put("amount", true);
 		
 		removeFileButton.setOnAction(e -> {
 			
 			int index = filesCombo.getSelectionModel().getSelectedIndex();
-			filesArrayList.remove(index);
 			filesList.remove(index);
 			filesCombo.getSelectionModel().selectFirst();
 			if (filesList.isEmpty()) {
@@ -159,7 +151,6 @@ public class EntryFrame extends FXPopupProgActivityFrame<Stage, BorderPane>{
 			fileChooser.setTitle("Select File");
 			File selectedFile = fileChooser.showOpenDialog(StageStack.peekStage());
 			if (selectedFile != null) {
-				filesArrayList.add(selectedFile);
 				filesList.add(selectedFile.getName());
 				filesCombo.setItems(filesList);
 				filesCombo.show();
@@ -170,7 +161,6 @@ public class EntryFrame extends FXPopupProgActivityFrame<Stage, BorderPane>{
 		});
 		if (toEdit != null && toEdit.getFiles() != null) {
 			for (File f: toEdit.getFiles()) {
-				filesArrayList.add(f);
 				filesList.add(f.getName());
 			}
 			if (!filesList.isEmpty()) {

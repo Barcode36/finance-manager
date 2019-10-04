@@ -17,10 +17,10 @@ import com.ccacic.financemanager.model.tag.Tag;
  */
 public class CashAccountAssembler extends AccountAssembler<CashAccount> {
 	
-	protected static final String defDisplayName = "Cash Account";
-	protected static final String defEntryType = FiatCurrEntry.class.getSimpleName();
-	protected static final Set<Currency> defCurrencies = FiatCurrEntry.getFiatCurrs();
-	protected static final Set<Tag> defTags = new HashSet<>();
+	private static final String defDisplayName = "Cash Account";
+	private static final String defEntryType = FiatCurrEntry.class.getSimpleName();
+	private static final Set<Currency> defCurrencies = FiatCurrEntry.getFiatCurrs();
+	private static final Set<Tag> defTags = new HashSet<>();
 
 	/**
 	 * Creates a new CashAccountAssembler with default values
@@ -37,8 +37,8 @@ public class CashAccountAssembler extends AccountAssembler<CashAccount> {
 	 * @param currencies the supported Currencies of CashAccount
 	 * @param tags the Tags associated with CashAccount
 	 */
-	public CashAccountAssembler(String displayName, String entryType, Set<Currency> currencies,
-			Set<Tag> tags) {
+    private CashAccountAssembler(String displayName, String entryType, Set<Currency> currencies,
+                                 Set<Tag> tags) {
 		super(CashAccount.class.getSimpleName(), displayName, entryType, currencies, tags);
 	}
 
@@ -49,7 +49,7 @@ public class CashAccountAssembler extends AccountAssembler<CashAccount> {
 	
 	@Override
 	public void modifyAccount(CashAccount account, ParamMap paramMap, Delta delta) {
-		return;
+
 	}
 
 	@Override

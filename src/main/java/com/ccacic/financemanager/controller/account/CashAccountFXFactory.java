@@ -25,7 +25,7 @@ public class CashAccountFXFactory extends FXAccountFactory<CashAccount> {
 
 	@Override
 	public List<FXPopupProgActivityFrame<?, ? extends Pane>> createAcctFrameList(CashAccount toEdit) {
-		return new ArrayList<FXPopupProgActivityFrame<?,? extends Pane>>();
+		return new ArrayList<>();
 	}
 
 	@Override

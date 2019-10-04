@@ -66,7 +66,7 @@ public final class Logger {
 			
 		}
 		
-	};
+	}
 	
 	/**
 	 * Returns the Logger instance
@@ -74,7 +74,7 @@ public final class Logger {
 	 */
 	public static Logger getInstance() {
 		return loggerInstance;
-	};
+	}
 	
 	/**
 	 * Returns the logging Thread
@@ -125,7 +125,7 @@ public final class Logger {
 	 * @author Cameron Cacic
 	 *
 	 */
-	public static enum Severity {
+	public enum Severity {
 		INFO,
 		DEBUG,
 		WARN,
@@ -151,7 +151,7 @@ public final class Logger {
 		 * @param time the timestamp of the Message
 		 * @param threadName the name of the Thread the Message is recieved from
 		 */
-		public Message(Severity severity, String text, LocalDateTime time, String threadName) {
+		Message(Severity severity, String text, LocalDateTime time, String threadName) {
 			this.severity = severity;
 			this.text = text;
 			this.time = time;
@@ -162,7 +162,7 @@ public final class Logger {
 	
 	
 	private PrintStream printStream;
-	private ConcurrentLinkedQueue<Message> queue;
+	private final ConcurrentLinkedQueue<Message> queue;
 	private Severity minSeverity;
 	
 	/**

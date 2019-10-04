@@ -9,31 +9,27 @@
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="BorderPane">
 	<padding>
-		<Insets top="0.0" bottom="5.0" right="5.0" left="5.0"/>
+		<Insets bottom="5.0" right="5.0" left="5.0"/>
 	</padding>
 	<top>
 		<HBox alignment="CENTER_LEFT">
-			<children>
-				<Text fx:id="nameText" fill="WHITE">
-					<font>
-						<Font style="Calibri" size="32"/>
-					</font>
-				</Text>
-			</children>
+			<Text fx:id="nameText" fill="WHITE">
+				<font>
+					<Font name="Calibri" size="32"/>
+				</font>
+			</Text>
 		</HBox>
 	</top>
 	<center>
-		<VBox fx:id="acctTypesBox" alignment="TOP_LEFT"/>
+		<VBox fx:id="acctTypesBox"/>
 	</center>
 	<bottom>
 		<HBox alignment="CENTER_RIGHT">
-			<children>
-				<Text fx:id="totalText" fill="WHITE">
-					<font>
-						<Font style="Calibri" size="24"/>
-					</font>
-				</Text>
-			</children>
+			<Text fx:id="totalText" fill="WHITE">
+				<font>
+					<Font name="Calibri" size="24"/>
+				</font>
+			</Text>
 		</HBox>
 	</bottom>
 </fx:root>

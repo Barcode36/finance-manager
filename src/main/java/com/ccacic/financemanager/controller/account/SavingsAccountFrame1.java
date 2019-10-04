@@ -21,7 +21,7 @@ public class SavingsAccountFrame1 extends FXPopupProgActivityFrame<Object, VBox>
 	@FXML
 	private TextField apyField;
 	
-	private SavingsAccount toEdit;
+	private final SavingsAccount toEdit;
 	
 	/**
 	 * Creates a new SavingsAccountFrame1

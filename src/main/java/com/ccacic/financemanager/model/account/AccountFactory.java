@@ -75,7 +75,6 @@ public class AccountFactory extends Factory<Account> {
 	 * @return the display name
 	 */
 	public String getDisplayName(String key) {
-		@SuppressWarnings("unchecked")
 		AccountAssembler<? extends Account> assembler = (AccountAssembler<? extends Account>) assemblerMap.get(key);
 		if (assembler == null) {
 			return "";
@@ -89,7 +88,6 @@ public class AccountFactory extends Factory<Account> {
 	 * @return the Entry type
 	 */
 	public String getEntryType(String key) {
-		@SuppressWarnings("unchecked")
 		AccountAssembler<? extends Account> assembler = (AccountAssembler<? extends Account>) assemblerMap.get(key);
 		if (assembler == null) {
 			return "";
@@ -103,7 +101,6 @@ public class AccountFactory extends Factory<Account> {
 	 * @return the supported Currencies
 	 */
 	public Set<Currency> getCurrencies(String key) {
-		@SuppressWarnings("unchecked")
 		AccountAssembler<? extends Account> assembler = (AccountAssembler<? extends Account>) assemblerMap.get(key);
 		if (assembler == null) {
 			Logger.getInstance().logError("AccountAssembler not found for '" + key + "'");
@@ -117,8 +114,7 @@ public class AccountFactory extends Factory<Account> {
 	 * @param key the Account type
 	 * @return the associated Tags
 	 */
-	public Set<Tag> getTags(String key) {
-		@SuppressWarnings("unchecked")
+	private Set<Tag> getTags(String key) {
 		AccountAssembler<? extends Account> assembler = (AccountAssembler<? extends Account>) assemblerMap.get(key);
 		if (assembler == null) {
 			Logger.getInstance().logError("AccountAssembler not found for '" + key + "'");
@@ -129,8 +125,7 @@ public class AccountFactory extends Factory<Account> {
 	
 	@Override
 	public Account requestItem(ParamMap paramMap) {
-		Account account = super.requestItem(paramMap);
-		return account;
+		return super.requestItem(paramMap);
 	}
 	
 }

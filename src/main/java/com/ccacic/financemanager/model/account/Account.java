@@ -19,10 +19,10 @@ import com.ccacic.financemanager.model.entrychunk.EntryChunkManager;
 public abstract class Account extends Unique {
 	
 	protected EntryChunkManager entryChunkManager;
-	protected String name;
-	protected Currency currency;
+	private String name;
+	private Currency currency;
 	protected String exchangeID;
-	protected LocalDateTime dateTimeCreated;
+	private LocalDateTime dateTimeCreated;
 	
 	/**
 	 * Assembler method for setting the dateTimeCreated
@@ -94,7 +94,7 @@ public abstract class Account extends Unique {
 	 * Gets the raw total of the EntryChunks in the Account
 	 * @return the raw total
 	 */
-	public double getRawTotal() {
+    private double getRawTotal() {
 		double total = 0;
 		for (EntryChunk entryChunk: entryChunkManager.getEntryChunks()) {
 			total += entryChunk.getTotal();

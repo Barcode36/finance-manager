@@ -19,6 +19,6 @@ public interface Distancator<T> extends Comparator<T> {
 	 * @param o2 the second object
 	 * @return the difference between the two objects
 	 */
-	public int compare(T o1, T o2);
+	int compare(T o1, T o2);
 	
 }

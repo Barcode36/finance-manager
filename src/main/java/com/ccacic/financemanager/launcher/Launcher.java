@@ -104,7 +104,7 @@ public class Launcher extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) {
 		
 		try {
 			FileHandler fileHandler = FileHandler.getInstance();
@@ -130,7 +130,7 @@ public class Launcher extends Application {
 	/**
 	 * Loads all the modules. To be streamlined in future releases
 	 */
-	protected void loadModules() {
+    private void loadModules() {
 		
 		AccountFactory accountFactory = AccountFactory.getInstance();
 		accountFactory.addAssembler(new CashAccountAssembler());

@@ -37,7 +37,7 @@ public abstract class Unique {
 	/**
 	 * Creates a new Unique
 	 */
-	public Unique() {
+    protected Unique() {
 		identifier = null;
 	}
 	
@@ -70,7 +70,7 @@ public abstract class Unique {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (obj == null || !getClass().equals(obj.getClass())) {
 			return false;
 		}
 		try {

@@ -9,8 +9,8 @@ package com.ccacic.financemanager.model.currency.conversion.graph;
 public class Edge<T> {
 
 	private double weight;
-	private Node<T> head;
-	private Node<T> tail;
+	private final Node<T> head;
+	private final Node<T> tail;
 	
 	/**
 	 * Creates a new Edge. Package scope since Node is package scope
@@ -80,7 +80,7 @@ public class Edge<T> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object obj) {
-		if (obj == null) {
+		if (obj == null || !getClass().equals(obj.getClass())) {
 			return false;
 		}
 		Edge<T> edge = (Edge<T>) obj;

@@ -21,7 +21,7 @@ public class StockEntryFrame1 extends FXPopupProgActivityFrame<CrypCurrEntry, VB
 	@FXML
 	private DoubleTextField sharesField;
 	
-	private StockEntry toEdit;
+	private final StockEntry toEdit;
 	
 	/**
 	 * Creates a new StockEntryFrame1

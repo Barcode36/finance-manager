@@ -14,10 +14,10 @@ import com.ccacic.financemanager.model.Unique;
  */
 public abstract class Entry extends Unique implements Comparable<Entry> {
 
-	protected LocalDateTime dateTime;
-	protected String descr;
+	private LocalDateTime dateTime;
+	private String descr;
 	protected double amount;
-	protected List<File> files;
+	private List<File> files;
 	
 	/**
 	 * Assembler method for setting the dateTime

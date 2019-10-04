@@ -14,8 +14,8 @@ import java.util.Map;
  */
 public class Delta {
 	
-	private Map<String, Object[]> deltaMap;
-	private Object obj;
+	private final Map<String, Object[]> deltaMap;
+	private final Object obj;
 	
 	/**
 	 * Creates a new Delta for the passed object
@@ -73,7 +73,7 @@ public class Delta {
 	 * @param id the ID to reference
 	 * @return the old value associated with the ID
 	 */
-	public Object getOldValue(String id) {
+	private Object getOldValue(String id) {
 		return deltaMap.get(id)[0];
 	}
 	
@@ -82,7 +82,7 @@ public class Delta {
 	 * @param id the ID to reference
 	 * @return the new value associated with the ID
 	 */
-	public Object getNewValue(String id) {
+	private Object getNewValue(String id) {
 		return deltaMap.get(id)[1];
 	}
 	
@@ -141,11 +141,7 @@ public class Delta {
 	public boolean deltaEntryHasChange(String id) {
 		Object[] deltaPair = deltaMap.get(id);
 		if (deltaPair[0] == null) {
-			if (deltaPair[1] == null) {
-				return false;
-			} else {
-				return true;
-			}
+			return deltaPair[1] != null;
 		} else {
 			if (deltaPair[1] == null) {
 				return true;

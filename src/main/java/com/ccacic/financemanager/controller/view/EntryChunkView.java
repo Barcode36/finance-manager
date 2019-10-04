@@ -17,11 +17,8 @@ import com.ccacic.financemanager.model.entrychunk.EntryChunk;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -40,10 +37,10 @@ public class EntryChunkView extends FXActivity<VBox> {
 	@FXML
 	private EntryTable entryTable;
 	
-	private EntryChunk entryChunk;
-	private Currency currency;
-	private String entryType;
-	private DateResolutionManager manager;
+	private final EntryChunk entryChunk;
+	private final Currency currency;
+	private final String entryType;
+	private final DateResolutionManager manager;
 	
 	/**
 	 * Creates a new EntryChunkView
@@ -110,36 +107,26 @@ public class EntryChunkView extends FXActivity<VBox> {
 		entryTable.setItems(entriesList);
 		entryTable.buildTable(currency, entryType);
 		
-		entryTable.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			
-			@Override
-			public void handle(MouseEvent e) {
-				if (e.getClickCount() > 1) {
-					Entry toEdit = entryTable.getSelectionModel().getSelectedItem();
-					if (toEdit != null) {
-						EntryActivity entryActivity = new EntryActivity(entryType, 
-								currency, toEdit, id);
-						entryActivity.open();
-					}
+		entryTable.setOnMouseClicked(e -> {
+			if (e.getClickCount() > 1) {
+				Entry toEdit = entryTable.getSelectionModel().getSelectedItem();
+				if (toEdit != null) {
+					EntryActivity entryActivity = new EntryActivity(entryType,
+							currency, toEdit, id);
+					entryActivity.open();
 				}
 			}
-			
 		});
 		
-		toggleEntriesButton.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent e) {
-				
-				if (toggleEntriesButton.getText().equals("+")) {
-					toggleEntriesButton.setText("-");
-					entryTable.setVisible(true);
-				} else {
-					toggleEntriesButton.setText("+");
-					entryTable.setVisible(false);
-				}
+		toggleEntriesButton.setOnAction(e -> {
+
+			if (toggleEntriesButton.getText().equals("+")) {
+				toggleEntriesButton.setText("-");
+				entryTable.setVisible(true);
+			} else {
+				toggleEntriesButton.setText("+");
+				entryTable.setVisible(false);
 			}
-			
 		});
 		
 		dateRange.setText(manager.getFormattedRange(entryChunk.getEarliest(), entryChunk.getLatest()));
